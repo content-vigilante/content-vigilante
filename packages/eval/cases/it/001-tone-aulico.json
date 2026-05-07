@@ -1,0 +1,15 @@
+{
+  "id": "it-001",
+  "guide": "lavazza",
+  "language": "it",
+  "content": "Siamo lieti di annunciare il lancio della nostra nuova piattaforma all'avanguardia che valorizzerà le sinergie strategiche.",
+  "expected": {
+    "scoreRange": [20, 55],
+    "mustFlag": [
+      { "lineContains": "lieti di annunciare", "type": "tone" },
+      { "lineContains": "sinergie", "type": "vocabulary" },
+      { "lineContains": "all'avanguardia", "type": "vocabulary" }
+    ],
+    "mustNotFlag": []
+  }
+}

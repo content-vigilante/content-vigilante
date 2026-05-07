@@ -1,0 +1,16 @@
+{
+  "id": "en-001",
+  "guide": "mailchimp",
+  "language": "en",
+  "content": "We are pleased to announce the launch of our new synergistic platform that will leverage best-in-class capabilities to unlock value for our stakeholders.",
+  "expected": {
+    "scoreRange": [20, 55],
+    "mustFlag": [
+      { "lineContains": "pleased to announce", "type": "tone" },
+      { "lineContains": "synergistic", "type": "vocabulary" },
+      { "lineContains": "leverage", "type": "vocabulary" },
+      { "lineContains": "best-in-class", "type": "vocabulary" }
+    ],
+    "mustNotFlag": []
+  }
+}

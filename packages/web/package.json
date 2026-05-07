@@ -1,0 +1,13 @@
+{
+  "name": "@content-vigilante/web",
+  "version": "0.0.1",
+  "description": "Local-first web UI for Content Vigilante. Lands in week 3.",
+  "license": "MIT",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "echo 'web app lands week 3' && exit 0",
+    "build": "echo 'web app lands week 3' && exit 0",
+    "typecheck": "echo 'no ts yet' && exit 0"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "name": "@content-vigilante/eval",
+  "version": "0.0.1",
+  "description": "Hand-labeled eval suite for Content Vigilante. Runs in CI, fails on regression.",
+  "license": "MIT",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "eval": "bun run src/runner.ts",
+    "eval:baseline": "bun run src/runner.ts --write-baseline",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@content-vigilante/core": "workspace:*"
+  }
+}

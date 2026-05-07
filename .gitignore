@@ -1,0 +1,48 @@
+node_modules/
+dist/
+build/
+.next/
+out/
+
+# bun
+bun.lockb
+
+# env
+.env
+.env.local
+.env.*.local
+
+# logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# editor
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.swp
+.DS_Store
+
+# OS
+Thumbs.db
+
+# coverage
+coverage/
+.nyc_output/
+
+# local sqlite stores
+*.sqlite
+*.sqlite-journal
+*.db
+
+# turbo / next
+.turbo/
+
+# vercel
+.vercel
+
+# generated
+packages/*/dist/
+packages/web/.next/

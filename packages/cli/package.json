@@ -1,0 +1,21 @@
+{
+  "name": "@content-vigilante/cli",
+  "version": "0.0.1",
+  "description": "CLI for Content Vigilante. Audit content against your brand guide.",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "cv": "./src/index.ts",
+    "content-vigilante": "./src/index.ts"
+  },
+  "scripts": {
+    "build": "bun build ./src/index.ts --outdir ./dist --target node --minify",
+    "typecheck": "tsc --noEmit",
+    "start": "bun run ./src/index.ts"
+  },
+  "dependencies": {
+    "@content-vigilante/core": "workspace:*",
+    "commander": "^12.1.0",
+    "kleur": "^4.1.5"
+  }
+}
