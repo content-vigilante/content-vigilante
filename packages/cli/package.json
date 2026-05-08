@@ -1,12 +1,25 @@
 {
   "name": "@content-vigilante/cli",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "description": "CLI for Content Vigilante. Audit content against your brand guide.",
   "license": "MIT",
+  "author": "Sai Prathyaksh Kanagat <saikanagat1117@gmail.com>",
+  "homepage": "https://github.com/content-vigilante/Content-Vigilante",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/content-vigilante/Content-Vigilante.git",
+    "directory": "packages/cli"
+  },
+  "bugs": "https://github.com/content-vigilante/Content-Vigilante/issues",
+  "keywords": ["ai", "cli", "brand-voice", "content-marketing", "audit"],
   "type": "module",
   "bin": {
     "cv": "./src/index.ts",
     "content-vigilante": "./src/index.ts"
+  },
+  "files": ["src", "README.md", "LICENSE"],
+  "publishConfig": {
+    "access": "public"
   },
   "scripts": {
     "build": "bun build ./src/index.ts --outdir ./dist --target node --minify",

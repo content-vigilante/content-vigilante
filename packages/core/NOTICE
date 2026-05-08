@@ -1,0 +1,26 @@
+Content Vigilante
+=================
+
+Copyright (c) 2026 Sai Prathyaksh Kanagat.
+
+The Content Vigilante codebase is licensed under the MIT License (see LICENSE).
+
+The repository contains structured data files derived from third-party brand
+voice guides. Those files are NOT covered by the MIT License. Each carries the
+upstream license of the source material.
+
+Third-party data files
+----------------------
+
+packages/core/src/guides/data/mailchimp.json
+  Source: https://styleguide.mailchimp.com/
+  License: Creative Commons Attribution-NonCommercial 4.0 International
+           (CC BY-NC 4.0)
+  Attribution: Mailchimp Content Style Guide.
+  Notes: This file restates Mailchimp's published guidance in a structured
+  schema for use as a reference dataset. Commercial redistribution of the
+  rule descriptions and examples is restricted by Mailchimp's license.
+
+If you redistribute or adapt this repository commercially, you must either
+remove `mailchimp.json` and any derived eval cases that depend on it, or
+obtain the appropriate license from Mailchimp.

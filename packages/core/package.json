@@ -1,14 +1,38 @@
 {
   "name": "@content-vigilante/core",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "description": "Core engine for Content Vigilante. Brand voice auditing, multi-judge scoring, multilingual.",
   "license": "MIT",
+  "author": "Sai Prathyaksh Kanagat <saikanagat1117@gmail.com>",
+  "homepage": "https://github.com/content-vigilante/Content-Vigilante",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/content-vigilante/Content-Vigilante.git",
+    "directory": "packages/core"
+  },
+  "bugs": "https://github.com/content-vigilante/Content-Vigilante/issues",
+  "keywords": [
+    "ai",
+    "llm",
+    "brand-voice",
+    "content-marketing",
+    "audit",
+    "anthropic",
+    "openai",
+    "ollama",
+    "multilingual"
+  ],
   "type": "module",
   "main": "./src/index.ts",
   "exports": {
     ".": "./src/index.ts",
     "./llm": "./src/llm/index.ts",
+    "./embeddings": "./src/embeddings/index.ts",
     "./types": "./src/types.ts"
+  },
+  "files": ["src", "README.md", "LICENSE", "NOTICE"],
+  "publishConfig": {
+    "access": "public"
   },
   "scripts": {
     "build": "bun build ./src/index.ts --outdir ./dist --target node",
