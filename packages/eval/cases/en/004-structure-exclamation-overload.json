@@ -1,0 +1,15 @@
+{
+  "id": "en-004",
+  "guide": "mailchimp",
+  "language": "en",
+  "content": "Welcome aboard!! We're so excited to have you!!! Sign up now and don't miss out!!",
+  "expected": {
+    "scoreRange": [25, 55],
+    "mustFlag": [
+      { "lineContains": "Welcome aboard!!", "type": "structure" },
+      { "lineContains": "have you!!!", "type": "structure" },
+      { "lineContains": "miss out!!", "type": "structure" }
+    ],
+    "mustNotFlag": []
+  }
+}

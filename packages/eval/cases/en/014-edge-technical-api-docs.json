@@ -1,0 +1,15 @@
+{
+  "id": "en-014",
+  "guide": "mailchimp",
+  "language": "en",
+  "content": "The API returns a 200 response with a JSON payload containing the campaign_id and status fields. Pass your API key in the Authorization header as a Bearer token.",
+  "expected": {
+    "scoreRange": [75, 100],
+    "mustFlag": [],
+    "mustNotFlag": [
+      { "lineContains": "API" },
+      { "lineContains": "JSON payload" },
+      { "lineContains": "Bearer token" }
+    ]
+  }
+}

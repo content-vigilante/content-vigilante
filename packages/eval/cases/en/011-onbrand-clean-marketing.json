@@ -1,0 +1,14 @@
+{
+  "id": "en-011",
+  "guide": "mailchimp",
+  "language": "en",
+  "content": "Send your first email in minutes. Pick a template, drop in your words, and hit send. We'll handle the rest.",
+  "expected": {
+    "scoreRange": [82, 100],
+    "mustFlag": [],
+    "mustNotFlag": [
+      { "lineContains": "Send your first email" },
+      { "lineContains": "We'll handle the rest" }
+    ]
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "id": "en-002",
+  "guide": "mailchimp",
+  "language": "en",
+  "content": "Our automagical platform helps marketing ninjas and growth rockstars disrupt the funnel and absolutely crush it on every channel.",
+  "expected": {
+    "scoreRange": [20, 50],
+    "mustFlag": [
+      { "lineContains": "automagical", "type": "vocabulary" },
+      { "lineContains": "ninjas", "type": "vocabulary" },
+      { "lineContains": "rockstars", "type": "vocabulary" },
+      { "lineContains": "disrupt", "type": "vocabulary" },
+      { "lineContains": "crush it", "type": "vocabulary" }
+    ],
+    "mustNotFlag": []
+  }
+}

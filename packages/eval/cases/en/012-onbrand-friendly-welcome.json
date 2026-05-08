@@ -1,0 +1,14 @@
+{
+  "id": "en-012",
+  "guide": "mailchimp",
+  "language": "en",
+  "content": "Welcome to Mailchimp. When a new subscriber joins, we'll send them a friendly hello on your behalf. You can edit the message anytime from your dashboard.",
+  "expected": {
+    "scoreRange": [82, 100],
+    "mustFlag": [],
+    "mustNotFlag": [
+      { "lineContains": "Welcome to Mailchimp" },
+      { "lineContains": "send them a friendly hello" }
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "id": "en-009",
+  "guide": "mailchimp",
+  "language": "en",
+  "content": "The newsletter was sent by our team this morning. Subscribers can reply directly if they have questions.",
+  "expected": {
+    "scoreRange": [60, 78],
+    "mustFlag": [{ "lineContains": "was sent by our team", "type": "tone" }],
+    "mustNotFlag": [{ "lineContains": "reply directly" }]
+  }
+}

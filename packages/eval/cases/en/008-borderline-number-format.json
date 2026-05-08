@@ -1,0 +1,14 @@
+{
+  "id": "en-008",
+  "guide": "mailchimp",
+  "language": "en",
+  "content": "Join over 150000 marketers who trust us with their email campaigns. Open rates jumped 20 percent last quarter.",
+  "expected": {
+    "scoreRange": [55, 75],
+    "mustFlag": [
+      { "lineContains": "150000", "type": "structure" },
+      { "lineContains": "20 percent", "type": "structure" }
+    ],
+    "mustNotFlag": [{ "lineContains": "email campaigns" }]
+  }
+}

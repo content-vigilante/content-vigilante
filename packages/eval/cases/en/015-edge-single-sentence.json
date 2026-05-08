@@ -1,0 +1,11 @@
+{
+  "id": "en-015",
+  "guide": "mailchimp",
+  "language": "en",
+  "content": "Send better email.",
+  "expected": {
+    "scoreRange": [80, 100],
+    "mustFlag": [],
+    "mustNotFlag": [{ "lineContains": "Send better email" }]
+  }
+}

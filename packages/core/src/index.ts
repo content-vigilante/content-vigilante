@@ -52,43 +52,30 @@ export {
 } from './guides/index.ts';
 
 export { judgeTone } from './judges/tone.ts';
+export { judgeVocabulary } from './judges/vocabulary.ts';
+export { judgeStructure } from './judges/structure.ts';
+export {
+  runAggregator,
+  DEFAULT_WEIGHTS,
+  type AggregatorOptions,
+  type AggregatorWeights,
+} from './judges/aggregator.ts';
 
-import { judgeTone } from './judges/tone.ts';
+export { GuideStore } from './store/index.ts';
+export type { GuideStoreOptions, RuleRow } from './store/index.ts';
+
+import { type AggregatorOptions, runAggregator } from './judges/aggregator.ts';
 import type { AuditInput, AuditResult, BrandGuide, Language } from './types.ts';
 
 /**
  * Audit content against a brand guide.
  *
- * v0.1 implementation: tone judge only (vocab + structure judges land
- * week 1 day 4). Aggregator weights tone at 100% until they're online.
- *
- * Multi-judge variance, embeddings-based RAG retrieval, and provider
- * cascading land in week 1 day 5.
+ * Runs three judges in parallel — tone (LLM), vocabulary (hybrid), and
+ * structure/readability (deterministic) — and returns a weighted overall
+ * score plus a deduplicated, line-sorted list of issues.
  */
-export async function audit(input: AuditInput): Promise<AuditResult> {
-  const start = Date.now();
-  const tone = await judgeTone({
-    content: input.content,
-    guide: input.guide,
-    llm: input.llm,
-  });
-
-  return {
-    score: tone.score,
-    dimensions: {
-      tone: tone.score,
-      vocabulary: 0,
-      structure: 0,
-      readability: 0,
-    },
-    issues: tone.issues,
-    strengths: [],
-    metadata: {
-      judgeAgreement: 1,
-      tokensUsed: 0,
-      durationMs: Date.now() - start,
-    },
-  };
+export async function audit(input: AuditInput, opts: AggregatorOptions = {}): Promise<AuditResult> {
+  return runAggregator(input, opts);
 }
 
 /**

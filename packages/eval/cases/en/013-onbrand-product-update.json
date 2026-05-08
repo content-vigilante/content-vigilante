@@ -1,0 +1,14 @@
+{
+  "id": "en-013",
+  "guide": "mailchimp",
+  "language": "en",
+  "content": "We rebuilt the reports page so you can see opens, clicks, and unsubscribes at a glance. Read the full changelog for details on what's new.",
+  "expected": {
+    "scoreRange": [82, 100],
+    "mustFlag": [],
+    "mustNotFlag": [
+      { "lineContains": "opens, clicks, and unsubscribes" },
+      { "lineContains": "Read the full changelog" }
+    ]
+  }
+}

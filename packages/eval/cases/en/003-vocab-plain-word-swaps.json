@@ -1,0 +1,17 @@
+{
+  "id": "en-003",
+  "guide": "mailchimp",
+  "language": "en",
+  "content": "We utilize advanced tools to incentivize signups, and our key learnings show that adding senders to a whitelist improves deliverability for grandfathered accounts.",
+  "expected": {
+    "scoreRange": [25, 55],
+    "mustFlag": [
+      { "lineContains": "utilize", "type": "vocabulary" },
+      { "lineContains": "incentivize", "type": "vocabulary" },
+      { "lineContains": "learnings", "type": "vocabulary" },
+      { "lineContains": "whitelist", "type": "vocabulary" },
+      { "lineContains": "grandfathered", "type": "vocabulary" }
+    ],
+    "mustNotFlag": []
+  }
+}

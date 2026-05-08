@@ -48,11 +48,20 @@ cv serve
 
 ## Roadmap
 
-- [x] Repo + CI scaffolding
-- [ ] v0.1 — Core engine, EN + IT, paste + URL ingestion, CLI, web UI, hosted demo, public eval suite
-- [ ] v0.2 — PDF/docx audit, YAML guide DSL, Docker image, French
-- [ ] v0.3 — Figma plugin, German, team brand library
+- [x] Repo + CI scaffolding, npm placeholders published
+- [x] LLM provider abstraction (Anthropic / OpenAI / Ollama)
+- [x] Brand guide loaders (JSON + markdown)
+- [x] Real Mailchimp guide bundled (57 rules)
+- [x] Tone judge, vocabulary judge (hybrid), structure judge (deterministic)
+- [x] sqlite-vec embedding store + Ollama bge-m3 + OpenAI 3-small providers
+- [x] Aggregator with weighted scoring + dedupe
+- [x] Eval runner with CI regression gate (15 hand-labeled cases)
+- [ ] CLI (`cv audit`, `cv init`, `cv serve`) wired to the engine — week 2
+- [ ] URL extractor + Italian eval cases + bundled IT guide — week 2
+- [ ] Next.js web UI on `contentvigilante.vercel.app` — week 3
 - [ ] v1.0 — Full polish, docs site, Product Hunt launch
+
+For the technical deep-dive see [`docs/PORTFOLIO.md`](docs/PORTFOLIO.md) and [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 
 ## Architecture
 

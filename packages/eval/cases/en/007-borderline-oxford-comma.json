@@ -1,0 +1,11 @@
+{
+  "id": "en-007",
+  "guide": "mailchimp",
+  "language": "en",
+  "content": "Build campaigns, automate your sends and track results from one dashboard. We help small businesses grow their audience.",
+  "expected": {
+    "scoreRange": [60, 78],
+    "mustFlag": [{ "lineContains": "automate your sends and track", "type": "structure" }],
+    "mustNotFlag": [{ "lineContains": "small businesses" }]
+  }
+}

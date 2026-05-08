@@ -1,0 +1,14 @@
+{
+  "id": "en-010",
+  "guide": "mailchimp",
+  "language": "en",
+  "content": "Signup for a free account in seconds. Login to access your dashboard whenever you need it.",
+  "expected": {
+    "scoreRange": [55, 75],
+    "mustFlag": [
+      { "lineContains": "Signup for a free account", "type": "vocabulary" },
+      { "lineContains": "Login to access", "type": "vocabulary" }
+    ],
+    "mustNotFlag": [{ "lineContains": "free account" }]
+  }
+}

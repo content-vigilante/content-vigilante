@@ -1,0 +1,16 @@
+{
+  "id": "en-005",
+  "guide": "mailchimp",
+  "language": "en",
+  "content": "Send your first e-mail with MailChimp today. Find templates on the Internet and launch your ecommerce campaign in minutes.",
+  "expected": {
+    "scoreRange": [30, 60],
+    "mustFlag": [
+      { "lineContains": "e-mail", "type": "vocabulary" },
+      { "lineContains": "MailChimp", "type": "vocabulary" },
+      { "lineContains": "Internet", "type": "vocabulary" },
+      { "lineContains": "ecommerce", "type": "vocabulary" }
+    ],
+    "mustNotFlag": []
+  }
+}

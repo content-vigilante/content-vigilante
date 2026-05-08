@@ -1,0 +1,16 @@
+{
+  "id": "en-006",
+  "guide": "mailchimp",
+  "language": "en",
+  "content": "Hey guys, click the button on the right to get started. Then check the sidebar below for more options. Click here to learn more.",
+  "expected": {
+    "scoreRange": [25, 55],
+    "mustFlag": [
+      { "lineContains": "Hey guys", "type": "readability" },
+      { "lineContains": "button on the right", "type": "readability" },
+      { "lineContains": "sidebar below", "type": "readability" },
+      { "lineContains": "Click here", "type": "readability" }
+    ],
+    "mustNotFlag": []
+  }
+}

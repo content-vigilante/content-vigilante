@@ -1,12 +1,8 @@
 /**
  * EmbeddingProvider — symmetric to LLMProvider.
  *
- * v0.1 ships two concrete impls:
- *   - OllamaEmbeddingProvider     (default — bge-m3, free, local, multilingual)
- *   - OpenAIEmbeddingProvider     (premium — text-embedding-3-small if user has key)
- *
- * Lands week 1 day 2 alongside the brand-guide ingestion pipeline.
- * See docs/research/embeddings.md for the full rationale.
+ * Concrete impls live in ./ollama.ts and ./openai.ts.
+ * See docs/research/embeddings.md for the rationale on bge-m3 as default.
  */
 
 export interface EmbeddingProvider {
@@ -21,21 +17,61 @@ export interface EmbeddingProvider {
 
 export interface ResolveEmbeddingProviderOptions {
   ollamaBaseURL?: string;
+  ollamaModel?: string;
   openAIApiKey?: string;
-  preferLocal?: boolean;
+  openAIModel?: string;
+  /** Force a specific provider. Useful for tests and CI. */
+  prefer?: 'ollama' | 'openai';
 }
 
 /**
  * Auto-select an embedding provider based on the user's environment.
  *
- *   1. If Ollama is reachable and bge-m3 is pulled, use it.
- *   2. Else if OPENAI_API_KEY is set, use text-embedding-3-small.
- *   3. Else throw with install instructions.
- *
- * Implementation lands week 1 day 2.
+ *   1. If `prefer` is set, honor it unconditionally.
+ *   2. Else if Ollama is reachable (3s probe), use it.
+ *   3. Else if OPENAI_API_KEY is set in env or opts, use OpenAI.
+ *   4. Else throw with install instructions.
  */
 export async function resolveEmbeddingProvider(
-  _opts: ResolveEmbeddingProviderOptions = {},
+  opts: ResolveEmbeddingProviderOptions = {},
 ): Promise<EmbeddingProvider> {
-  throw new Error('resolveEmbeddingProvider is not yet implemented (lands week 1 day 2)');
+  const { createOllamaEmbeddingProvider, isOllamaAvailable } = await import('./ollama.ts');
+  const { createOpenAIEmbeddingProvider } = await import('./openai.ts');
+
+  if (opts.prefer === 'ollama') {
+    return createOllamaEmbeddingProvider({
+      ...(opts.ollamaBaseURL ? { baseURL: opts.ollamaBaseURL } : {}),
+      ...(opts.ollamaModel ? { model: opts.ollamaModel } : {}),
+    });
+  }
+  if (opts.prefer === 'openai') {
+    return createOpenAIEmbeddingProvider({
+      ...(opts.openAIApiKey ? { apiKey: opts.openAIApiKey } : {}),
+      ...(opts.openAIModel ? { model: opts.openAIModel } : {}),
+    });
+  }
+
+  if (
+    await isOllamaAvailable({
+      ...(opts.ollamaBaseURL ? { baseURL: opts.ollamaBaseURL } : {}),
+      ...(opts.ollamaModel ? { model: opts.ollamaModel } : {}),
+    })
+  ) {
+    return createOllamaEmbeddingProvider({
+      ...(opts.ollamaBaseURL ? { baseURL: opts.ollamaBaseURL } : {}),
+      ...(opts.ollamaModel ? { model: opts.ollamaModel } : {}),
+    });
+  }
+
+  const apiKey = opts.openAIApiKey ?? process.env['OPENAI_API_KEY'];
+  if (apiKey) {
+    return createOpenAIEmbeddingProvider({
+      apiKey,
+      ...(opts.openAIModel ? { model: opts.openAIModel } : {}),
+    });
+  }
+
+  throw new Error(
+    'No embedding provider available. Install Ollama (https://ollama.com) and run `ollama pull bge-m3`, or set OPENAI_API_KEY in your env.',
+  );
 }

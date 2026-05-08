@@ -29,3 +29,11 @@ jobs:
 
       - name: Test
         run: bun test
+
+      - name: Install libsqlite3 (for sqlite-vec extension loading)
+        run: sudo apt-get update && sudo apt-get install -y libsqlite3-dev
+
+      - name: Eval regression gate
+        env:
+          CV_SQLITE_LIB: /usr/lib/x86_64-linux-gnu/libsqlite3.so.0
+        run: bun run packages/eval/src/runner.ts
