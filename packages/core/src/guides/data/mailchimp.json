@@ -1,0 +1,422 @@
+{
+  "source": "mailchimp",
+  "language": "en",
+  "version": "extracted-2026-05-07",
+  "url": "https://styleguide.mailchimp.com/",
+  "license": "Mailchimp Content Style Guide is published under CC BY-NC 4.0",
+  "rules": [
+    {
+      "id": "tone-active-voice",
+      "category": "tone",
+      "description": "Use active voice. Avoid passive constructions where the subject receives the action.",
+      "examples": {
+        "good": ["Marti logged into the account."],
+        "bad": ["The account was logged into by Marti."]
+      }
+    },
+    {
+      "id": "tone-plain-language",
+      "category": "tone",
+      "description": "Write plainly. Value clarity above all and avoid fluffy metaphors or cheap plays to emotion.",
+      "examples": {}
+    },
+    {
+      "id": "tone-no-jargon",
+      "category": "tone",
+      "description": "Avoid slang and corporate jargon. Write in plain English rather than technical B2B terminology.",
+      "examples": {}
+    },
+    {
+      "id": "tone-positive-language",
+      "category": "tone",
+      "description": "Use positive phrasing rather than negative constructions. Tell people what they can do, not what they can't.",
+      "examples": {}
+    },
+    {
+      "id": "tone-dry-humor",
+      "category": "tone",
+      "description": "Keep humor straight-faced, subtle, and a touch eccentric. Avoid forced jokes.",
+      "examples": {}
+    },
+    {
+      "id": "tone-genuine",
+      "category": "tone",
+      "description": "Be genuine and relatable. Speak in a familiar, warm, and accessible way rather than corporate-sounding.",
+      "examples": {}
+    },
+    {
+      "id": "tone-not-condescending",
+      "category": "tone",
+      "description": "Don't be condescending. Bring the reader in on the joke rather than excluding them.",
+      "examples": {}
+    },
+    {
+      "id": "tone-clarity-over-entertainment",
+      "category": "tone",
+      "description": "Prioritize clarity over entertainment. It's always more important to be clear than entertaining.",
+      "examples": {}
+    },
+    {
+      "id": "tone-contractions",
+      "category": "tone",
+      "description": "Use contractions freely (it's, don't, we're) for an informal, friendly tone.",
+      "examples": {}
+    },
+    {
+      "id": "vocab-avoid-automagical",
+      "category": "vocabulary",
+      "description": "Avoid the word \"automagical\" — it's corporate jargon.",
+      "examples": {
+        "bad": ["Our automagical workflow takes care of it."]
+      }
+    },
+    {
+      "id": "vocab-avoid-leverage",
+      "category": "vocabulary",
+      "description": "Avoid \"leverage\" as a verb. Use \"use\" instead.",
+      "examples": {
+        "good": ["Use these tools to grow your audience."],
+        "bad": ["Leverage these tools to grow your audience."]
+      }
+    },
+    {
+      "id": "vocab-avoid-incentivize",
+      "category": "vocabulary",
+      "description": "Avoid \"incentivize\" — prefer plainer alternatives like \"encourage\" or \"reward.\"",
+      "examples": {}
+    },
+    {
+      "id": "vocab-avoid-disruption",
+      "category": "vocabulary",
+      "description": "Avoid buzzwords like \"disruption\" and \"thought leader.\"",
+      "examples": {}
+    },
+    {
+      "id": "vocab-avoid-learnings",
+      "category": "vocabulary",
+      "description": "Avoid \"learnings.\" Use \"lessons\" or \"what we learned.\"",
+      "examples": {}
+    },
+    {
+      "id": "vocab-avoid-funnel-jargon",
+      "category": "vocabulary",
+      "description": "Avoid corporate marketing jargon like \"funnel\" when plainer language works.",
+      "examples": {}
+    },
+    {
+      "id": "vocab-avoid-ninja-rockstar",
+      "category": "vocabulary",
+      "description": "Avoid hyperbolic role descriptors: ninja, rockstar, wizard, unicorn (unless literal).",
+      "examples": {
+        "bad": ["We're hiring a marketing ninja."]
+      }
+    },
+    {
+      "id": "vocab-avoid-crushing-it",
+      "category": "vocabulary",
+      "description": "Avoid \"crushing it\" and \"killing it.\"",
+      "examples": {}
+    },
+    {
+      "id": "vocab-avoid-crazy-insane",
+      "category": "vocabulary",
+      "description": "Avoid \"crazy\" and \"insane,\" especially when describing people.",
+      "examples": {}
+    },
+    {
+      "id": "vocab-avoid-best-in-breed",
+      "category": "vocabulary",
+      "description": "Avoid \"best-in-breed\" and similar empty superlatives.",
+      "examples": {}
+    },
+    {
+      "id": "vocab-avoid-blacklist-whitelist",
+      "category": "vocabulary",
+      "description": "Avoid \"blacklist\" and \"whitelist.\" Use \"blocklist\" and \"allowlist\" instead.",
+      "examples": {}
+    },
+    {
+      "id": "vocab-avoid-grandfathered",
+      "category": "vocabulary",
+      "description": "Avoid \"grandfathered.\" Use \"legacy\" or \"existing users\" instead.",
+      "examples": {}
+    },
+    {
+      "id": "vocab-email-no-hyphen",
+      "category": "vocabulary",
+      "description": "Write \"email\" as one word, no hyphen, lowercase unless at the start of a sentence.",
+      "examples": {
+        "good": ["Send the email to your subscribers."],
+        "bad": ["Send the e-mail to your subscribers."]
+      }
+    },
+    {
+      "id": "vocab-internet-lowercase",
+      "category": "vocabulary",
+      "description": "Don't capitalize \"internet,\" \"online,\" or \"website\" mid-sentence.",
+      "examples": {
+        "good": ["Find it on the internet."],
+        "bad": ["Find it on the Internet."]
+      }
+    },
+    {
+      "id": "vocab-ecommerce-hyphen",
+      "category": "vocabulary",
+      "description": "Write \"e-commerce\" with a hyphen.",
+      "examples": {
+        "good": ["Our e-commerce features..."],
+        "bad": ["Our ecommerce features..."]
+      }
+    },
+    {
+      "id": "vocab-login-vs-log-in",
+      "category": "vocabulary",
+      "description": "\"Login\" is a noun/adjective; \"log in\" (two words) is the verb. Same pattern for signup/sign up, setup/set up.",
+      "examples": {
+        "good": ["Log in to your account.", "Use your login credentials."],
+        "bad": ["Login to your account."]
+      }
+    },
+    {
+      "id": "vocab-signup-vs-sign-up",
+      "category": "vocabulary",
+      "description": "\"Signup\" is a noun/adjective; \"sign up\" (two words) is the verb.",
+      "examples": {
+        "good": ["Sign up for our newsletter.", "The signup form is short."],
+        "bad": ["Signup for our newsletter."]
+      }
+    },
+    {
+      "id": "vocab-dropdown-hyphen",
+      "category": "vocabulary",
+      "description": "Use \"drop-down\" (hyphenated) as a noun or adjective; \"drop down\" (no hyphen) only as a verb.",
+      "examples": {}
+    },
+    {
+      "id": "vocab-popup-hyphen",
+      "category": "vocabulary",
+      "description": "Use \"pop-up\" (hyphenated) as a noun or adjective; \"pop up\" only as a verb.",
+      "examples": {}
+    },
+    {
+      "id": "vocab-ok-allcaps",
+      "category": "vocabulary",
+      "description": "Write \"OK\" in all caps, no periods. Not \"O.K.\" or \"okay.\"",
+      "examples": {}
+    },
+    {
+      "id": "vocab-website-one-word",
+      "category": "vocabulary",
+      "description": "Write \"website,\" \"homepage,\" \"username,\" \"checkbox,\" \"coworker,\" \"hashtag,\" and \"nonprofit\" as one word, no hyphen.",
+      "examples": {}
+    },
+    {
+      "id": "vocab-mailchimp-capitalization",
+      "category": "vocabulary",
+      "description": "Write \"Mailchimp\" with capital M and lowercase c. Refer to the company as \"we,\" not \"it.\"",
+      "examples": {
+        "good": ["Mailchimp"],
+        "bad": ["MailChimp", "mailchimp"]
+      }
+    },
+    {
+      "id": "struct-oxford-comma",
+      "category": "structure",
+      "description": "Use the Oxford (serial) comma in lists of three or more items.",
+      "examples": {
+        "good": ["David admires his parents, Oprah, and Justin Timberlake."],
+        "bad": ["David admires his parents, Oprah and Justin Timberlake."]
+      }
+    },
+    {
+      "id": "struct-no-double-exclamation",
+      "category": "structure",
+      "description": "Use exclamation points sparingly, and never more than one at a time. Avoid them in failure messages and alerts.",
+      "examples": {
+        "bad": ["Welcome aboard!!", "Sign up now!!!"]
+      }
+    },
+    {
+      "id": "struct-title-case-headers",
+      "category": "structure",
+      "description": "Use title case for headers (capitalize all words except articles, prepositions, and conjunctions). Use sentence case for body copy.",
+      "examples": {}
+    },
+    {
+      "id": "struct-numbers-spell-or-numerals",
+      "category": "structure",
+      "description": "Spell out numbers when they start a sentence; otherwise use numerals (including ordinals).",
+      "examples": {
+        "good": ["Twenty people signed up.", "We had 12 visitors."],
+        "bad": ["12 people signed up."]
+      }
+    },
+    {
+      "id": "struct-numbers-commas",
+      "category": "structure",
+      "description": "Add commas to numbers with more than three digits.",
+      "examples": {
+        "good": ["1,000", "150,000"],
+        "bad": ["1000", "150000"]
+      }
+    },
+    {
+      "id": "struct-percent-symbol",
+      "category": "structure",
+      "description": "Use the % symbol rather than spelling out \"percent.\"",
+      "examples": {
+        "good": ["20%"],
+        "bad": ["20 percent"]
+      }
+    },
+    {
+      "id": "struct-no-ampersand",
+      "category": "structure",
+      "description": "Don't use ampersands in place of \"and,\" except in official brand or company names.",
+      "examples": {
+        "good": ["Ben & Jerry's", "tools and templates"],
+        "bad": ["tools & templates"]
+      }
+    },
+    {
+      "id": "struct-em-dash-no-spaces",
+      "category": "structure",
+      "description": "Use a true em dash (—) without spaces around it to offset asides. Don't use double hyphens.",
+      "examples": {
+        "good": ["The plan—if you can call it that—worked."],
+        "bad": ["The plan -- if you can call it that -- worked."]
+      }
+    },
+    {
+      "id": "struct-minimize-semicolons",
+      "category": "structure",
+      "description": "Minimize semicolons. Prefer an em dash or a new sentence.",
+      "examples": {}
+    },
+    {
+      "id": "struct-singular-they",
+      "category": "structure",
+      "description": "Use \"they,\" \"them,\" and \"their\" as singular pronouns when gender is unknown or non-specified.",
+      "examples": {
+        "good": ["When a customer signs up, send them a welcome email."]
+      }
+    },
+    {
+      "id": "struct-one-space-after-period",
+      "category": "structure",
+      "description": "Use one space between sentences, never two.",
+      "examples": {}
+    },
+    {
+      "id": "struct-left-align",
+      "category": "structure",
+      "description": "Left-align body text. Never center- or right-align long-form copy.",
+      "examples": {}
+    },
+    {
+      "id": "struct-no-underline",
+      "category": "structure",
+      "description": "Don't use underline formatting (it implies a hyperlink). Don't combine italic, bold, all-caps, and underline.",
+      "examples": {}
+    },
+    {
+      "id": "struct-time-format",
+      "category": "structure",
+      "description": "Write times as numerals with a space before lowercase am/pm. Omit minutes on the hour. Use an en dash for ranges.",
+      "examples": {
+        "good": ["7 am", "10:30 pm", "7 am–10:30 pm"],
+        "bad": ["7:00AM", "7am"]
+      }
+    },
+    {
+      "id": "struct-spell-out-acronyms",
+      "category": "readability",
+      "description": "Spell out abbreviations and acronyms on first mention, then use the short form. Exception: well-known ones like API or HTML.",
+      "examples": {}
+    },
+    {
+      "id": "read-descriptive-link-text",
+      "category": "readability",
+      "description": "Link text should describe the destination or action. Avoid \"click here\" and \"learn more.\"",
+      "examples": {
+        "good": ["Read our pricing guide"],
+        "bad": ["Click here", "Learn more"]
+      }
+    },
+    {
+      "id": "read-alt-text",
+      "category": "readability",
+      "description": "Include alt text on all meaningful images. For charts and graphs, describe the data so readers don't need to see the image.",
+      "examples": {}
+    },
+    {
+      "id": "read-short-sentences",
+      "category": "readability",
+      "description": "Write short sentences and use familiar words. Avoid jargon and slang.",
+      "examples": {}
+    },
+    {
+      "id": "read-nested-headers",
+      "category": "readability",
+      "description": "Headings must be nested and consecutive (H1 → H2 → H3). Never skip a heading level for styling.",
+      "examples": {}
+    },
+    {
+      "id": "read-important-info-first",
+      "category": "readability",
+      "description": "Lead with the most important information. Group related topics in the same paragraph; separate different topics with headings.",
+      "examples": {}
+    },
+    {
+      "id": "read-no-directional-language",
+      "category": "readability",
+      "description": "Avoid directional instructions that require seeing the layout (\"the sidebar on the right,\" \"the button below\").",
+      "examples": {
+        "good": ["Select from these options"],
+        "bad": ["Select from the options in the right sidebar"]
+      }
+    },
+    {
+      "id": "read-no-disability-idioms",
+      "category": "readability",
+      "description": "Avoid disability-based idioms like \"lame,\" \"crazy,\" \"insane,\" or \"falling on deaf ears.\"",
+      "examples": {}
+    },
+    {
+      "id": "read-avoid-guys",
+      "category": "readability",
+      "description": "Avoid \"guys\" for mixed groups and \"girls\" for women. Use neutral terms.",
+      "examples": {
+        "good": ["Hi everyone", "Hi team"],
+        "bad": ["Hey guys"]
+      }
+    },
+    {
+      "id": "read-gender-neutral-roles",
+      "category": "readability",
+      "description": "Use gender-neutral role names: \"server\" not \"waitress,\" \"businessperson\" not \"businessman,\" \"firefighter\" not \"fireman.\"",
+      "examples": {}
+    },
+    {
+      "id": "read-no-age-descriptors",
+      "category": "readability",
+      "description": "Don't describe people as \"young,\" \"old,\" or \"elderly.\" Mention age only when relevant, and give the specific number.",
+      "examples": {
+        "good": ["The CEO, 16, just got her driver's license."],
+        "bad": ["The young CEO just got her driver's license."]
+      }
+    },
+    {
+      "id": "read-no-suffer-victim",
+      "category": "readability",
+      "description": "When writing about disability, avoid \"suffer,\" \"victim,\" and \"handicapped\" (except in fixed terms like \"handicapped parking\").",
+      "examples": {}
+    },
+    {
+      "id": "read-capitalize-racial-groups",
+      "category": "readability",
+      "description": "Capitalize racial and ethnic group names (Black, Asian American, Latino). Keep \"white\" lowercase.",
+      "examples": {}
+    }
+  ]
+}

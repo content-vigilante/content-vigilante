@@ -41,6 +41,9 @@ export {
   createOpenAIProvider,
 } from './llm/index.ts';
 
+export type { EmbeddingProvider, ResolveEmbeddingProviderOptions } from './embeddings/index.ts';
+export { resolveEmbeddingProvider } from './embeddings/index.ts';
+
 export { judgeTone } from './judges/tone.ts';
 
 // Top-level convenience APIs land in week 1 days 3-5 as the
