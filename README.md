@@ -107,4 +107,4 @@ MIT — see [`LICENSE`](LICENSE).
 
 ---
 
-Built by [Sai Prathyaksh Kanagat](https://github.com/saikanagat1117-sys) in Bologna.
+Built by [Sai Prathyaksh Kanagat](https://github.com/Sai-Kanagat) in Bologna.
