@@ -6,9 +6,9 @@
 
 An open-source brand voice auditor. Drop in your brand guidelines and any piece of content. Get a scored report with annotated deviations and suggested rewrites. Multilingual. Local-first. Bring your own LLM.
 
-[![CI](https://github.com/content-vigilante/content-vigilante/actions/workflows/ci.yml/badge.svg)](https://github.com/content-vigilante/content-vigilante/actions/workflows/ci.yml)
+[![CI](https://github.com/content-vigilante/Content-Vigilante/actions/workflows/ci.yml/badge.svg)](https://github.com/content-vigilante/Content-Vigilante/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Stars](https://img.shields.io/github/stars/content-vigilante/content-vigilante?style=social)](https://github.com/content-vigilante/content-vigilante)
+[![Stars](https://img.shields.io/github/stars/content-vigilante/Content-Vigilante?style=social)](https://github.com/content-vigilante/Content-Vigilante)
 
 </div>
 
