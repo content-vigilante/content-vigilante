@@ -28,6 +28,7 @@
     ".": "./src/index.ts",
     "./extractors/text": "./src/extractors/text.ts",
     "./guides": "./src/guides/index.ts",
+    "./guides/loadFromJSON": "./src/guides/loadFromJSON.ts",
     "./judges/aggregator": "./src/judges/aggregator.ts",
     "./llm": "./src/llm/index.ts",
     "./embeddings": "./src/embeddings/index.ts",

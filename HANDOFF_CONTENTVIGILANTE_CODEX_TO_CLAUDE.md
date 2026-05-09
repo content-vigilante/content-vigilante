@@ -25,7 +25,7 @@ This repo is Content Vigilante, a Bun/TypeScript monorepo for auditing content a
    - Moved `typedRoutes` out of `experimental` in `next.config.ts`.
 6. Prevented Next from importing Bun-only SQLite code during web builds:
    - Removed `GuideStore` exports from the core root barrel in `packages/core/src/index.ts`.
-   - Added core subpath exports for `./extractors/text`, `./guides`, and `./judges/aggregator`.
+   - Added core subpath exports for `./extractors/text`, `./guides`, `./guides/loadFromJSON`, and `./judges/aggregator`.
    - Updated `packages/web/app/api/audit/route.ts` to import only the guide, aggregator, LLM, and type modules it needs.
 7. Replaced the placeholder `cv serve` command:
    - It now finds `packages/web`.

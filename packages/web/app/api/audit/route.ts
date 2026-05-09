@@ -1,6 +1,6 @@
 import { join } from 'node:path';
 import { extractText } from '@content-vigilante/core/extractors/text';
-import { loadGuideFromJSON } from '@content-vigilante/core/guides';
+import { loadGuideFromJSON } from '@content-vigilante/core/guides/loadFromJSON';
 import { runAggregator as audit } from '@content-vigilante/core/judges/aggregator';
 import {
   createAnthropicProvider,

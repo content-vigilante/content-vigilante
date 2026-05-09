@@ -6,6 +6,7 @@ const nextConfig: NextConfig = {
   // The web UI doesn't currently use the store path, but we mark sqlite-vec + better-sqlite3
   // as server-only to avoid bundling them into the client.
   serverExternalPackages: ['sqlite-vec', 'bun:sqlite', 'playwright'],
+  transpilePackages: ['@content-vigilante/core'],
   typedRoutes: true,
 };
 
