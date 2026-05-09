@@ -1,0 +1,7 @@
+.next/
+out/
+node_modules/
+.vercel/
+*.log
+.env*.local
+next-env.d.ts.bak

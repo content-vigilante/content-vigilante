@@ -1,0 +1,18 @@
+{
+  "id": "it-004",
+  "guide": "designers-italia",
+  "language": "it",
+  "content": "Accedi al portale con SPID o CIE.\nIn merito ai documenti, puoi caricarli direttamente dalla tua area personale.\nSe hai bisogno di aiuto, scrivici: ti rispondiamo entro due giorni lavorativi.\nSuccessivamente potrai monitorare lo stato della tua pratica.",
+  "expected": {
+    "scoreRange": [55, 75],
+    "mustFlag": [
+      { "lineContains": "In merito ai", "type": "vocabulary" },
+      { "lineContains": "Successivamente", "type": "vocabulary" }
+    ],
+    "mustNotFlag": [
+      { "lineContains": "Accedi al portale" },
+      { "lineContains": "scrivici" },
+      { "lineContains": "ti rispondiamo" }
+    ]
+  }
+}

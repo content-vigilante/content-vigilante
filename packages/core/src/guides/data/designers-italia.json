@@ -1,0 +1,396 @@
+{
+  "source": "designers-italia",
+  "language": "it",
+  "version": "extracted-2026-05-08",
+  "url": "https://designers.italia.it/design-system/fondamenti/",
+  "license": "CC BY 4.0 — © Presidenza del Consiglio dei Ministri / Designers Italia",
+  "notes": "Estratto dal design system ufficiale del governo italiano (Designers Italia), sezioni Fondamenti: Linguaggio, Microtesti, Contenuti, Tono di voce. Le regole sono riformulazioni delle linee guida pubbliche; gli esempi sono ripresi letteralmente dalle pagine sorgenti.",
+  "rules": [
+    {
+      "id": "tone-tu-informal",
+      "category": "tone",
+      "description": "Usa il \"tu\" per rivolgerti all'utente. Evita il \"Lei\" e le forme impersonali, che creano distanza.",
+      "examples": {
+        "good": ["In base alle norme ISO/IEC hai l'obbligo di rispettare i requisiti."],
+        "bad": [
+          "Conformemente alle norme ISO/IEC devono essere obbligatoriamente rispettati i requisiti."
+        ]
+      }
+    },
+    {
+      "id": "tone-no-burocratese",
+      "category": "tone",
+      "description": "Evita il burocratese e i paroloni amministrativi. Va' dritto al punto con sintassi semplice e verbi attivi.",
+      "examples": {
+        "good": [
+          "Il ravvedimento operoso non è più possibile se il Fisco ha già constatato la violazione."
+        ],
+        "bad": [
+          "Costituisce causa ostativa alla facoltà di esperire il ravvedimento operoso la già avvenuta constatazione della violazione da parte del Fisco."
+        ]
+      }
+    },
+    {
+      "id": "tone-active-voice",
+      "category": "tone",
+      "description": "Preferisci la voce attiva alla passiva. Indica chiaramente chi compie l'azione.",
+      "examples": {
+        "good": ["L'ente ha annullato la pratica."],
+        "bad": ["Si è deciso di procedere all'annullamento della pratica."]
+      }
+    },
+    {
+      "id": "tone-action-oriented",
+      "category": "tone",
+      "description": "Scrivi orientato all'azione. Dì all'utente cosa può fare, non descrivere genericamente la possibilità.",
+      "examples": {
+        "good": ["Scarica il bando per la richiesta dei contributi."],
+        "bad": [
+          "Il cittadino interessato può reperire il bando per la richiesta di contributi in questa sezione."
+        ]
+      }
+    },
+    {
+      "id": "tone-empathetic",
+      "category": "tone",
+      "description": "Adatta il tono allo stato emotivo dell'utente. Sii empatico nei momenti di difficoltà, di supporto nei contesti dolorosi, motivante nei successi.",
+      "examples": {
+        "good": ["Siamo a tua disposizione per guidarti."]
+      }
+    },
+    {
+      "id": "tone-no-blame",
+      "category": "tone",
+      "description": "Non colpevolizzare l'utente. Presenta errori e sanzioni in modo neutro, senza tono accusatorio.",
+      "examples": {
+        "good": ["Hai ricevuto una multa? Puoi pagarla online in modo semplice."]
+      }
+    },
+    {
+      "id": "tone-reassure-on-error",
+      "category": "tone",
+      "description": "Nei messaggi di errore rassicura l'utente e proponi una via d'uscita, invece di limitarti a segnalare il problema.",
+      "examples": {
+        "good": ["Non ti è stato addebitato alcun importo. Puoi riprovare."]
+      }
+    },
+    {
+      "id": "tone-people-not-citizens",
+      "category": "tone",
+      "description": "Metti le persone al centro. Preferisci \"persone\" a etichette burocratiche come \"cittadini\" o \"utenti\" quando il contesto lo permette.",
+      "examples": {
+        "good": ["mettendo le persone al centro"],
+        "bad": ["mettendo i cittadini al centro"]
+      }
+    },
+    {
+      "id": "tone-inclusive-disability",
+      "category": "tone",
+      "description": "Usa il person-first language per la disabilità. Scrivi \"persone con disabilità\", non \"disabili\".",
+      "examples": {
+        "good": ["persone con disabilità"],
+        "bad": ["disabili"]
+      }
+    },
+    {
+      "id": "tone-inclusive-migration",
+      "category": "tone",
+      "description": "Evita termini stigmatizzanti per le persone migranti. Preferisci formulazioni descrittive e rispettose.",
+      "examples": {
+        "good": ["persone sbarcate"],
+        "bad": ["clandestini"]
+      }
+    },
+    {
+      "id": "tone-feminine-titles",
+      "category": "tone",
+      "description": "Usa il femminile dei ruoli professionali quando ti riferisci a una donna. Non estendere il maschile come neutro.",
+      "examples": {
+        "good": ["la ministra, la sindaca, la dirigente"],
+        "bad": ["il ministro, il sindaco, il dirigente (riferito a una donna)"]
+      }
+    },
+    {
+      "id": "tone-no-ableist-verbs",
+      "category": "tone",
+      "description": "Evita verbi abilisti come \"vedi\" o \"leggi\" nelle CTA generiche. Usa alternative inclusive.",
+      "examples": {
+        "good": ["Scopri", "Vai a", "Approfondisci"],
+        "bad": ["Vedi", "Leggi"]
+      }
+    },
+    {
+      "id": "tone-welcome-inclusive",
+      "category": "tone",
+      "description": "Formula i messaggi di benvenuto e di stato in modo neutro rispetto al genere.",
+      "examples": {
+        "good": ["Ti diamo il benvenuto", "Ricevi aggiornamenti"],
+        "bad": ["Benvenuto", "Rimani aggiornato"]
+      }
+    },
+    {
+      "id": "vocab-cta-specific-verb",
+      "category": "vocabulary",
+      "description": "Le CTA devono iniziare con un verbo specifico che descrive l'azione. Evita etichette generiche come \"OK\".",
+      "examples": {
+        "good": ["Invia", "Aggiungi un nuovo provider"],
+        "bad": ["OK", "Nuovo provider"]
+      }
+    },
+    {
+      "id": "vocab-imperative-not-infinitive",
+      "category": "vocabulary",
+      "description": "Nei pulsanti e nelle CTA usa l'imperativo, non l'infinito o le nominalizzazioni.",
+      "examples": {
+        "good": ["Invia", "Aggiungi"],
+        "bad": ["Invio", "Inviare", "Aggiunta", "Aggiungere"]
+      }
+    },
+    {
+      "id": "vocab-no-nominalizations",
+      "category": "vocabulary",
+      "description": "Evita le nominalizzazioni. Trasforma i sostantivi astratti in verbi.",
+      "examples": {
+        "good": ["Cerca un documento."],
+        "bad": ["Fai una ricerca fra i documenti."]
+      }
+    },
+    {
+      "id": "vocab-positive-framing",
+      "category": "vocabulary",
+      "description": "Formula in positivo invece che in negativo. Dì cosa è richiesto, non cosa non è.",
+      "examples": {
+        "good": ["I campi con asterisco sono obbligatori."],
+        "bad": ["Questo campo non è opzionale."]
+      }
+    },
+    {
+      "id": "vocab-explain-acronyms",
+      "category": "vocabulary",
+      "description": "Alla prima occorrenza scrivi sempre il nome completo seguito dall'acronimo tra parentesi.",
+      "examples": {
+        "good": ["Presidenza del Consiglio dei Ministri (PCDM)"]
+      }
+    },
+    {
+      "id": "vocab-explain-laws",
+      "category": "vocabulary",
+      "description": "Non citare i riferimenti normativi testualmente. Spiega sinteticamente il contenuto, poi indica la norma tra parentesi e linka a Normattiva.",
+      "examples": {}
+    },
+    {
+      "id": "vocab-specific-placeholder",
+      "category": "vocabulary",
+      "description": "I placeholder devono essere specifici e contestuali, non generici.",
+      "examples": {
+        "good": ["Cerca servizi e uffici"],
+        "bad": ["Inserisci testo"]
+      }
+    },
+    {
+      "id": "vocab-specific-helper-text",
+      "category": "vocabulary",
+      "description": "L'helper text deve indicare requisiti concreti, non aggettivi vaghi.",
+      "examples": {
+        "good": ["Inserisci una password di almeno 8 caratteri con una maiuscola."],
+        "bad": ["Password sicura"]
+      }
+    },
+    {
+      "id": "vocab-specific-dropdown",
+      "category": "vocabulary",
+      "description": "Le etichette dei dropdown devono nominare la categoria di scelta.",
+      "examples": {
+        "good": ["Seleziona una regione"],
+        "bad": ["Seleziona un'opzione"]
+      }
+    },
+    {
+      "id": "vocab-consistent-terminology",
+      "category": "vocabulary",
+      "description": "Usa la stessa terminologia per lo stesso concetto in tutto il servizio. Non alternare sinonimi che possono confondere.",
+      "examples": {}
+    },
+    {
+      "id": "vocab-descriptive-names",
+      "category": "vocabulary",
+      "description": "Usa diciture descrittive e di immediata comprensione per servizi e organizzazioni, anziché marchi o sigle complesse.",
+      "examples": {}
+    },
+    {
+      "id": "struct-confirm-as-question",
+      "category": "structure",
+      "description": "I messaggi di conferma di azioni importanti o irreversibili devono avere un titolo a forma di domanda \"Vuoi + verbo dell'azione\", una descrizione delle conseguenze e due CTA: l'azione principale e \"Annulla\".",
+      "examples": {
+        "bad": ["Attenzione!", "Sei sicuro di voler procedere?"]
+      }
+    },
+    {
+      "id": "struct-error-message-structure",
+      "category": "structure",
+      "description": "I messaggi di errore devono avere quattro elementi: titolo che descrive il problema senza incolpare, causa, soluzione e, se possibile, una CTA per risolvere subito.",
+      "examples": {}
+    },
+    {
+      "id": "struct-success-message-structure",
+      "category": "structure",
+      "description": "I messaggi di successo devono indicare l'esito, gli effetti (numero pratica, tempi), cosa succede dopo e una CTA per continuare.",
+      "examples": {
+        "good": ["Hai salvato il documento. Vai a '...' per visualizzarlo."],
+        "bad": ["Il documento è stato salvato con successo nella sezione '...'."]
+      }
+    },
+    {
+      "id": "struct-paragraph-max-5-sentences",
+      "category": "structure",
+      "description": "Ogni paragrafo non deve superare le 5 frasi. Dividi i contenuti lunghi in sezioni con titoletti.",
+      "examples": {}
+    },
+    {
+      "id": "struct-title-max-70-chars",
+      "category": "structure",
+      "description": "I titoli di pagina non devono superare i 70 caratteri (spazi inclusi). Google taglia i testi più lunghi.",
+      "examples": {}
+    },
+    {
+      "id": "struct-summary-max-160-chars",
+      "category": "structure",
+      "description": "Il sommario di pagina non deve superare i 160 caratteri, deve finire con un punto (per le tecnologie assistive) e non deve ripetere il titolo.",
+      "examples": {}
+    },
+    {
+      "id": "struct-heading-hierarchy",
+      "category": "structure",
+      "description": "L'H1 è il titolo della pagina; i contenuti partono da H2 e usano i livelli H2-H4 in ordine sequenziale. Non saltare livelli e non usare il grassetto come sostituto.",
+      "examples": {}
+    },
+    {
+      "id": "struct-bullet-lists-coherent",
+      "category": "structure",
+      "description": "Negli elenchi puntati le voci devono essere coerenti con la frase introduttiva, sintetiche e con iniziale minuscola se sono parte della frase.",
+      "examples": {}
+    },
+    {
+      "id": "struct-numbered-lists-for-process",
+      "category": "structure",
+      "description": "Usa elenchi numerati solo per guidare in un processo sequenziale. Frasi brevi, punto fermo finale, niente sottoelenchi puntati.",
+      "examples": {}
+    },
+    {
+      "id": "struct-link-clear-destination",
+      "category": "structure",
+      "description": "Il testo di un link deve rendere chiara la destinazione e lo scopo. Stesso dominio in stessa scheda, dominio esterno in nuova scheda.",
+      "examples": {}
+    },
+    {
+      "id": "struct-left-align-text",
+      "category": "structure",
+      "description": "Allinea sempre il testo a sinistra. Il testo giustificato è molto difficile da leggere.",
+      "examples": {}
+    },
+    {
+      "id": "struct-sentence-case",
+      "category": "structure",
+      "description": "Usa il sentence case: maiuscola solo sulla prima lettera della frase. Il testo tutto in maiuscolo è difficile da leggere.",
+      "examples": {}
+    },
+    {
+      "id": "struct-bold-keywords-only",
+      "category": "structure",
+      "description": "Usa il grassetto solo per evidenziare parole chiave, mai frasi intere. Per testi lunghi preferisci titoletti.",
+      "examples": {}
+    },
+    {
+      "id": "struct-no-italic-no-underline",
+      "category": "structure",
+      "description": "Evita il corsivo (rende difficile la lettura) tranne per indicazioni bibliografiche, opere e parole straniere non comuni. Non sottolineare il testo, salvo i link.",
+      "examples": {}
+    },
+    {
+      "id": "read-gulpease-test",
+      "category": "readability",
+      "description": "Verifica la leggibilità con test misurabili: indice Gulpease, formula Flesch-Vacca, cloze test e test dell'evidenziatore.",
+      "examples": {}
+    },
+    {
+      "id": "read-numbers-as-digits",
+      "category": "readability",
+      "description": "Per dati precisi (matematici, scientifici, statistici, prezzi) usa le cifre. Senza separatore fino a 9.999, con punto come separatore migliaia da 10.000 in su; virgola per i decimali.",
+      "examples": {
+        "good": ["8700", "11.800", "2,5"]
+      }
+    },
+    {
+      "id": "read-large-numbers-words",
+      "category": "readability",
+      "description": "Per valori molto alti e indicativi preferisci le lettere alle cifre.",
+      "examples": {
+        "good": ["4 milioni e 325 mila persone", "circa 10 mila enti"]
+      }
+    },
+    {
+      "id": "read-date-format",
+      "category": "readability",
+      "description": "Scrivi le date con giorno e anno in cifre, mese e giorno della settimana in lettere minuscole.",
+      "examples": {
+        "good": ["25 gennaio 2018", "lunedì 25 gennaio 2018"]
+      }
+    },
+    {
+      "id": "read-time-format",
+      "category": "readability",
+      "description": "Scrivi gli orari in cifre con due punti, senza spazi.",
+      "examples": {
+        "good": ["23:59"]
+      }
+    },
+    {
+      "id": "read-phone-format",
+      "category": "readability",
+      "description": "I numeri di telefono includono sempre il prefisso internazionale, sono raggruppati con spazi e linkati con tel:.",
+      "examples": {
+        "good": ["+39 06 123 456 78"]
+      }
+    },
+    {
+      "id": "read-address-format",
+      "category": "readability",
+      "description": "Negli indirizzi separa via con numero civico, CAP e città con virgole.",
+      "examples": {
+        "good": ["Via Giulia 25, 00185, Roma"]
+      }
+    },
+    {
+      "id": "read-units-with-space",
+      "category": "readability",
+      "description": "Scrivi le unità di misura con un numero in cifre e il simbolo SI separati da uno spazio.",
+      "examples": {
+        "good": ["3 km", "15 kg", "25 °C"]
+      }
+    },
+    {
+      "id": "read-images-alt-text",
+      "category": "readability",
+      "description": "Aggiungi sempre alt-text alle immagini significative, sottotitoli e trascrizioni ai video, didascalie sintetiche (max 2 righe) con autore e licenza.",
+      "examples": {}
+    },
+    {
+      "id": "read-tables-few-columns",
+      "category": "readability",
+      "description": "Nelle tabelle non inserire troppo testo e mantieni poche colonne per la leggibilità da mobile. Per dati senza comparazione usa i tab al posto della tabella.",
+      "examples": {}
+    },
+    {
+      "id": "read-no-redundant-intros",
+      "category": "readability",
+      "description": "Elimina parole introduttive inutili e ridondanze. Ogni 100 parole aggiunte aumentano il carico cognitivo della pagina.",
+      "examples": {}
+    },
+    {
+      "id": "read-explain-technical-terms",
+      "category": "readability",
+      "description": "Usa termini tecnici o burocratici solo se sai che il pubblico li comprende. Altrimenti spiegali brevemente o offri un sinonimo comune.",
+      "examples": {}
+    }
+  ]
+}

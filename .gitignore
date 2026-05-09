@@ -39,6 +39,7 @@ coverage/
 
 # turbo / next
 .turbo/
+*.tsbuildinfo
 
 # vercel
 .vercel

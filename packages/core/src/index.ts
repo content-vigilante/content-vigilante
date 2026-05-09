@@ -61,9 +61,6 @@ export {
   type AggregatorWeights,
 } from './judges/aggregator.ts';
 
-export { GuideStore } from './store/index.ts';
-export type { GuideStoreOptions, RuleRow } from './store/index.ts';
-
 import { type AggregatorOptions, runAggregator } from './judges/aggregator.ts';
 import type { AuditInput, AuditResult, BrandGuide, Language } from './types.ts';
 
@@ -94,9 +91,10 @@ export async function loadGuide(source: {
   throw new Error(`Unsupported guide source type: ${String((source as { type: string }).type)}`);
 }
 
-export async function extractContent(_source: {
+export async function extractContent(source: {
   type: 'text' | 'url';
   value: string;
 }): Promise<{ text: string; language: Language }> {
-  throw new Error('extractContent is not yet implemented (lands week 1 day 3)');
+  const { extractContent: dispatch } = await import('./extractors/index.ts');
+  return dispatch(source);
 }

@@ -1,0 +1,19 @@
+{
+  "id": "it-002",
+  "guide": "designers-italia",
+  "language": "it",
+  "content": "Si rende noto che, in ordine alle nuove disposizioni, la preghiamo di voler effettuare il login al portale.\nQualora l'utenza non risultasse abilitata, si invita la S.V. a contattare l'ufficio competente ai fini della regolarizzazione.\nSuccessivamente alla verifica, sarà altresì possibile accedere ai servizi telematici.",
+  "expected": {
+    "scoreRange": [20, 45],
+    "mustFlag": [
+      { "lineContains": "Si rende noto che", "type": "tone" },
+      { "lineContains": "la preghiamo di", "type": "tone" },
+      { "lineContains": "effettuare il login", "type": "vocabulary" },
+      { "lineContains": "Qualora", "type": "vocabulary" },
+      { "lineContains": "ai fini della", "type": "vocabulary" },
+      { "lineContains": "Successivamente", "type": "vocabulary" },
+      { "lineContains": "altresì", "type": "vocabulary" }
+    ],
+    "mustNotFlag": [{ "lineContains": "portale" }, { "lineContains": "servizi telematici" }]
+  }
+}

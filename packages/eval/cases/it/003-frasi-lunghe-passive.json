@@ -1,0 +1,17 @@
+{
+  "id": "it-003",
+  "guide": "designers-italia",
+  "language": "it",
+  "content": "In merito alla richiesta presentata dalla S.V., si comunica che la pratica è stata esaminata dall'ufficio competente, è stata approvata dal responsabile del procedimento e sarà trasmessa agli uffici periferici per gli adempimenti di rispettiva competenza nei termini previsti dalla normativa vigente.\nViceversa, qualora la documentazione prodotta risultasse incompleta o non conforme ai requisiti richiesti dal bando, l'istanza verrà rigettata e l'interessato sarà invitato a ripresentare la domanda.",
+  "expected": {
+    "scoreRange": [20, 50],
+    "mustFlag": [
+      { "lineContains": "In merito alla", "type": "vocabulary" },
+      { "lineContains": "è stata approvata dal", "type": "structure" },
+      { "lineContains": "Viceversa", "type": "vocabulary" },
+      { "lineContains": "qualora", "type": "vocabulary" },
+      { "lineContains": "In merito alla richiesta presentata", "type": "structure" }
+    ],
+    "mustNotFlag": [{ "lineContains": "bando" }, { "lineContains": "domanda" }]
+  }
+}

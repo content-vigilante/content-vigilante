@@ -26,6 +26,9 @@
   "main": "./src/index.ts",
   "exports": {
     ".": "./src/index.ts",
+    "./extractors/text": "./src/extractors/text.ts",
+    "./guides": "./src/guides/index.ts",
+    "./judges/aggregator": "./src/judges/aggregator.ts",
     "./llm": "./src/llm/index.ts",
     "./embeddings": "./src/embeddings/index.ts",
     "./types": "./src/types.ts"
@@ -41,7 +44,10 @@
   "dependencies": {
     "@ai-sdk/anthropic": "^1.0.0",
     "@ai-sdk/openai": "^1.0.0",
+    "@mozilla/readability": "^0.6.0",
     "ai": "^4.0.0",
+    "franc": "^6.2.0",
+    "linkedom": "^0.18.12",
     "ollama-ai-provider": "^1.0.0",
     "sqlite-vec": "^0.1.9",
     "unpdf": "^1.6.2",

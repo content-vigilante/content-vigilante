@@ -1,0 +1,16 @@
+{
+  "id": "it-006",
+  "guide": "designers-italia",
+  "language": "it",
+  "content": "La preghiamo di voler effettuare l'autenticazione. Qualora riscontrasse difficoltà, La invitiamo a contattare l'assistenza.",
+  "expected": {
+    "scoreRange": [25, 50],
+    "mustFlag": [
+      { "lineContains": "La preghiamo di", "type": "tone" },
+      { "lineContains": "effettuare l'autenticazione", "type": "vocabulary" },
+      { "lineContains": "Qualora", "type": "vocabulary" },
+      { "lineContains": "La invitiamo a", "type": "tone" }
+    ],
+    "mustNotFlag": [{ "lineContains": "assistenza" }]
+  }
+}

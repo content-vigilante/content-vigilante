@@ -1,0 +1,17 @@
+{
+  "id": "it-005",
+  "guide": "designers-italia",
+  "language": "it",
+  "content": "Accedi con SPID, CIE o CNS.\nScegli il servizio che ti serve dall'elenco.\nCarica i documenti richiesti e invia la domanda.\nRicevi gli aggiornamenti via email o nell'area personale.\nSe qualcosa non funziona, scrivici. Ti rispondiamo entro due giorni.",
+  "expected": {
+    "scoreRange": [80, 100],
+    "mustFlag": [],
+    "mustNotFlag": [
+      { "lineContains": "Accedi" },
+      { "lineContains": "Scegli il servizio" },
+      { "lineContains": "Carica i documenti" },
+      { "lineContains": "Ti rispondiamo" },
+      { "lineContains": "area personale" }
+    ]
+  }
+}
