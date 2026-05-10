@@ -61,7 +61,7 @@ cv serve
 - [ ] Next.js web UI on `contentvigilante.vercel.app` — week 3
 - [ ] v1.0 — Full polish, docs site, Product Hunt launch
 
-For the technical deep-dive see [`docs/PORTFOLIO.md`](docs/PORTFOLIO.md) and [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
+For the technical deep-dive see [`docs/TECHNICAL_OVERVIEW.md`](docs/TECHNICAL_OVERVIEW.md) and [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 
 ## Architecture
 
@@ -108,7 +108,7 @@ Every prompt change is regression-tested against a public, hand-labeled eval sui
 
 ## Contributing
 
-This is a portfolio project under active development. Issues and PRs welcome once v0.1 ships. For now, **star the repo to follow along.**
+Content Vigilante is under active development. Issues and PRs are welcome once v0.1 ships. For now, **star the repo to follow along.**
 
 ## License
 

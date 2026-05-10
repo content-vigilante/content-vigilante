@@ -1,6 +1,6 @@
-# Content Vigilante — Portfolio Brief
+# Content Vigilante — Technical Overview
 
-A short, recruiter-friendly overview of what this is, why it's interesting, and what it took to build.
+A short technical overview of what this is, why it's interesting, and what it took to build.
 
 ## One-liner
 
@@ -12,7 +12,7 @@ Every marketing team has a brand guide nobody reads. Tone drifts across writers,
 
 Content Vigilante is the missing audit layer.
 
-## Why it's portfolio-worthy
+## Technical highlights
 
 This is not a wrapper around the OpenAI API. The repo demonstrates real AI engineering:
 
@@ -85,7 +85,7 @@ content-vigilante/
 │   └── web/                     # Next.js app — coming in week 3
 ├── docs/
 │   ├── ARCHITECTURE.md          # Design decisions, shadow paths, error taxonomy
-│   ├── PORTFOLIO.md             # This file
+│   ├── TECHNICAL_OVERVIEW.md    # This file
 │   └── research/
 │       ├── pdf-parser.md        # unpdf vs pdfjs-dist vs pdf-parse — comparison + rationale
 │       └── embeddings.md        # bge-m3 vs OpenAI vs Cohere — MIRACL benchmarks
@@ -149,7 +149,7 @@ ANTHROPIC_API_KEY=sk-ant-... bun run packages/core/examples/audit-mailchimp.ts
 
 You'll see the engine score two real samples — one off-brand ("we are pleased to announce", "synergistic", "leverage", "ninjas", "crush it"), one on-brand — and produce line-level issues with severity, the brand rule violated, and a suggested rewrite.
 
-## Honest limits (because hiring managers notice the absence of these)
+## Current limitations
 
 - **Currently EN-first.** Italian eval cases reference a Lavazza guide that hasn't been bundled yet (deferred from the swarm pass when the agent rate-limited). The IT pipeline is wired and tested, just waiting for source data.
 - **Eval F1 is 0.32 in deterministic mode.** That's what you'd expect — LLM-flavored issues like throat-clearing, condescension, or directional language are out of reach for pure regex. With `--with-llm`, expect F1 in the 0.8s range. CI runs deterministic mode to keep token costs to zero.
