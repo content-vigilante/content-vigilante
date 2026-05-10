@@ -1,6 +1,6 @@
 # Content Vigilante — Technical Overview
 
-A short technical overview of what this is, why it's interesting, and what it took to build.
+A technical overview of the project's architecture, design decisions, and implementation.
 
 ## One-liner
 
