@@ -14,7 +14,7 @@ Content Vigilante is the missing audit layer.
 
 ## Technical highlights
 
-The project demonstrates real AI engineering through:
+Content Vigilante implements real AI engineering through:
 
 | Signal | How it shows up here |
 |---|---|
