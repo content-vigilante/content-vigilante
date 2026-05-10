@@ -14,7 +14,7 @@ Content Vigilante is the missing audit layer.
 
 ## Technical highlights
 
-This is not a wrapper around the OpenAI API. The repo demonstrates real AI engineering:
+The project demonstrates real AI engineering through:
 
 | Signal | How it shows up here |
 |---|---|
@@ -149,7 +149,7 @@ ANTHROPIC_API_KEY=sk-ant-... bun run packages/core/examples/audit-mailchimp.ts
 
 You'll see the engine score two real samples — one off-brand ("we are pleased to announce", "synergistic", "leverage", "ninjas", "crush it"), one on-brand — and produce line-level issues with severity, the brand rule violated, and a suggested rewrite.
 
-## Current limitations
+## Known limitations
 
 - **Currently EN-first.** Italian eval cases reference a Lavazza guide that hasn't been bundled yet (deferred from the swarm pass when the agent rate-limited). The IT pipeline is wired and tested, just waiting for source data.
 - **Eval F1 is 0.32 in deterministic mode.** That's what you'd expect — LLM-flavored issues like throat-clearing, condescension, or directional language are out of reach for pure regex. With `--with-llm`, expect F1 in the 0.8s range. CI runs deterministic mode to keep token costs to zero.
