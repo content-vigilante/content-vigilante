@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Content Vigilante — Audit Dashboard</title>
+<link rel="stylesheet" href="styles/brand.css" />
+<style>
+  body { background: var(--cv-stone-100); }
+  .app { display: grid; grid-template-columns: 240px 1fr; min-height: 100vh; }
+
+  /* SIDEBAR */
+  aside {
+    background: var(--cv-ink); color: rgba(255,255,255,0.85);
+    padding: 24px 18px;
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  aside .brand { display: flex; align-items: center; gap: 10px; padding: 8px 10px 24px; font-family: var(--cv-display); font-weight: 700; font-size: 18px; letter-spacing: -0.018em; color: #fff; }
+  aside .brand .v { font-weight: 500; }
+  aside .group { font-family: var(--cv-mono); font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: rgba(255,255,255,0.4); padding: 18px 10px 8px; }
+  aside a { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; text-decoration: none; color: rgba(255,255,255,0.7); font-family: var(--cv-sans); font-weight: 500; font-size: 14px; }
+  aside a.active { background: rgba(255,255,255,0.06); color: #fff; }
+  aside a:hover { color: #fff; }
+  aside a .badge { margin-left: auto; font-family: var(--cv-mono); font-size: 10px; padding: 2px 6px; border-radius: 4px; background: var(--cv-green); color: var(--cv-ink); font-weight: 700; letter-spacing: .08em; }
+  aside .ico { width: 16px; height: 16px; opacity: 0.8; }
+
+  aside .me {
+    margin-top: auto; display: flex; align-items: center; gap: 10px; padding: 12px; background: rgba(255,255,255,0.04); border-radius: 10px;
+  }
+  aside .me .av { width: 32px; height: 32px; border-radius: 50%; background: var(--cv-green); color: var(--cv-ink); display: flex; align-items: center; justify-content: center; font-family: var(--cv-display); font-weight: 700; font-size: 13px; }
+  aside .me .name { font-family: var(--cv-sans); font-weight: 600; font-size: 13px; color: #fff; }
+  aside .me .role { font-family: var(--cv-mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,0.5); }
+
+  /* MAIN */
+  main { padding: 24px 32px; display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+
+  /* TOPBAR */
+  .topbar { display: flex; justify-content: space-between; align-items: center; }
+  .crumbs { font-family: var(--cv-mono); font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--cv-stone-500); }
+  .crumbs strong { color: var(--cv-ink); font-weight: 700; }
+  .actions { display: flex; gap: 10px; align-items: center; }
+  .search {
+    background: #fff; border: 1px solid var(--cv-line); border-radius: 999px;
+    padding: 8px 14px; font-family: var(--cv-mono); font-size: 12px; color: var(--cv-stone-500);
+    display: flex; align-items: center; gap: 8px; width: 280px;
+  }
+  .btn-new {
+    font-family: var(--cv-sans); font-weight: 600; font-size: 13px;
+    background: var(--cv-ink); color: #fff;
+    padding: 8px 16px; border-radius: 999px; border: 0;
+    display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
+  }
+
+  /* PAGE HEADER */
+  .pagehead { display: flex; justify-content: space-between; align-items: end; }
+  .pagehead h1 { font-family: var(--cv-display); font-weight: 700; font-size: 44px; line-height: 1; letter-spacing: -0.022em; margin: 0 0 6px; }
+  .pagehead .sub { font-family: var(--cv-sans); font-size: 14px; color: var(--cv-stone-600); }
+  .pagehead .filters { display: flex; gap: 6px; }
+  .pagehead .filters span { padding: 6px 12px; border-radius: 999px; font-family: var(--cv-mono); font-size: 11px; letter-spacing: .12em; font-weight: 600; text-transform: uppercase; background: #fff; border: 1px solid var(--cv-line); color: var(--cv-stone-600); }
+  .pagehead .filters .on { background: var(--cv-ink); color: #fff; border-color: var(--cv-ink); }
+
+  /* STAT TILES */
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .stat { background: #fff; border: 1px solid var(--cv-line); border-radius: 14px; padding: 20px; }
+  .stat .label { font-family: var(--cv-mono); font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--cv-stone-500); }
+  .stat .num { font-family: var(--cv-display); font-weight: 700; font-size: 44px; line-height: 1; letter-spacing: -0.022em; margin: 8px 0 4px; }
+  .stat.green .num { color: var(--cv-green-deep); }
+  .stat.amber .num { color: #B47A00; }
+  .stat.red   .num { color: #A02418; }
+  .stat .delta { font-family: var(--cv-mono); font-size: 11px; color: var(--cv-stone-500); }
+  .stat .delta.up { color: var(--cv-green-deep); }
+  .stat .delta.dn { color: var(--cv-red); }
+
+  /* SPLIT */
+  .split { display: grid; grid-template-columns: 1.2fr 1fr; gap: 16px; align-items: start; }
+
+  /* QUEUE TABLE */
+  .queue { background: #fff; border: 1px solid var(--cv-line); border-radius: 14px; overflow: hidden; }
+  .queue .head, .queue .row { display: grid; grid-template-columns: 1.6fr 0.7fr 0.6fr 0.7fr 0.5fr; gap: 12px; padding: 14px 18px; align-items: center; }
+  .queue .head { background: var(--cv-stone-100); font-family: var(--cv-mono); font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--cv-stone-500); border-bottom: 1px solid var(--cv-line); }
+  .queue .row { border-bottom: 1px solid var(--cv-line); font-family: var(--cv-sans); font-size: 14px; }
+  .queue .row:last-child { border-bottom: 0; }
+  .queue .row .ttl { font-weight: 600; }
+  .queue .row .meta { font-family: var(--cv-mono); font-size: 11px; color: var(--cv-stone-500); margin-top: 2px; }
+  .pill { font-family: var(--cv-mono); font-size: 10.5px; padding: 3px 8px; border-radius: 4px; letter-spacing: .12em; font-weight: 700; }
+  .pill.green { background: var(--cv-green-soft); color: var(--cv-green-deep); }
+  .pill.amber { background: var(--cv-amber-soft); color: #8A5A00; }
+  .pill.red { background: var(--cv-red-soft); color: #A02418; }
+  .pill.gray { background: var(--cv-stone-200); color: var(--cv-stone-600); }
+  .lang { font-family: var(--cv-mono); font-size: 11px; font-weight: 700; letter-spacing: .14em; color: var(--cv-stone-600); }
+  .scoreCell { font-family: var(--cv-display); font-weight: 700; font-size: 18px; letter-spacing: -0.018em; }
+  .scoreCell.gn { color: var(--cv-green-deep); }
+  .scoreCell.am { color: #B47A00; }
+  .scoreCell.rd { color: var(--cv-red); }
+  .agoCell { font-family: var(--cv-mono); font-size: 11px; color: var(--cv-stone-500); }
+
+  /* ANNOTATED REPORT */
+  .report { background: #fff; border: 1px solid var(--cv-line); border-radius: 14px; padding: 22px; }
+  .report .top { display: flex; justify-content: space-between; align-items: start; margin-bottom: 14px; }
+  .report .top .ttl { font-family: var(--cv-display); font-weight: 700; font-size: 20px; letter-spacing: -0.018em; }
+  .report .top .sub { font-family: var(--cv-mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--cv-stone-500); margin-top: 4px; }
+  .report .scoreBox {
+    background: var(--cv-green); color: var(--cv-ink);
+    padding: 8px 14px; border-radius: 10px;
+    text-align: right;
+  }
+  .report .scoreBox .n { font-family: var(--cv-display); font-weight: 700; font-size: 32px; line-height: 1; }
+  .report .scoreBox .l { font-family: var(--cv-mono); font-size: 9.5px; letter-spacing: .16em; font-weight: 700; text-transform: uppercase; }
+
+  .report .doc { font-family: var(--cv-sans); font-size: 14px; line-height: 1.7; color: var(--cv-ink); padding-top: 6px; border-top: 1px solid var(--cv-line); margin-top: 6px; }
+  .report .doc h4 { font-family: var(--cv-display); font-weight: 700; font-size: 18px; margin: 12px 0 8px; letter-spacing: -0.018em; }
+  .report .doc .flag { padding: 1px 4px; border-radius: 3px; cursor: pointer; position: relative; }
+  .report .doc .flag.am { background: rgba(244,169,61,0.18); border-bottom: 2px solid var(--cv-amber); }
+  .report .doc .flag.rd { background: rgba(229,72,59,0.18); border-bottom: 2px solid var(--cv-red); }
+  .report .doc .flag.gn { background: rgba(31,179,90,0.18); border-bottom: 2px solid var(--cv-green-deep); }
+
+  .findings { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--cv-line); }
+  .finding { display: grid; grid-template-columns: 70px 1fr auto; gap: 14px; align-items: start; padding: 10px 0; }
+  .finding .clause { font-family: var(--cv-mono); font-size: 10.5px; letter-spacing: .14em; font-weight: 700; color: var(--cv-stone-500); padding-top: 2px; }
+  .finding .body .ttl { font-family: var(--cv-sans); font-weight: 600; font-size: 13.5px; }
+  .finding .body .desc { font-family: var(--cv-sans); font-size: 12.5px; color: var(--cv-stone-600); margin-top: 2px; }
+
+  /* FOOTER actions inside report */
+  .report-actions { display: flex; gap: 10px; margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--cv-line); }
+  .report-actions .btn { font-family: var(--cv-sans); font-weight: 600; font-size: 13px; padding: 9px 16px; border-radius: 999px; border: 1px solid var(--cv-line); background: #fff; cursor: pointer; color: var(--cv-ink); }
+  .report-actions .btn.primary { background: var(--cv-ink); color: #fff; border-color: var(--cv-ink); }
+
+  /* RIGHT side: trends */
+  .trends { background: #fff; border: 1px solid var(--cv-line); border-radius: 14px; padding: 22px; }
+  .trends h3 { font-family: var(--cv-display); font-weight: 700; font-size: 20px; letter-spacing: -0.018em; margin: 0 0 4px; }
+  .trends .sub { font-family: var(--cv-mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--cv-stone-500); }
+
+  .chart { margin-top: 20px; height: 180px; position: relative; }
+  .chart .grid {
+    position: absolute; inset: 0;
+    background-image: linear-gradient(to top, var(--cv-stone-200) 1px, transparent 1px);
+    background-size: 100% 36px;
+    background-position: bottom;
+  }
+  .chart svg { position: relative; width: 100%; height: 100%; }
+
+  .legend { display: flex; gap: 18px; margin-top: 14px; font-family: var(--cv-mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--cv-stone-500); }
+  .legend span { display: flex; align-items: center; gap: 6px; }
+  .legend .d { width: 10px; height: 10px; border-radius: 2px; }
+
+  /* Top violations */
+  .top-vio { margin-top: 24px; border-top: 1px solid var(--cv-line); padding-top: 18px; }
+  .top-vio h4 { font-family: var(--cv-display); font-weight: 700; font-size: 16px; letter-spacing: -0.018em; margin: 0 0 12px; }
+  .top-vio .vrow { display: grid; grid-template-columns: 1fr 60px; align-items: center; padding: 7px 0; gap: 12px; font-family: var(--cv-sans); font-size: 13px; }
+  .top-vio .vrow .bar { height: 6px; background: var(--cv-stone-200); border-radius: 3px; overflow: hidden; }
+  .top-vio .vrow .bar i { display: block; height: 100%; background: var(--cv-red); border-radius: 3px; }
+  .top-vio .vrow .num { font-family: var(--cv-mono); font-size: 11.5px; color: var(--cv-stone-500); text-align: right; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <symbol id="cv-owl" viewBox="0 0 200 200">
+    <path d="M 100 12 L 64 4 Q 60 28, 60 40 Q 36 46, 24 70 Q 14 92, 18 124 Q 24 162, 60 182 Q 80 192, 100 192 Q 120 192, 140 182 Q 176 162, 182 124 Q 186 92, 176 70 Q 164 46, 140 40 Q 140 28, 136 4 L 100 12 Z" fill="currentColor"/>
+    <circle cx="68" cy="98" r="30" fill="rgba(255,255,255,0.86)"/>
+    <circle cx="132" cy="98" r="30" fill="rgba(255,255,255,0.86)"/>
+    <circle cx="68" cy="98" r="18" fill="#3FE07A"/>
+    <circle cx="132" cy="98" r="18" fill="#3FE07A"/>
+    <circle cx="68" cy="98" r="7" fill="currentColor"/>
+    <circle cx="132" cy="98" r="7" fill="currentColor"/>
+    <path d="M 100 122 L 90 138 Q 100 144, 110 138 Z" fill="#3FE07A"/>
+  </symbol>
+</svg>
+
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <aside>
+    <div class="brand">
+      <span style="color:#1A1F3A; background: #fff; border-radius: 6px; padding: 4px;">
+        <svg width="22" height="22"><use href="#cv-owl"/></svg>
+      </span>
+      Content <span class="v">Vigilante</span>
+    </div>
+
+    <div class="group">Workspace</div>
+    <a href="#" class="active">▣ Audits <span class="badge">12</span></a>
+    <a href="#">◇ Brand guides</a>
+    <a href="#">◈ Approved library</a>
+    <a href="#">◔ Pending review</a>
+
+    <div class="group">Insights</div>
+    <a href="#">◐ Trends</a>
+    <a href="#">◑ Top violations</a>
+    <a href="#">◍ Localization drift</a>
+
+    <div class="group">Settings</div>
+    <a href="#">⚙ Workspace</a>
+    <a href="#">⌨ API</a>
+    <a href="#">⌥ Integrations</a>
+
+    <div class="me">
+      <div class="av">MR</div>
+      <div>
+        <div class="name">Marta Rivera</div>
+        <div class="role">Northwind · admin</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main>
+
+    <div class="topbar">
+      <div class="crumbs">Northwind · <strong>Audits</strong> · all locales</div>
+      <div class="actions">
+        <div class="search">
+          <span style="font-family: var(--cv-mono); font-size: 11px;">⌕</span>
+          Search audits, clauses, content…
+          <span style="margin-left:auto; padding: 2px 6px; border: 1px solid var(--cv-line); border-radius: 4px; font-size: 10px;">⌘K</span>
+        </div>
+        <button class="btn-new">+ New audit</button>
+      </div>
+    </div>
+
+    <!-- HEADER -->
+    <div class="pagehead">
+      <div>
+        <h1>Audits.</h1>
+        <div class="sub">12 in queue · 4 awaiting review · last sync 2 min ago</div>
+      </div>
+      <div class="filters">
+        <span class="on">All</span>
+        <span>On-brand</span>
+        <span>Drift</span>
+        <span>Off-brand</span>
+        <span>EN</span>
+        <span>IT</span>
+        <span>FR</span>
+        <span>DE</span>
+      </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats">
+      <div class="stat">
+        <div class="label">AUDITS · LAST 7D</div>
+        <div class="num">248</div>
+        <div class="delta up">▲ 18% vs prev</div>
+      </div>
+      <div class="stat green">
+        <div class="label">AVG SCORE</div>
+        <div class="num">87.4</div>
+        <div class="delta up">▲ 2.1 pts</div>
+      </div>
+      <div class="stat amber">
+        <div class="label">DRIFT RATE</div>
+        <div class="num">14%</div>
+        <div class="delta dn">▲ 3% — review</div>
+      </div>
+      <div class="stat red">
+        <div class="label">OFF-BRAND</div>
+        <div class="num">3.1%</div>
+        <div class="delta up">▼ 0.8% vs prev</div>
+      </div>
+    </div>
+
+    <!-- SPLIT -->
+    <div class="split">
+
+      <!-- LEFT: queue + report -->
+      <div style="display:flex; flex-direction: column; gap: 16px;">
+
+        <!-- QUEUE -->
+        <div class="queue">
+          <div class="head">
+            <span>Content</span>
+            <span>Verdict</span>
+            <span>Score</span>
+            <span>Locale</span>
+            <span>When</span>
+          </div>
+          <div class="row">
+            <div>
+              <div class="ttl">Q2 product launch — blog draft</div>
+              <div class="meta">BLOG · 1,240 words · author Sara K.</div>
+            </div>
+            <span class="pill green">ON-BRAND</span>
+            <span class="scoreCell gn">87</span>
+            <span class="lang">EN-US</span>
+            <span class="agoCell">2m</span>
+          </div>
+          <div class="row">
+            <div>
+              <div class="ttl">Newsletter — Maggio campagna</div>
+              <div class="meta">EMAIL · 320 words · author L. Bianchi</div>
+            </div>
+            <span class="pill amber">DRIFT</span>
+            <span class="scoreCell am">74</span>
+            <span class="lang">IT</span>
+            <span class="agoCell">8m</span>
+          </div>
+          <div class="row">
+            <div>
+              <div class="ttl">LinkedIn paid — Frühling 2026</div>
+              <div class="meta">SOCIAL · 80 words · author M. Krämer</div>
+            </div>
+            <span class="pill red">OFF-BRAND</span>
+            <span class="scoreCell rd">38</span>
+            <span class="lang">DE</span>
+            <span class="agoCell">14m</span>
+          </div>
+          <div class="row">
+            <div>
+              <div class="ttl">Page d'accueil — héros V3</div>
+              <div class="meta">WEB · 56 words · author C. Dubois</div>
+            </div>
+            <span class="pill green">ON-BRAND</span>
+            <span class="scoreCell gn">94</span>
+            <span class="lang">FR</span>
+            <span class="agoCell">22m</span>
+          </div>
+          <div class="row">
+            <div>
+              <div class="ttl">Support reply macro — refunds</div>
+              <div class="meta">CS · 140 words · automated</div>
+            </div>
+            <span class="pill amber">DRIFT</span>
+            <span class="scoreCell am">71</span>
+            <span class="lang">EN-GB</span>
+            <span class="agoCell">38m</span>
+          </div>
+          <div class="row">
+            <div>
+              <div class="ttl">Press release — Series B</div>
+              <div class="meta">PR · 480 words · approved by legal</div>
+            </div>
+            <span class="pill gray">PENDING</span>
+            <span class="scoreCell">—</span>
+            <span class="lang">EN-US</span>
+            <span class="agoCell">1h</span>
+          </div>
+        </div>
+
+        <!-- REPORT -->
+        <div class="report">
+          <div class="top">
+            <div>
+              <div class="ttl">Q2 product launch — blog draft</div>
+              <div class="sub">BLOG · EN-US · 1,240 WORDS · CLAUSE COVERAGE 94%</div>
+            </div>
+            <div class="scoreBox">
+              <div class="l">ON-BRAND</div>
+              <div class="n">87</div>
+              <div class="l">/ 100</div>
+            </div>
+          </div>
+
+          <div class="doc">
+            <h4>Introducing the new Vigilante reports.</h4>
+            <p>
+              We built the new report to be fast, <span class="flag am">surprisingly delightful</span>,
+              and ruthlessly honest. Every flag now points to a specific clause in your brand guide —
+              <span class="flag gn">no more black-box scoring</span>.
+            </p>
+            <p>
+              Drop in a draft and you'll get a verdict in seconds.
+              <span class="flag rd">This game-changing release</span> ships today across all four supported languages.
+            </p>
+          </div>
+
+          <div class="findings">
+            <div class="finding">
+              <span class="clause" style="color: var(--cv-amber);">§4.2 ▲</span>
+              <div class="body">
+                <div class="ttl">Tone drift · "surprisingly delightful"</div>
+                <div class="desc">Marketing voice prohibits adverb-stacked emotional adjectives. Suggested rewrite: <em>"fast and accurate."</em></div>
+              </div>
+              <span class="pill amber">DRIFT</span>
+            </div>
+            <div class="finding">
+              <span class="clause" style="color: var(--cv-red);">§2.1 ●</span>
+              <div class="body">
+                <div class="ttl">Banned phrase · "game-changing"</div>
+                <div class="desc">Listed in lexicon §2.1 as cliché. Suggested rewrite: <em>"This release ships today."</em></div>
+              </div>
+              <span class="pill red">OFF-BRAND</span>
+            </div>
+            <div class="finding">
+              <span class="clause" style="color: var(--cv-green-deep);">§6 ✓</span>
+              <div class="body">
+                <div class="ttl">Evidence rule · clause cited</div>
+                <div class="desc">Reference to "specific clause in your brand guide" satisfies §6 transparency rule.</div>
+              </div>
+              <span class="pill green">ON-BRAND</span>
+            </div>
+          </div>
+
+          <div class="report-actions">
+            <button class="btn primary">Apply suggested rewrites (2)</button>
+            <button class="btn">Stamp &amp; ship</button>
+            <button class="btn">Send to author</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: trends -->
+      <div class="trends">
+        <h3>Brand health · 30 days</h3>
+        <div class="sub">Score trend across all locales</div>
+
+        <div class="chart">
+          <div class="grid"></div>
+          <svg viewBox="0 0 400 180" preserveAspectRatio="none">
+            <!-- area fill -->
+            <path d="M 0 110 L 30 100 L 60 90 L 90 95 L 120 80 L 150 85 L 180 70 L 210 60 L 240 65 L 270 50 L 300 55 L 330 40 L 360 45 L 400 30 L 400 180 L 0 180 Z" fill="rgba(63,224,122,0.18)"/>
+            <!-- line -->
+            <path d="M 0 110 L 30 100 L 60 90 L 90 95 L 120 80 L 150 85 L 180 70 L 210 60 L 240 65 L 270 50 L 300 55 L 330 40 L 360 45 L 400 30" fill="none" stroke="#1FB35A" stroke-width="2"/>
+            <!-- last point -->
+            <circle cx="400" cy="30" r="5" fill="#1FB35A"/>
+            <circle cx="400" cy="30" r="10" fill="rgba(63,224,122,0.3)"/>
+          </svg>
+        </div>
+        <div class="legend">
+          <span><span class="d" style="background: var(--cv-green-deep);"></span>Score</span>
+          <span><span class="d" style="background: var(--cv-stone-300);"></span>Target 85+</span>
+        </div>
+
+        <div class="top-vio">
+          <h4>Top violations · 30d</h4>
+          <div class="vrow"><span>Banned phrases (§2.1)</span><span class="num">42</span></div>
+          <div class="vrow"><div><div class="bar"><i style="width:90%;"></i></div></div><span class="num">90%</span></div>
+          <div class="vrow"><span>Tone drift (§4.2)</span><span class="num">28</span></div>
+          <div class="vrow"><div><div class="bar"><i style="width:62%; background: var(--cv-amber);"></i></div></div><span class="num">62%</span></div>
+          <div class="vrow"><span>Missing citation (§6)</span><span class="num">17</span></div>
+          <div class="vrow"><div><div class="bar"><i style="width:38%; background: var(--cv-amber);"></i></div></div><span class="num">38%</span></div>
+          <div class="vrow"><span>Localization register (§7)</span><span class="num">9</span></div>
+          <div class="vrow"><div><div class="bar"><i style="width:20%; background: var(--cv-stone-400);"></i></div></div><span class="num">20%</span></div>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+</div>
+
+</body>
+</html>

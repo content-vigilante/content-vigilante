@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Content Vigilante — Social Kit</title>
+<link rel="stylesheet" href="styles/brand.css" />
+<style>
+  body { background: var(--cv-stone-100); padding: 60px 40px; }
+  .page { max-width: 1280px; margin: 0 auto; }
+  header { margin-bottom: 48px; }
+  header .eyebrow { font-family: var(--cv-mono); font-size: 11.5px; letter-spacing: .22em; text-transform: uppercase; color: var(--cv-stone-500); margin-bottom: 14px; display: flex; align-items: center; gap: 12px; }
+  header .eyebrow svg { width: 22px; height: 22px; }
+  header h1 { font-family: var(--cv-display); font-weight: 700; font-size: 88px; line-height: 1; letter-spacing: -0.025em; margin: 0 0 18px; }
+  header p { font-family: var(--cv-sans); font-size: 18px; color: var(--cv-stone-600); max-width: 680px; line-height: 1.55; margin: 0; }
+
+  .section { margin-top: 64px; }
+  .section .head { display: flex; justify-content: space-between; align-items: end; margin-bottom: 24px; }
+  .section .head h2 { font-family: var(--cv-display); font-weight: 700; font-size: 36px; letter-spacing: -0.022em; margin: 0; }
+  .section .head .meta { font-family: var(--cv-mono); font-size: 11.5px; letter-spacing: .18em; text-transform: uppercase; color: var(--cv-stone-500); }
+
+  /* generic card frame */
+  .card-wrap { background: #fff; border: 1px solid var(--cv-line); border-radius: 14px; padding: 24px; }
+  .card-wrap .lab { font-family: var(--cv-mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--cv-stone-500); margin-bottom: 14px; display: flex; justify-content: space-between; }
+
+  /* AVATARS */
+  .av-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .av { aspect-ratio: 1; border-radius: 50%; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+  .av.cream { background: var(--cv-paper); }
+  .av.navy { background: var(--cv-ink); }
+  .av.green { background: var(--cv-green); }
+  .av.stone { background: var(--cv-stone-100); }
+  .av-row .card-wrap { display: flex; flex-direction: column; gap: 10px; }
+  .av svg { width: 75%; height: 75%; }
+  .av.green svg path:first-of-type { fill: var(--cv-ink); }
+  .av.green svg circle:nth-of-type(3),
+  .av.green svg circle:nth-of-type(4) { fill: var(--cv-paper); }
+  .av.green svg path:last-of-type { fill: var(--cv-paper); }
+  .av.navy svg path:first-of-type { fill: #2A2F4F; }
+  .av.navy svg circle:nth-of-type(1),
+  .av.navy svg circle:nth-of-type(2) { fill: rgba(255,255,255,0.92); }
+
+  /* TWITTER / X header — 1500x500 -> 750x250 */
+  .twitter-header {
+    width: 100%; aspect-ratio: 3 / 1;
+    background: var(--cv-ink); color: #fff;
+    border-radius: 14px; padding: 56px 64px;
+    display: flex; align-items: center; gap: 56px;
+    position: relative; overflow: hidden;
+  }
+  .twitter-header::before {
+    content: ''; position: absolute; right: -100px; top: -100px;
+    width: 440px; height: 440px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(63,224,122,0.18), transparent 70%);
+  }
+  .twitter-header .word {
+    font-family: var(--cv-display); font-weight: 700; font-size: 64px;
+    line-height: 0.95; letter-spacing: -0.025em;
+  }
+  .twitter-header .word .em { color: var(--cv-green); }
+  .twitter-header .meta { font-family: var(--cv-mono); font-size: 11.5px; letter-spacing: .22em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-top: 14px; }
+  .twitter-header .right { margin-left: auto; }
+
+  /* LINKEDIN cover — 4 / 1 */
+  .li-cover {
+    width: 100%; aspect-ratio: 4 / 1;
+    background: var(--cv-paper);
+    border-radius: 14px; padding: 36px 56px;
+    display: flex; align-items: center; gap: 36px;
+    border: 1px solid var(--cv-line);
+  }
+  .li-cover .word { font-family: var(--cv-display); font-weight: 700; font-size: 44px; line-height: 1; letter-spacing: -0.022em; }
+  .li-cover .word .v { font-weight: 500; }
+  .li-cover .word + .sub { font-family: var(--cv-mono); font-size: 11.5px; letter-spacing: .22em; text-transform: uppercase; color: var(--cv-stone-500); margin-top: 8px; }
+  .li-cover .right { margin-left: auto; display: flex; align-items: center; gap: 14px; }
+  .li-cover .right .stamp { font-family: var(--cv-mono); font-size: 11px; letter-spacing: .18em; padding: 8px 14px; border-radius: 999px; background: var(--cv-green-soft); color: var(--cv-green-deep); font-weight: 700; text-transform: uppercase; }
+
+  /* POST templates — square 1:1 */
+  .post-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .post {
+    aspect-ratio: 1;
+    border-radius: 14px;
+    padding: 36px;
+    display: flex; flex-direction: column; justify-content: space-between;
+    position: relative; overflow: hidden;
+  }
+  .post.navy { background: var(--cv-ink); color: #fff; }
+  .post.cream { background: var(--cv-paper); color: var(--cv-ink); border: 1px solid var(--cv-line); }
+  .post.green { background: var(--cv-green); color: var(--cv-ink); }
+
+  .post .meta { font-family: var(--cv-mono); font-size: 11px; letter-spacing: .2em; text-transform: uppercase; opacity: 0.6; }
+  .post h3 { font-family: var(--cv-display); font-weight: 700; font-size: 44px; line-height: 1.0; letter-spacing: -0.022em; margin: 0; }
+  .post .em { color: var(--cv-green); }
+  .post.green .em { color: var(--cv-ink); font-style: italic; }
+  .post.cream .em { color: var(--cv-green-deep); }
+  .post .foot { display: flex; justify-content: space-between; align-items: center; font-family: var(--cv-mono); font-size: 11px; letter-spacing: .2em; text-transform: uppercase; opacity: 0.65; }
+  .post .foot .brand { display: flex; align-items: center; gap: 8px; opacity: 1; font-family: var(--cv-display); text-transform: none; letter-spacing: -0.018em; font-weight: 700; font-size: 14px; }
+  .post .foot .brand .v { font-weight: 500; }
+  .post .foot .brand svg { width: 18px; height: 18px; }
+
+  /* tag stamp inside posts */
+  .verdict-stamp {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 12px; border-radius: 999px;
+    font-family: var(--cv-mono); font-size: 11px; letter-spacing: .14em; font-weight: 700; text-transform: uppercase;
+    background: var(--cv-green); color: var(--cv-ink);
+  }
+  .post.green .verdict-stamp { background: var(--cv-ink); color: var(--cv-green); }
+  .post.cream .verdict-stamp { background: var(--cv-green-soft); color: var(--cv-green-deep); }
+
+  /* STORY frames — 9:16 */
+  .story-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .story {
+    aspect-ratio: 9/16;
+    border-radius: 14px;
+    padding: 28px 24px;
+    display: flex; flex-direction: column; justify-content: space-between;
+    position: relative; overflow: hidden;
+  }
+  .story.navy { background: var(--cv-ink); color: #fff; }
+  .story.cream { background: var(--cv-paper); color: var(--cv-ink); border: 1px solid var(--cv-line); }
+  .story.green { background: var(--cv-green); color: var(--cv-ink); }
+  .story h4 { font-family: var(--cv-display); font-weight: 700; font-size: 32px; line-height: 1.0; letter-spacing: -0.022em; margin: 0; }
+  .story .em { color: var(--cv-green); }
+  .story.green .em { color: var(--cv-ink); font-style: italic; }
+  .story .lab { font-family: var(--cv-mono); font-size: 10px; letter-spacing: .2em; text-transform: uppercase; opacity: 0.6; }
+  .story .num { font-family: var(--cv-display); font-size: 88px; line-height: 1; font-weight: 700; letter-spacing: -0.025em; }
+
+  /* doc-style flag highlight */
+  .flag-am { background: rgba(244,169,61,0.22); border-bottom: 2px solid var(--cv-amber); padding: 1px 4px; }
+  .flag-rd { background: rgba(229,72,59,0.22); border-bottom: 2px solid var(--cv-red); padding: 1px 4px; }
+  .flag-gn { background: rgba(31,179,90,0.22); border-bottom: 2px solid var(--cv-green-deep); padding: 1px 4px; }
+
+  @media (max-width: 900px) {
+    .post-row { grid-template-columns: 1fr 1fr; }
+    .story-row { grid-template-columns: 1fr 1fr; }
+    .av-row { grid-template-columns: repeat(2, 1fr); }
+    header h1 { font-size: 56px; }
+  }
+</style>
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <symbol id="cv-owl" viewBox="0 0 200 200">
+    <path d="M 100 12 L 64 4 Q 60 28, 60 40 Q 36 46, 24 70 Q 14 92, 18 124 Q 24 162, 60 182 Q 80 192, 100 192 Q 120 192, 140 182 Q 176 162, 182 124 Q 186 92, 176 70 Q 164 46, 140 40 Q 140 28, 136 4 L 100 12 Z" fill="#1A1F3A"/>
+    <circle cx="68" cy="98" r="30" fill="rgba(255,255,255,0.86)"/>
+    <circle cx="132" cy="98" r="30" fill="rgba(255,255,255,0.86)"/>
+    <circle cx="68" cy="98" r="18" fill="#3FE07A"/>
+    <circle cx="132" cy="98" r="18" fill="#3FE07A"/>
+    <circle cx="68" cy="98" r="7" fill="#1A1F3A"/>
+    <circle cx="132" cy="98" r="7" fill="#1A1F3A"/>
+    <circle cx="73" cy="93" r="3" fill="rgba(255,255,255,0.85)"/>
+    <circle cx="137" cy="93" r="3" fill="rgba(255,255,255,0.85)"/>
+    <path d="M 100 122 L 90 138 Q 100 144, 110 138 Z" fill="#3FE07A"/>
+  </symbol>
+</svg>
+
+<div class="page">
+
+  <header>
+    <div class="eyebrow"><svg><use href="#cv-owl"/></svg> Content Vigilante · Social Kit · v1.0</div>
+    <h1>Social kit.</h1>
+    <p>Avatars, banners, and post templates for X, LinkedIn, Instagram, and stories. Stay on-brand on every channel — the system audits the system.</p>
+  </header>
+
+  <!-- AVATARS -->
+  <section class="section">
+    <div class="head">
+      <h2>Avatars</h2>
+      <span class="meta">1024×1024 · square · masked to circle</span>
+    </div>
+    <div class="av-row">
+      <div class="card-wrap">
+        <div class="lab"><span>01 · Cream</span><span>Default</span></div>
+        <div class="av cream"><svg viewBox="0 0 200 200"><use href="#cv-owl"/></svg></div>
+      </div>
+      <div class="card-wrap">
+        <div class="lab"><span>02 · Navy</span><span>Dark mode</span></div>
+        <div class="av navy"><svg viewBox="0 0 200 200"><use href="#cv-owl"/></svg></div>
+      </div>
+      <div class="card-wrap">
+        <div class="lab"><span>03 · Green</span><span>Campaign</span></div>
+        <div class="av green"><svg viewBox="0 0 200 200"><use href="#cv-owl"/></svg></div>
+      </div>
+      <div class="card-wrap">
+        <div class="lab"><span>04 · Stone</span><span>Subtle</span></div>
+        <div class="av stone"><svg viewBox="0 0 200 200"><use href="#cv-owl"/></svg></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BANNERS -->
+  <section class="section">
+    <div class="head">
+      <h2>Banners</h2>
+      <span class="meta">X · 1500×500 · LinkedIn · 1584×396</span>
+    </div>
+
+    <div class="card-wrap" style="margin-bottom: 16px;">
+      <div class="lab"><span>X · Header</span><span>1500×500 · 3:1</span></div>
+      <div class="twitter-header">
+        <svg width="160" height="160"><use href="#cv-owl"/></svg>
+        <div>
+          <div class="word">Stop shipping<br/><span class="em">off-brand</span> content.</div>
+          <div class="meta">EN · IT · FR · DE · contentvigilante.io</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-wrap">
+      <div class="lab"><span>LinkedIn · Cover</span><span>1584×396 · 4:1</span></div>
+      <div class="li-cover">
+        <svg width="120" height="120"><use href="#cv-owl"/></svg>
+        <div>
+          <div class="word">Content <span class="v">Vigilante</span></div>
+          <div class="sub">Office of Brand Enforcement · EN · IT · FR · DE</div>
+        </div>
+        <div class="right">
+          <span class="stamp">● Audit-grade</span>
+          <span class="stamp">● 4 languages</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- POSTS -->
+  <section class="section">
+    <div class="head">
+      <h2>Post templates</h2>
+      <span class="meta">1080×1080 · 1:1</span>
+    </div>
+
+    <div class="post-row">
+      <div class="post navy">
+        <span class="meta">QUOTE · 01</span>
+        <h3>"Verdicts.<br/>Not <span class="em">opinions.</span>"</h3>
+        <div class="foot">
+          <div class="brand"><svg><use href="#cv-owl"/></svg> Content <span class="v">Vigilante</span></div>
+          <span>EN · IT · FR · DE</span>
+        </div>
+      </div>
+
+      <div class="post cream">
+        <span class="meta">PROOF · 02</span>
+        <h3>Audit time<br/><span class="em">~6 sec.</span></h3>
+        <div>
+          <div style="font-family: var(--cv-mono); font-size: 12px; letter-spacing: .14em; color: var(--cv-stone-500); margin-bottom: 8px;">VERDICT</div>
+          <span class="verdict-stamp"><span style="width:8px; height:8px; border-radius:50%; background: currentColor;"></span> ON-BRAND · 87/100</span>
+        </div>
+        <div class="foot">
+          <div class="brand"><svg><use href="#cv-owl"/></svg> Content <span class="v">Vigilante</span></div>
+          <span>contentvigilante.io</span>
+        </div>
+      </div>
+
+      <div class="post green">
+        <span class="meta">CTA · 03</span>
+        <h3>Stop shipping<br/><span class="em">off-brand.</span></h3>
+        <div class="foot" style="opacity: 0.85;">
+          <div class="brand"><svg><use href="#cv-owl"/></svg> Content <span class="v">Vigilante</span></div>
+          <span>Free audit →</span>
+        </div>
+      </div>
+
+      <div class="post navy" style="grid-column: span 2;">
+        <span class="meta">DEMO · 04</span>
+        <div style="background:#fff; color: var(--cv-ink); border-radius: 12px; padding: 22px 26px; font-family: var(--cv-sans); font-size: 17px; line-height: 1.55;">
+          <div style="font-family: var(--cv-mono); font-size: 10.5px; letter-spacing: .16em; text-transform: uppercase; color: var(--cv-stone-500); margin-bottom: 10px;">PROOF · BLOG_DRAFT_Q2 · EN-US</div>
+          <p style="margin: 0;">We built the new report to be fast, <span class="flag-am">surprisingly delightful</span>, and ruthlessly honest. Every flag now points to <span class="flag-gn">a specific clause</span> in your brand guide. <span class="flag-rd">This game-changing release</span> ships today.</p>
+        </div>
+        <div class="foot">
+          <div class="brand"><svg><use href="#cv-owl"/></svg> Content <span class="v">Vigilante</span></div>
+          <span>3 flags · 1 rewrite</span>
+        </div>
+      </div>
+
+      <div class="post cream">
+        <span class="meta">STAT · 05</span>
+        <div>
+          <div style="font-family: var(--cv-display); font-size: 132px; font-weight: 700; line-height: 0.95; letter-spacing: -0.028em; color: var(--cv-green-deep);">138%</div>
+          <div style="font-family: var(--cv-sans); font-size: 18px; color: var(--cv-stone-600); max-width: 220px; line-height: 1.4; margin-top: 8px;">Net revenue retention. Brand teams expand fast.</div>
+        </div>
+        <div class="foot">
+          <div class="brand"><svg><use href="#cv-owl"/></svg> Content <span class="v">Vigilante</span></div>
+          <span>Q2 · 2026</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STORIES -->
+  <section class="section">
+    <div class="head">
+      <h2>Stories &amp; reels</h2>
+      <span class="meta">1080×1920 · 9:16</span>
+    </div>
+    <div class="story-row">
+      <div class="story navy">
+        <span class="lab">REEL · 01 · INTRO</span>
+        <h4>Stop shipping<br/><span class="em">off-brand.</span></h4>
+        <div style="display: flex; align-items: center; justify-content: center; padding: 20px 0;">
+          <svg width="120" height="120"><use href="#cv-owl"/></svg>
+        </div>
+        <span class="lab" style="text-align: right;">→ swipe</span>
+      </div>
+      <div class="story cream">
+        <span class="lab">REEL · 02 · DROP</span>
+        <h4>Drop your guide.<br/>Drop a draft.</h4>
+        <div style="border: 2px dashed var(--cv-stone-400); border-radius: 14px; padding: 32px; text-align: center; font-family: var(--cv-mono); font-size: 13px; letter-spacing: .14em; color: var(--cv-stone-500); text-transform: uppercase;">Drop file<br/>or paste URL</div>
+        <span class="lab" style="text-align: right; color: var(--cv-stone-500);">→ swipe</span>
+      </div>
+      <div class="story green">
+        <span class="lab">REEL · 03 · VERDICT</span>
+        <div class="num">87<span style="font-size: 32px; opacity: 0.5;">/ 100</span></div>
+        <span class="verdict-stamp" style="align-self: flex-start;">● ON-BRAND</span>
+        <span class="lab" style="text-align: right;">→ swipe</span>
+      </div>
+      <div class="story navy">
+        <span class="lab">REEL · 04 · CTA</span>
+        <h4>Run a free<br/>audit. <span class="em">Today.</span></h4>
+        <div class="brand" style="display: flex; align-items: center; gap: 10px; font-family: var(--cv-display); font-weight: 700; font-size: 18px; letter-spacing: -0.018em;">
+          <svg width="28" height="28"><use href="#cv-owl"/></svg> Content <span style="font-weight:500;">Vigilante</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- USAGE -->
+  <section class="section">
+    <div class="head">
+      <h2>Voice notes for social</h2>
+      <span class="meta">Captions · hashtags · CTAs</span>
+    </div>
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+      <div class="card-wrap">
+        <div class="lab"><span>CAPTION · DO</span><span style="color: var(--cv-green-deep);">ON-BRAND</span></div>
+        <p style="font-family: var(--cv-display); font-weight: 500; font-size: 22px; line-height: 1.35; margin: 0; color: var(--cv-ink);">Audit a draft. Get a verdict. Ship.<br/>Free for the first 50 audits → contentvigilante.io</p>
+      </div>
+      <div class="card-wrap">
+        <div class="lab"><span>CAPTION · DON'T</span><span style="color: var(--cv-red);">OFF-BRAND</span></div>
+        <p style="font-family: var(--cv-display); font-weight: 500; font-size: 22px; line-height: 1.35; margin: 0; color: var(--cv-stone-500);">🚀 Excited to share our game-changing AI-powered platform that empowers brand teams to unlock seamless workflows! ✨</p>
+      </div>
+      <div class="card-wrap">
+        <div class="lab"><span>HASHTAGS · USE</span><span>≤ 3 per post</span></div>
+        <p style="font-family: var(--cv-mono); font-size: 16px; line-height: 1.6; margin: 0; color: var(--cv-stone-600); letter-spacing: .04em;">#brandcompliance · #contentops · #brandgovernance</p>
+      </div>
+      <div class="card-wrap">
+        <div class="lab"><span>HASHTAGS · AVOID</span><span style="color: var(--cv-red);">NEVER</span></div>
+        <p style="font-family: var(--cv-mono); font-size: 16px; line-height: 1.6; margin: 0; color: var(--cv-stone-500); letter-spacing: .04em; text-decoration: line-through;">#ai · #futureofwork · #marketinghacks · #grindset</p>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+</body>
+</html>

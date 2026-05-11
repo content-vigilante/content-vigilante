@@ -1,0 +1,171 @@
+/* ============================================================
+   CONTENT VIGILANTE — Brand System
+   Stop shipping off-brand content.
+   v2 · Owl mark direction (navy / cream / green)
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+  /* ---- Core palette -------------------------------------- */
+  --cv-ink:        #1A1F3A;   /* deep warm navy — the owl */
+  --cv-ink-2:      #232943;
+  --cv-ink-3:      #2E3552;
+  --cv-ink-soft:   #4A5070;
+
+  --cv-paper:      #FFFFFF;
+  --cv-paper-2:    #FAFBFC;
+  --cv-paper-3:    #F1F3F7;
+  --cv-paper-4:    #E2E6EE;
+
+  /* ---- Signal palette ------------------------------------ */
+  --cv-green:      #3FE07A;   /* Vigilante green — the eye */
+  --cv-green-deep: #1FB35A;
+  --cv-green-soft: #DEFCE8;
+  --cv-green-line: #BCEFCD;
+
+  --cv-amber:      #F4A93D;
+  --cv-amber-soft: #FFF1DC;
+  --cv-amber-line: #FBD795;
+
+  --cv-red:        #E5483B;
+  --cv-red-soft:   #FFE4E0;
+  --cv-red-line:   #FFC5BD;
+
+  /* ---- Neutral scale ------------------------------------ */
+  --cv-stone-50:   #FAFBFC;
+  --cv-stone-100:  #F1F3F7;
+  --cv-stone-200:  #E2E6EE;
+  --cv-stone-300:  #C8CEDC;
+  --cv-stone-400:  #969DB3;
+  --cv-stone-500:  #6B7390;
+  --cv-stone-600:  #474D67;
+  --cv-stone-700:  #2E3552;
+
+  --cv-line:       rgba(26, 31, 58, 0.10);
+  --cv-line-soft:  rgba(26, 31, 58, 0.05);
+  --cv-line-strong:rgba(26, 31, 58, 0.22);
+
+  /* ---- Type --------------------------------------------- */
+  --cv-display: 'Plus Jakarta Sans', ui-sans-serif, -apple-system, sans-serif;
+  --cv-sans:    'Manrope', ui-sans-serif, -apple-system, sans-serif;
+  --cv-mono:    'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace;
+
+  /* ---- Spacing ------------------------------------------ */
+  --cv-1: 4px;  --cv-2: 8px;  --cv-3: 12px; --cv-4: 16px;
+  --cv-5: 24px; --cv-6: 32px; --cv-7: 48px; --cv-8: 64px;
+  --cv-9: 96px; --cv-10:128px;
+
+  /* ---- Radii / shadow ----------------------------------- */
+  --cv-r-sm: 6px;  --cv-r-md: 12px; --cv-r-lg: 20px; --cv-r-xl: 28px;
+  --cv-shadow-sm: 0 1px 2px rgba(26,31,58,0.06), 0 0 0 1px rgba(26,31,58,0.05);
+  --cv-shadow-md: 0 8px 24px -8px rgba(26,31,58,0.18), 0 0 0 1px rgba(26,31,58,0.05);
+  --cv-shadow-lg: 0 24px 60px -20px rgba(26,31,58,0.28), 0 0 0 1px rgba(26,31,58,0.06);
+  --cv-shadow-glow:0 0 0 6px rgba(63,224,122,0.18), 0 8px 24px -8px rgba(26,31,58,0.18);
+}
+
+/* Dark inversion (for hero / cover blocks) */
+.cv-dark {
+  --cv-paper:      #1A1F3A;
+  --cv-paper-2:    #232943;
+  --cv-paper-3:    #2E3552;
+  --cv-paper-4:    #3A4163;
+  --cv-ink:        #FFFFFF;
+  --cv-ink-2:      #E2E6EE;
+  --cv-ink-soft:   #969DB3;
+  --cv-line:       rgba(255,255,255,0.10);
+  --cv-line-soft:  rgba(255,255,255,0.05);
+  --cv-line-strong:rgba(255,255,255,0.28);
+  color: var(--cv-ink);
+  background: var(--cv-paper);
+}
+
+/* ============================================================
+   Base
+   ============================================================ */
+html, body {
+  margin: 0;
+  background: var(--cv-paper);
+  color: var(--cv-ink);
+  font-family: var(--cv-sans);
+  font-feature-settings: "ss01";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+* { box-sizing: border-box; }
+a { color: inherit; }
+
+/* ============================================================
+   Type primitives
+   ============================================================ */
+.cv-display    { font-family: var(--cv-display); font-weight: 700; letter-spacing: -0.022em; line-height: 1.02; }
+.cv-display-md { font-family: var(--cv-display); font-weight: 600; letter-spacing: -0.018em; line-height: 1.06; }
+.cv-sans       { font-family: var(--cv-sans); }
+.cv-mono       { font-family: var(--cv-mono); }
+
+.cv-eyebrow {
+  font-family: var(--cv-mono);
+  font-size: 11px;
+  letter-spacing: 0.20em;
+  text-transform: uppercase;
+  color: var(--cv-stone-500);
+  font-weight: 500;
+}
+
+/* ============================================================
+   Atomic UI
+   ============================================================ */
+.cv-rule       { height: 1px; background: var(--cv-line); border: 0; margin: 0; }
+
+.cv-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--cv-mono); font-size: 11px; letter-spacing: 0.10em;
+  text-transform: uppercase; padding: 6px 10px;
+  border: 1px solid var(--cv-line-strong); border-radius: 999px;
+  color: var(--cv-ink); background: transparent;
+}
+.cv-pill--green {
+  background: var(--cv-green-soft); color: var(--cv-green-deep);
+  border-color: var(--cv-green-line);
+}
+
+.cv-tag-green { display:inline-flex; align-items:center; gap:6px; font-family:var(--cv-sans); font-size:12px; font-weight:600; padding:4px 10px; border-radius:999px; background:var(--cv-green-soft); color:var(--cv-green-deep); border:1px solid var(--cv-green-line); }
+.cv-tag-amber { display:inline-flex; align-items:center; gap:6px; font-family:var(--cv-sans); font-size:12px; font-weight:600; padding:4px 10px; border-radius:999px; background:var(--cv-amber-soft); color:#8A5A00; border:1px solid var(--cv-amber-line); }
+.cv-tag-red   { display:inline-flex; align-items:center; gap:6px; font-family:var(--cv-sans); font-size:12px; font-weight:600; padding:4px 10px; border-radius:999px; background:var(--cv-red-soft); color:#A02418; border:1px solid var(--cv-red-line); }
+
+.cv-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--cv-sans); font-weight: 600; font-size: 14px;
+  padding: 12px 18px; border-radius: 999px;
+  border: 1px solid var(--cv-ink); background: var(--cv-ink); color: #fff;
+  cursor: pointer; text-decoration: none; line-height: 1;
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.cv-btn:hover { transform: translateY(-1px); box-shadow: var(--cv-shadow-md); }
+.cv-btn--ghost { background: transparent; color: var(--cv-ink); }
+.cv-btn--green { background: var(--cv-green); border-color: var(--cv-green); color: var(--cv-ink); }
+.cv-btn--green:hover { box-shadow: var(--cv-shadow-glow); }
+.cv-btn--lg { padding: 16px 26px; font-size: 16px; }
+
+.cv-card {
+  background: var(--cv-paper);
+  border: 1px solid var(--cv-line);
+  border-radius: var(--cv-r-md);
+  overflow: hidden;
+}
+
+/* ============================================================
+   Grid container
+   ============================================================ */
+.cv-wrap { max-width: 1280px; margin: 0 auto; padding: 0 var(--cv-7); }
+@media (max-width: 720px) { .cv-wrap { padding: 0 var(--cv-5); } }
+
+/* ============================================================
+   Owl pulse — used in motion contexts only
+   ============================================================ */
+@keyframes cv-blink {
+  0%, 92%, 100% { transform: scaleY(1); }
+  95%           { transform: scaleY(0.05); }
+}
+.cv-eye-blink { transform-origin: center; animation: cv-blink 5.5s ease-in-out infinite; }

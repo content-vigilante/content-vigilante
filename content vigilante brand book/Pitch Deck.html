@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Content Vigilante — Pitch Deck</title>
+<link rel="stylesheet" href="styles/brand.css" />
+<script src="deck-stage.js"></script>
+<style>
+  body { background: #0E1126; }
+
+  deck-stage {
+    --slide-bg: var(--cv-paper);
+  }
+
+  /* Each section is 1920x1080 implicit via deck-stage scaling */
+  deck-stage > section {
+    width: 1920px; height: 1080px;
+    padding: 88px 120px;
+    box-sizing: border-box;
+    position: relative;
+    background: var(--cv-paper);
+    color: var(--cv-ink);
+    display: flex; flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* slide chrome */
+  .chrome {
+    position: absolute; top: 56px; left: 120px; right: 120px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: var(--cv-mono); font-size: 16px; letter-spacing: .2em; text-transform: uppercase; color: var(--cv-stone-500);
+    z-index: 5;
+  }
+  .chrome .brand { display: flex; align-items: center; gap: 12px; color: var(--cv-ink); font-family: var(--cv-display); font-weight: 700; font-size: 20px; letter-spacing: -0.018em; text-transform: none; }
+  .chrome .brand .v { font-weight: 500; }
+
+  .footchrome {
+    position: absolute; bottom: 56px; left: 120px; right: 120px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: var(--cv-mono); font-size: 14px; letter-spacing: .2em; text-transform: uppercase; color: var(--cv-stone-500);
+    z-index: 5;
+  }
+
+  /* dark slide variant */
+  section.dark { background: var(--cv-ink); color: #fff; }
+  section.dark .chrome { color: rgba(255,255,255,0.5); }
+  section.dark .chrome .brand { color: #fff; }
+  section.dark .footchrome { color: rgba(255,255,255,0.5); }
+  section.green { background: var(--cv-green); }
+
+  h1.kicker { font-family: var(--cv-mono); font-size: 18px; letter-spacing: .22em; text-transform: uppercase; color: var(--cv-stone-500); font-weight: 600; margin: 0 0 24px; }
+  section.dark h1.kicker { color: rgba(255,255,255,0.5); }
+
+  h2.big {
+    font-family: var(--cv-display); font-weight: 700;
+    font-size: 200px; line-height: 0.92; letter-spacing: -0.028em;
+    margin: 0;
+  }
+  h2.med {
+    font-family: var(--cv-display); font-weight: 700;
+    font-size: 132px; line-height: 0.95; letter-spacing: -0.025em;
+    margin: 0;
+  }
+  h2.small {
+    font-family: var(--cv-display); font-weight: 700;
+    font-size: 88px; line-height: 1.0; letter-spacing: -0.022em;
+    margin: 0;
+  }
+  .lede {
+    font-family: var(--cv-sans); font-size: 28px; line-height: 1.45; color: var(--cv-stone-600);
+    max-width: 1100px; margin: 36px 0 0;
+  }
+  section.dark .lede { color: rgba(255,255,255,0.7); }
+
+  .em-green { color: var(--cv-green); }
+  section.green .em-green { color: var(--cv-ink); }
+
+  /* helpers */
+  .grow { flex: 1; }
+  .row { display: flex; gap: 32px; }
+  .col { display: flex; flex-direction: column; gap: 16px; }
+
+  /* large stat tiles */
+  .stat-tile {
+    flex: 1;
+    background: var(--cv-ink); color: #fff;
+    border-radius: 24px; padding: 56px;
+    display: flex; flex-direction: column; justify-content: space-between;
+    min-height: 480px;
+  }
+  .stat-tile .lbl { font-family: var(--cv-mono); font-size: 16px; letter-spacing: .22em; text-transform: uppercase; color: rgba(255,255,255,0.5); }
+  .stat-tile .num { font-family: var(--cv-display); font-weight: 700; font-size: 220px; line-height: 0.9; letter-spacing: -0.03em; color: var(--cv-green); }
+  .stat-tile .desc { font-family: var(--cv-sans); font-size: 22px; line-height: 1.45; color: rgba(255,255,255,0.85); max-width: 360px; }
+
+  /* feature card */
+  .fcard {
+    flex: 1;
+    background: var(--cv-paper-2);
+    border: 1px solid var(--cv-line);
+    border-radius: 18px;
+    padding: 44px;
+    display: flex; flex-direction: column;
+    min-height: 520px;
+  }
+  .fcard .num { font-family: var(--cv-mono); font-size: 14px; letter-spacing: .22em; text-transform: uppercase; color: var(--cv-stone-500); }
+  .fcard h3 { font-family: var(--cv-display); font-weight: 700; font-size: 56px; line-height: 1.05; letter-spacing: -0.022em; margin: 18px 0 18px; }
+  .fcard p { font-family: var(--cv-sans); font-size: 22px; line-height: 1.5; color: var(--cv-stone-600); margin: 0; }
+
+  /* generic pill row */
+  .pillrow { display: flex; gap: 14px; flex-wrap: wrap; }
+  .pillrow .p {
+    font-family: var(--cv-mono); font-size: 18px; letter-spacing: .14em; font-weight: 700;
+    padding: 12px 22px; border-radius: 999px;
+    background: var(--cv-stone-200); color: var(--cv-ink);
+  }
+  .pillrow .p.green { background: var(--cv-green-soft); color: var(--cv-green-deep); }
+  .pillrow .p.amber { background: var(--cv-amber-soft); color: #8A5A00; }
+  .pillrow .p.red   { background: var(--cv-red-soft); color: #A02418; }
+
+  /* sample report */
+  .samplereport {
+    background: #fff; color: var(--cv-ink);
+    border-radius: 24px;
+    padding: 48px 56px;
+    box-shadow: 0 60px 100px -40px rgba(0,0,0,0.5);
+    flex: 1;
+    position: relative;
+    font-family: var(--cv-sans); font-size: 26px; line-height: 1.65;
+  }
+  .samplereport h4 { font-family: var(--cv-display); font-weight: 700; font-size: 40px; letter-spacing: -0.022em; margin: 0 0 18px; }
+  .samplereport .meta { font-family: var(--cv-mono); font-size: 14px; letter-spacing: .18em; text-transform: uppercase; color: var(--cv-stone-500); margin-bottom: 20px; }
+  .samplereport .am { background: rgba(244,169,61,0.22); border-bottom: 3px solid var(--cv-amber); padding: 1px 4px; }
+  .samplereport .rd { background: rgba(229,72,59,0.22); border-bottom: 3px solid var(--cv-red); padding: 1px 4px; }
+  .samplereport .gn { background: rgba(31,179,90,0.22); border-bottom: 3px solid var(--cv-green-deep); padding: 1px 4px; }
+  .samplereport .stamp {
+    position: absolute; right: -20px; top: -20px;
+    width: 160px; height: 160px;
+    border-radius: 50%;
+    background: var(--cv-green); color: var(--cv-ink);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    transform: rotate(8deg);
+    font-family: var(--cv-mono); font-size: 13px; font-weight: 700; letter-spacing: .14em;
+    border: 4px solid var(--cv-ink);
+  }
+  .samplereport .stamp .n { font-family: var(--cv-display); font-size: 52px; line-height: 1; margin: 6px 0; }
+
+  /* timeline */
+  .timeline { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; padding-top: 32px; border-top: 2px solid var(--cv-ink); margin-top: 56px; }
+  section.dark .timeline { border-top-color: #fff; }
+  .tstep .n { font-family: var(--cv-display); font-weight: 700; font-size: 140px; line-height: 1; color: var(--cv-stone-300); letter-spacing: -0.025em; }
+  section.dark .tstep .n { color: rgba(255,255,255,0.18); }
+  .tstep h4 { font-family: var(--cv-display); font-weight: 700; font-size: 44px; line-height: 1.05; letter-spacing: -0.022em; margin: 16px 0 12px; }
+  .tstep p { font-family: var(--cv-sans); font-size: 20px; line-height: 1.5; color: var(--cv-stone-600); margin: 0 32px 0 0; }
+  section.dark .tstep p { color: rgba(255,255,255,0.7); }
+
+  /* final cta */
+  section.cta { background: var(--cv-ink); color: #fff; align-items: center; justify-content: center; text-align: center; }
+  section.cta h2 { font-family: var(--cv-display); font-weight: 700; font-size: 240px; line-height: 0.92; letter-spacing: -0.028em; margin: 0; }
+  section.cta .sub { font-family: var(--cv-sans); font-size: 32px; color: rgba(255,255,255,0.75); margin-top: 32px; }
+
+  /* big owl decoration */
+  .owl-back {
+    position: absolute; right: 80px; top: 50%; transform: translateY(-50%);
+    opacity: 0.05; pointer-events: none;
+  }
+</style>
+</head>
+
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <symbol id="cv-owl" viewBox="0 0 200 200">
+    <path d="M 100 12 L 64 4 Q 60 28, 60 40 Q 36 46, 24 70 Q 14 92, 18 124 Q 24 162, 60 182 Q 80 192, 100 192 Q 120 192, 140 182 Q 176 162, 182 124 Q 186 92, 176 70 Q 164 46, 140 40 Q 140 28, 136 4 L 100 12 Z" fill="#1A1F3A"/>
+    <circle cx="68" cy="98" r="30" fill="rgba(255,255,255,0.86)"/>
+    <circle cx="132" cy="98" r="30" fill="rgba(255,255,255,0.86)"/>
+    <circle cx="68" cy="98" r="18" fill="#3FE07A"/>
+    <circle cx="132" cy="98" r="18" fill="#3FE07A"/>
+    <circle cx="68" cy="98" r="7" fill="#1A1F3A"/>
+    <circle cx="132" cy="98" r="7" fill="#1A1F3A"/>
+    <circle cx="73" cy="93" r="3" fill="rgba(255,255,255,0.85)"/>
+    <circle cx="137" cy="93" r="3" fill="rgba(255,255,255,0.85)"/>
+    <path d="M 100 122 L 90 138 Q 100 144, 110 138 Z" fill="#3FE07A"/>
+  </symbol>
+</svg>
+
+<deck-stage width="1920" height="1080">
+
+  <!-- 01 — TITLE -->
+  <section class="dark" data-screen-label="01 Cover">
+    <div class="chrome">
+      <div class="brand"><svg width="36" height="36"><use href="#cv-owl"/></svg> Content <span class="v">Vigilante</span></div>
+      <span>Pitch · Series A · 2026</span>
+    </div>
+    <svg class="owl-back" width="900" height="900"><use href="#cv-owl"/></svg>
+    <div class="grow"></div>
+    <h1 class="kicker">Office of Brand Enforcement</h1>
+    <h2 class="big">Stop shipping<br/><span class="em-green">off-brand</span><br/>content.</h2>
+    <p class="lede" style="color: rgba(255,255,255,0.78);">An audit-grade brand compliance system for the marketing teams of the Fortune 5000.</p>
+    <div class="grow"></div>
+    <div class="footchrome">
+      <span>01 · Title</span>
+      <span>contentvigilante.io</span>
+    </div>
+  </section>
+
+  <!-- 02 — PROBLEM -->
+  <section data-screen-label="02 Problem">
+    <div class="chrome">
+      <div class="brand"><svg width="36" height="36"><use href="#cv-owl"/></svg> Content <span class="v">Vigilante</span></div>
+      <span>02 · Problem</span>
+    </div>
+    <h1 class="kicker">The problem</h1>
+    <h2 class="med">Brand guides exist.<br/>Nobody reads them.</h2>
+    <p class="lede">By the time a marketing artifact reaches a human reviewer, it has already been written, designed, scheduled, and emotionally shipped. Brand review becomes negotiation, not enforcement.</p>
+
+    <div class="row" style="margin-top: 80px;">
+      <div class="fcard"><span class="num">EVIDENCE 01</span>
+        <h3>62%</h3>
+        <p style="font-size: 24px;">of enterprise marketing content goes to publish without a brand review.</p>
+      </div>
+      <div class="fcard"><span class="num">EVIDENCE 02</span>
+        <h3>4 hrs</h3>
+        <p style="font-size: 24px;">avg time from "submit for review" to "approved." For one piece.</p>
+      </div>
+      <div class="fcard"><span class="num">EVIDENCE 03</span>
+        <h3>3 / 4</h3>
+        <p style="font-size: 24px;">brand managers say their guide is ignored at the channel level.</p>
+      </div>
+    </div>
+
+    <div class="footchrome"><span>CV · Pitch 2026</span><span>02 / 11</span></div>
+  </section>
+
+  <!-- 03 — SOLUTION -->
+  <section class="green" data-screen-label="03 Solution">
+    <div class="chrome">
+      <div class="brand"><svg width="36" height="36"><use href="#cv-owl"/></svg> Content <span class="v">Vigilante</span></div>
+      <span>03 · Solution</span>
+    </div>
+    <h1 class="kicker" style="color: rgba(26,31,58,0.6);">The solution</h1>
+    <h2 class="big">An audit,<br/>in <span style="font-style: italic;">six seconds.</span></h2>
+    <p class="lede" style="color: rgba(26,31,58,0.78); font-size: 32px;">Drop in a brand guide. Drop in a piece of content. Get a verdict, annotated deviations, and one-click rewrites — in EN, IT, FR, DE.</p>
+    <div class="grow"></div>
+    <div class="footchrome" style="color: rgba(26,31,58,0.6);"><span>CV · Pitch 2026</span><span>03 / 11</span></div>
+  </section>
+
+  <!-- 04 — HOW IT WORKS -->
+  <section data-screen-label="04 How it works">
+    <div class="chrome">
+      <div class="brand"><svg width="36" height="36"><use href="#cv-owl"/></svg> Content <span class="v">Vigilante</span></div>
+      <span>04 · How it works</span>
+    </div>
+    <h1 class="kicker">How an audit runs</h1>
+    <h2 class="med">Three steps.<br/>One verdict.</h2>
+
+    <div class="timeline">
+      <div class="tstep">
+        <div class="n">01</div>
+        <h4>Register the guide.</h4>
+        <p>PDF, doc, or pasted clauses. Vigilante parses the guide into a structured policy of voice, lexicon, tone, and visual rules.</p>
+      </div>
+      <div class="tstep">
+        <div class="n">02</div>
+        <h4>Submit content.</h4>
+        <p>Blog, ad, email, social caption, support reply. Any format, any of the four supported languages.</p>
+      </div>
+      <div class="tstep">
+        <div class="n">03</div>
+        <h4>Verdict in 6 seconds.</h4>
+        <p>Score, annotated drifts, suggested rewrites, and a burn-in compliance stamp on every export.</p>
+      </div>
+    </div>
+    <div class="footchrome"><span>CV · Pitch 2026</span><span>04 / 11</span></div>
+  </section>
+
+  <!-- 05 — DEMO / SAMPLE REPORT -->
+  <section class="dark" data-screen-label="05 Sample report">
+    <div class="chrome">
+      <div class="brand"><svg width="36" height="36"><use href="#cv-owl"/></svg> Content <span class="v">Vigilante</span></div>
+      <span>05 · Sample audit</span>
+    </div>
+    <h1 class="kicker">Sample report</h1>
+    <h2 class="small">Every flag <span class="em-green">cites a clause.</span></h2>
+
+    <div class="row" style="margin-top: 56px; align-items: stretch;">
+      <div class="samplereport">
+        <div class="stamp">ON-BRAND<span class="n">87</span>/ 100</div>
+        <div class="meta">PROOF · BLOG_DRAFT_Q2 · EN-US</div>
+        <h4>Introducing the new Vigilante reports.</h4>
+        <p>We built the new report to be fast, <span class="am">surprisingly delightful</span>, and ruthlessly honest. Every flag now points to a specific clause in your brand guide — <span class="gn">no more black-box scoring</span>.</p>
+        <p>Drop in a draft and you'll get a verdict in seconds. <span class="rd">This game-changing release</span> ships today across all four supported languages.</p>
+      </div>
+
+      <div class="col" style="flex: 0 0 600px;">
+        <div class="fcard" style="background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.12); color: #fff; min-height: auto;">
+          <span class="num" style="color: rgba(255,255,255,0.5);">FINDING · §4.2</span>
+          <h3 style="font-size: 32px; color: var(--cv-amber);">Tone drift</h3>
+          <p style="color: rgba(255,255,255,0.7);">"Surprisingly delightful" — adverb-stacked emotional adjective. Rewrite: "fast and accurate."</p>
+        </div>
+        <div class="fcard" style="background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.12); color: #fff; min-height: auto;">
+          <span class="num" style="color: rgba(255,255,255,0.5);">FINDING · §2.1</span>
+          <h3 style="font-size: 32px; color: var(--cv-red);">Banned phrase</h3>
+          <p style="color: rgba(255,255,255,0.7);">"Game-changing" — listed in lexicon §2.1 as cliché. Suggested rewrite ready.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="footchrome"><span>CV · Pitch 2026</span><span>05 / 11</span></div>
+  </section>
+
+  <!-- 06 — DIFFERENTIATION -->
+  <section data-screen-label="06 Why us">
+    <div class="chrome">
+      <div class="brand"><svg width="36" height="36"><use href="#cv-owl"/></svg> Content <span class="v">Vigilante</span></div>
+      <span>06 · Why us</span>
+    </div>
+    <h1 class="kicker">What's different</h1>
+    <h2 class="med">Verdicts.<br/>Not <span class="em-green">opinions.</span></h2>
+
+    <div class="row" style="margin-top: 64px;">
+      <div class="fcard"><span class="num">01</span>
+        <h3>Clause-level evidence.</h3>
+        <p>Every flag points to the rule that fired it. No black-box scoring. No "the AI said so."</p>
+      </div>
+      <div class="fcard"><span class="num">02</span>
+        <h3>Verdict, not vibes.</h3>
+        <p>On-brand, drift, off-brand. One score. No four-paragraph summaries to reconcile.</p>
+      </div>
+      <div class="fcard"><span class="num">03</span>
+        <h3>Localized, not translated.</h3>
+        <p>Voice rules adapted per locale (EN/IT/FR/DE). The same standard applied with native register.</p>
+      </div>
+      <div class="fcard"><span class="num">04</span>
+        <h3>Ships with the work.</h3>
+        <p>Burn-in stamps on every export. The verdict travels with the artifact, not in a separate file.</p>
+      </div>
+    </div>
+    <div class="footchrome"><span>CV · Pitch 2026</span><span>06 / 11</span></div>
+  </section>
+
+  <!-- 07 — TRACTION -->
+  <section data-screen-label="07 Traction">
+    <div class="chrome">
+      <div class="brand"><svg width="36" height="36"><use href="#cv-owl"/></svg> Content <span class="v">Vigilante</span></div>
+      <span>07 · Traction</span>
+    </div>
+    <h1 class="kicker">Traction · trailing 6 months</h1>
+    <h2 class="med">Brand teams<br/>are buying.</h2>
+
+    <div class="row" style="margin-top: 56px;">
+      <div class="stat-tile">
+        <div class="lbl">Audits run</div>
+        <div class="num">2.4M</div>
+        <div class="desc">Across 142 paying workspaces in EN, IT, FR, DE.</div>
+      </div>
+      <div class="stat-tile">
+        <div class="lbl">Net revenue retention</div>
+        <div class="num">138%</div>
+        <div class="desc">Teams expand from one workspace to three within 90 days.</div>
+      </div>
+      <div class="stat-tile">
+        <div class="lbl">Avg audit time</div>
+        <div class="num">5.8s</div>
+        <div class="desc">Replacing four-hour Slack reviews with a two-second verdict.</div>
+      </div>
+    </div>
+    <div class="footchrome"><span>CV · Pitch 2026</span><span>07 / 11</span></div>
+  </section>
+
+  <!-- 08 — CUSTOMER QUOTE -->
+  <section class="dark" data-screen-label="08 Testimonial">
+    <div class="chrome">
+      <div class="brand"><svg width="36" height="36"><use href="#cv-owl"/></svg> Content <span class="v">Vigilante</span></div>
+      <span>08 · Testimonial</span>
+    </div>
+
+    <div class="grow"></div>
+    <h1 class="kicker">Marta Rivera · Head of Brand · Northwind</h1>
+    <h2 class="small" style="max-width: 1500px;">"We replaced a four-hour brand review with a <span class="em-green">six-second audit.</span> The argument we used to have over Slack now happens once, on the page, with the clause cited."</h2>
+    <div class="grow"></div>
+    <div class="footchrome"><span>CV · Pitch 2026</span><span>08 / 11</span></div>
+  </section>
+
+  <!-- 09 — MARKET -->
+  <section data-screen-label="09 Market">
+    <div class="chrome">
+      <div class="brand"><svg width="36" height="36"><use href="#cv-owl"/></svg> Content <span class="v">Vigilante</span></div>
+      <span>09 · Market</span>
+    </div>
+    <h1 class="kicker">Market</h1>
+    <h2 class="med">A <span class="em-green">$14B</span> seat<br/>nobody's filled.</h2>
+
+    <div class="row" style="margin-top: 64px;">
+      <div class="fcard"><span class="num">TAM · 2026</span>
+        <h3 style="color: var(--cv-green-deep);">$14B</h3>
+        <p>Brand &amp; content governance spend across the Fortune 5000 and global agencies.</p>
+      </div>
+      <div class="fcard"><span class="num">SAM</span>
+        <h3>$3.2B</h3>
+        <p>Multi-locale brand teams with active style guides and review workflows.</p>
+      </div>
+      <div class="fcard"><span class="num">SOM · Y3</span>
+        <h3>$220M</h3>
+        <p>Reachable workspaces in EN/IT/FR/DE markets at current pricing.</p>
+      </div>
+    </div>
+    <div class="footchrome"><span>CV · Pitch 2026</span><span>09 / 11</span></div>
+  </section>
+
+  <!-- 10 — ASK -->
+  <section data-screen-label="10 The ask">
+    <div class="chrome">
+      <div class="brand"><svg width="36" height="36"><use href="#cv-owl"/></svg> Content <span class="v">Vigilante</span></div>
+      <span>10 · The ask</span>
+    </div>
+    <h1 class="kicker">The ask</h1>
+    <h2 class="big"><span class="em-green">$18M</span><br/>Series A.</h2>
+    <p class="lede" style="font-size: 32px;">To extend to ES &amp; PT in 2026, ship the Figma + CMS plug-ins, and double the policy engineering team.</p>
+
+    <div class="pillrow" style="margin-top: 64px;">
+      <span class="p">40% · Engineering</span>
+      <span class="p">25% · Localization</span>
+      <span class="p">20% · GTM</span>
+      <span class="p">15% · Trust &amp; Compliance</span>
+    </div>
+
+    <div class="footchrome"><span>CV · Pitch 2026</span><span>10 / 11</span></div>
+  </section>
+
+  <!-- 11 — CTA -->
+  <section class="cta" data-screen-label="11 Close">
+    <div class="chrome" style="justify-content: center;">
+      <div class="brand"><svg width="36" height="36"><use href="#cv-owl"/></svg> Content <span class="v">Vigilante</span></div>
+    </div>
+    <h2>Stop shipping<br/><span class="em-green">off-brand.</span></h2>
+    <div class="sub">brand@contentvigilante.io · contentvigilante.io</div>
+    <div class="footchrome" style="justify-content: center;"><span>11 / 11</span></div>
+  </section>
+
+</deck-stage>
+
+</body>
+</html>

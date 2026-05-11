@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Content Vigilante — Brand Guidelines</title>
+<link rel="stylesheet" href="styles/brand.css" />
+<style>
+  /* ============== Page chrome ============== */
+  body { background: var(--cv-paper); }
+  .page { max-width: 1180px; margin: 0 auto; padding: 0 var(--cv-7) var(--cv-10); }
+  @media (max-width: 720px) { .page { padding: 0 var(--cv-5) var(--cv-9); } }
+
+  /* Sticky side nav */
+  .doc-nav {
+    position: fixed; top: 24px; left: 24px; width: 220px;
+    font-family: var(--cv-mono); font-size: 11px; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--cv-stone-500);
+    z-index: 10;
+  }
+  .doc-nav .head { font-weight: 700; color: var(--cv-ink); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+  .doc-nav ol { list-style: none; padding: 0; margin: 0; counter-reset: nav; }
+  .doc-nav li { counter-increment: nav; padding: 6px 0; border-top: 1px solid var(--cv-line); }
+  .doc-nav li:first-child { border-top: 0; }
+  .doc-nav a { display: flex; gap: 10px; text-decoration: none; color: inherit; }
+  .doc-nav a::before { content: counter(nav, decimal-leading-zero); color: var(--cv-stone-400); }
+  .doc-nav a:hover { color: var(--cv-ink); }
+
+  @media (max-width: 1280px) { .doc-nav { display: none; } }
+
+  /* Section primitives */
+  section { padding: var(--cv-9) 0; border-top: 1px solid var(--cv-line); }
+  section:first-of-type { border-top: 0; }
+  .sec-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: var(--cv-7); }
+  .sec-head .num { font-family: var(--cv-mono); font-size: 11px; letter-spacing: .2em; color: var(--cv-stone-500); }
+  .sec-head h2 { font-family: var(--cv-display); font-weight: 700; font-size: 56px; letter-spacing: -0.022em; line-height: 1; margin: 0; }
+  .sec-lede { font-family: var(--cv-sans); font-size: 18px; line-height: 1.55; color: var(--cv-stone-600); max-width: 680px; margin: -24px 0 var(--cv-6); }
+
+  /* ============== Cover ============== */
+  .cover {
+    background: var(--cv-ink); color: #fff;
+    border-radius: 24px;
+    padding: 72px 64px;
+    margin: 32px 0 48px;
+    position: relative; overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.05);
+  }
+  .cover .topbar { display: flex; justify-content: space-between; align-items: center; font-family: var(--cv-mono); font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: rgba(255,255,255,0.6); }
+  .cover .crest { position: absolute; right: -50px; top: -50px; opacity: 0.06; }
+  .cover h1 { font-family: var(--cv-display); font-weight: 700; font-size: 96px; line-height: 0.95; letter-spacing: -0.025em; margin: 70px 0 0; }
+  .cover h1 .accent { color: var(--cv-green); }
+  .cover .slogan { font-family: var(--cv-display); font-weight: 500; font-size: 30px; margin-top: 22px; color: rgba(255,255,255,0.78); max-width: 540px; }
+  .cover .footrow { display: flex; justify-content: space-between; margin-top: 80px; font-family: var(--cv-mono); font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: rgba(255,255,255,0.5); }
+
+  /* ============== Foundation ============== */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--cv-6); }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--cv-5); }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--cv-4); }
+  @media (max-width: 720px) {
+    .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+  }
+
+  .pillar {
+    border: 1px solid var(--cv-line);
+    border-radius: 14px;
+    padding: 32px;
+    background: var(--cv-paper);
+  }
+  .pillar .num { font-family: var(--cv-mono); font-size: 11px; letter-spacing: .2em; color: var(--cv-stone-500); }
+  .pillar h3 { font-family: var(--cv-display); font-weight: 700; font-size: 28px; line-height: 1.1; letter-spacing: -0.018em; margin: 12px 0 12px; }
+  .pillar p { font-family: var(--cv-sans); font-size: 15px; line-height: 1.6; color: var(--cv-stone-600); margin: 0; }
+
+  /* ============== Logo section ============== */
+  .lockup-tile {
+    background: var(--cv-paper-2);
+    border-radius: 14px;
+    padding: 56px;
+    display: flex; align-items: center; justify-content: center;
+    min-height: 240px;
+    border: 1px solid var(--cv-line);
+  }
+  .lockup-tile.dark { background: var(--cv-ink); }
+  .lockup-tile.cream { background: #FAF6EE; }
+  .lockup-tile.green { background: var(--cv-green-soft); }
+
+  .clear-frame {
+    position: relative; padding: 36px;
+    border: 1px dashed var(--cv-line-strong); border-radius: 12px;
+    background: var(--cv-paper-2);
+  }
+  .clear-frame .inner { position: relative; padding: 36px; border: 1px dashed var(--cv-green-deep); border-radius: 6px; display: flex; align-items: center; justify-content: center; }
+  .clear-frame .x-pin {
+    position: absolute; background: var(--cv-green); color: var(--cv-ink);
+    font-family: var(--cv-mono); font-size: 9.5px; font-weight: 700;
+    padding: 3px 7px; border-radius: 4px; letter-spacing: .12em;
+  }
+
+  .misuse-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  @media (max-width: 720px) { .misuse-row { grid-template-columns: repeat(2, 1fr); } }
+  .miss {
+    background: var(--cv-paper-2); border-radius: 12px;
+    padding: 22px; min-height: 130px;
+    display: flex; align-items: center; justify-content: center;
+    position: relative; border: 1px solid var(--cv-line);
+  }
+  .miss .strike-x {
+    position: absolute; left: -8px; right: -8px; top: 50%;
+    height: 3px; background: var(--cv-red);
+    transform: rotate(-12deg) translateY(-50%);
+    border-radius: 2px;
+  }
+  .misuse-cap { font-family: var(--cv-mono); font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--cv-red); margin-top: 8px; text-align: center; font-weight: 600; }
+
+  /* ============== Color ============== */
+  .swatch {
+    border-radius: 14px; padding: 24px; min-height: 180px; display: flex; flex-direction: column; justify-content: space-between;
+    border: 1px solid var(--cv-line);
+  }
+  .swatch .name { font-family: var(--cv-display); font-weight: 700; font-size: 22px; letter-spacing: -0.018em; }
+  .swatch .meta { font-family: var(--cv-mono); font-size: 11px; letter-spacing: .12em; line-height: 1.6; }
+  .swatch .meta .row { display: flex; justify-content: space-between; }
+
+  /* ============== Type ============== */
+  .type-spec { display: grid; grid-template-columns: 220px 1fr; gap: 32px; align-items: start; padding: 28px 0; border-bottom: 1px solid var(--cv-line); }
+  .type-spec:last-child { border-bottom: 0; }
+  .type-spec .meta { font-family: var(--cv-mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--cv-stone-500); line-height: 1.8; }
+  .type-spec .meta strong { display: block; color: var(--cv-ink); font-weight: 600; font-size: 13px; letter-spacing: 0; text-transform: none; font-family: var(--cv-sans); margin-bottom: 4px; }
+  .type-sample h3 { margin: 0 0 10px; }
+
+  /* Tone do/don't */
+  .voice-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 1px solid var(--cv-line); border-radius: 12px; overflow: hidden; }
+  .voice-cell { padding: 22px 24px; border-right: 1px solid var(--cv-line); }
+  .voice-cell:last-child { border-right: 0; }
+  .voice-cell .tag { font-family: var(--cv-mono); font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; font-weight: 700; }
+  .voice-cell.do  .tag { color: var(--cv-green-deep); }
+  .voice-cell.dont .tag { color: var(--cv-red); }
+  .voice-cell p { font-family: var(--cv-display); font-weight: 500; font-size: 22px; line-height: 1.25; letter-spacing: -0.014em; margin: 10px 0 0; color: var(--cv-ink); }
+  .voice-cell.dont p { color: var(--cv-stone-500); }
+
+  /* Iconography stroke style demo */
+  .icon-card { background: var(--cv-paper-2); border-radius: 12px; padding: 22px; border: 1px solid var(--cv-line); display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+  .icon-card svg { color: var(--cv-ink); }
+  .icon-card .name { font-family: var(--cv-mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--cv-stone-500); }
+
+  /* Compliance stamps */
+  .stamp {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 10px 14px; border-radius: 999px;
+    font-family: var(--cv-mono); font-size: 12px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase;
+  }
+  .stamp.green { background: var(--cv-green-soft); color: var(--cv-green-deep); border: 1px solid var(--cv-green-line); }
+  .stamp.amber { background: var(--cv-amber-soft); color: #8A5A00;            border: 1px solid var(--cv-amber-line); }
+  .stamp.red   { background: var(--cv-red-soft);   color: #A02418;            border: 1px solid var(--cv-red-line); }
+  .stamp .dot  { width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+
+  /* Photography */
+  .img-tile {
+    border-radius: 14px; overflow: hidden;
+    border: 1px solid var(--cv-line);
+    aspect-ratio: 4/3;
+    background: var(--cv-paper-2);
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--cv-stone-400);
+    font-family: var(--cv-mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+  }
+  .img-tile.dark { background: var(--cv-ink); color: rgba(255,255,255,0.5); }
+  .img-tile.green { background: linear-gradient(135deg, var(--cv-green-soft), var(--cv-green) 200%); color: var(--cv-green-deep); }
+  .img-tile.cream { background: #FAF6EE; color: var(--cv-stone-500); }
+  .img-tile .label { position: absolute; bottom: 12px; left: 14px; }
+  .img-tile .crop  { font-family: var(--cv-mono); font-size: 10px; letter-spacing: .12em; color: inherit; opacity: 0.8; }
+  .img-tile.placeholder::before {
+    content: '';
+    position: absolute; inset: 24px;
+    border: 1px dashed currentColor; border-radius: 6px; opacity: .35;
+  }
+  .img-tile .ph-icon {
+    width: 44px; height: 44px; border-radius: 10px;
+    border: 1.5px dashed currentColor;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0.6;
+  }
+
+  /* ============== Footer ============== */
+  .footer-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 32px; padding: 48px 0; border-top: 1px solid var(--cv-line); }
+  @media (max-width: 720px) { .footer-grid { grid-template-columns: 1fr; } }
+  .footer-grid .label { font-family: var(--cv-mono); font-size: 10.5px; letter-spacing: .18em; text-transform: uppercase; color: var(--cv-stone-500); margin-bottom: 6px; }
+  .footer-grid .val { font-family: var(--cv-display); font-weight: 600; font-size: 18px; }
+
+  /* tiny inline owl helper */
+  .owl-inline { vertical-align: middle; }
+</style>
+</head>
+
+<body>
+
+<!-- Owl SVG symbols -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <symbol id="cv-owl" viewBox="0 0 200 200">
+    <path d="M 100 12 L 64 4 Q 60 28, 60 40 Q 36 46, 24 70 Q 14 92, 18 124 Q 24 162, 60 182 Q 80 192, 100 192 Q 120 192, 140 182 Q 176 162, 182 124 Q 186 92, 176 70 Q 164 46, 140 40 Q 140 28, 136 4 L 100 12 Z" fill="var(--owl-body, #1A1F3A)"/>
+    <circle cx="68" cy="98" r="30" fill="var(--owl-ring, rgba(255,255,255,0.86))"/>
+    <circle cx="132" cy="98" r="30" fill="var(--owl-ring, rgba(255,255,255,0.86))"/>
+    <circle cx="68" cy="98" r="18" fill="var(--owl-eye, #3FE07A)"/>
+    <circle cx="132" cy="98" r="18" fill="var(--owl-eye, #3FE07A)"/>
+    <circle cx="68" cy="98" r="7" fill="var(--owl-pupil, #1A1F3A)"/>
+    <circle cx="132" cy="98" r="7" fill="var(--owl-pupil, #1A1F3A)"/>
+    <circle cx="73" cy="93" r="3" fill="rgba(255,255,255,0.85)"/>
+    <circle cx="137" cy="93" r="3" fill="rgba(255,255,255,0.85)"/>
+    <path d="M 100 122 L 90 138 Q 100 144, 110 138 Z" fill="var(--owl-eye, #3FE07A)"/>
+    <path d="M 100 188 L 92 168 Q 100 174, 108 168 Z" fill="rgba(0,0,0,0.18)"/>
+  </symbol>
+</svg>
+
+<!-- ============== SIDE NAV ============== -->
+<nav class="doc-nav">
+  <div class="head">
+    <svg width="22" height="22"><use href="#cv-owl"/></svg>
+    Brand Guidelines
+  </div>
+  <ol>
+    <li><a href="#cover">Cover</a></li>
+    <li><a href="#foundation">Foundation</a></li>
+    <li><a href="#logo">Logo system</a></li>
+    <li><a href="#color">Color</a></li>
+    <li><a href="#type">Typography</a></li>
+    <li><a href="#voice">Voice &amp; tone</a></li>
+    <li><a href="#icons">Iconography</a></li>
+    <li><a href="#imagery">Imagery</a></li>
+    <li><a href="#stamps">Compliance stamps</a></li>
+    <li><a href="#multi">Multilingual</a></li>
+    <li><a href="#applications">Applications</a></li>
+  </ol>
+</nav>
+
+<div class="page">
+
+  <!-- ============== COVER ============== -->
+  <section id="cover" class="cover" style="border-top:0; padding:72px 64px;">
+    <svg class="crest" width="520" height="520"><use href="#cv-owl"/></svg>
+    <div class="topbar">
+      <span>Content Vigilante · Brand Guidelines</span>
+      <span>v1.0 · May 2026</span>
+    </div>
+    <h1>Stop shipping<br/><em style="font-style: normal; color: var(--cv-green);">off-brand</em><br/>content.</h1>
+    <p class="slogan">A brand book for the team that audits everyone else's brand books.</p>
+    <div class="footrow">
+      <span>Office of Brand Enforcement</span>
+      <span>EN · IT · FR · DE</span>
+      <span>Vol. 01</span>
+    </div>
+  </section>
+
+  <!-- ============== FOUNDATION ============== -->
+  <section id="foundation">
+    <div class="sec-head">
+      <span class="num">01 / FOUNDATION</span>
+    </div>
+    <h2 class="sec-head" style="display:block; margin-bottom: 12px;">What we are.</h2>
+    <p class="sec-lede">Content Vigilante audits marketing content against your brand guidelines in seconds. Drop in your guide and any piece of work — get a scored report with annotated deviations and suggested rewrites. The owl is the watcher; the system is what makes the work feel calm enough to be trusted.</p>
+
+    <div class="grid-3" style="margin-top: 48px;">
+      <div class="pillar">
+        <span class="num">PILLAR 01</span>
+        <h3>Vigilance, not aggression.</h3>
+        <p>We watch, we flag, we explain. We don't moralise. The owl observes; it never lectures.</p>
+      </div>
+      <div class="pillar">
+        <span class="num">PILLAR 02</span>
+        <h3>Verdicts over hedges.</h3>
+        <p>Every audit ends in a clear judgement: on-brand, drift, or off-brand. No "it depends." No four bullets when one will do.</p>
+      </div>
+      <div class="pillar">
+        <span class="num">PILLAR 03</span>
+        <h3>Evidence in the margin.</h3>
+        <p>We show our work. Every flag points to a clause in the guide. No black-box scoring.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== LOGO ============== -->
+  <section id="logo">
+    <div class="sec-head">
+      <span class="num">02 / LOGO SYSTEM</span>
+    </div>
+    <h2 class="sec-head" style="display:block; margin-bottom: 12px;">The owl, the wordmark, the seal.</h2>
+    <p class="sec-lede">Three roles, one system. The lockup is the masthead. The mark stands alone wherever space narrows. The seal becomes the compliance stamp inside the product.</p>
+
+    <!-- Primary lockup -->
+    <div class="grid-2" style="margin-top: 32px;">
+      <div class="lockup-tile">
+        <div style="display:flex; align-items:center; gap:24px;">
+          <svg width="84" height="84"><use href="#cv-owl"/></svg>
+          <span style="font-family: var(--cv-display); font-weight: 700; font-size: 44px; letter-spacing: -0.022em;">
+            Content <span style="font-weight:500;">Vigilante</span>
+          </span>
+        </div>
+      </div>
+      <div class="lockup-tile dark" style="--owl-ring: rgba(255,255,255,0.86);">
+        <div style="display:flex; align-items:center; gap:24px; color: #fff;">
+          <svg width="84" height="84"><use href="#cv-owl"/></svg>
+          <span style="font-family: var(--cv-display); font-weight: 700; font-size: 44px; letter-spacing: -0.022em;">
+            Content <span style="font-weight:500;">Vigilante</span>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stacked + tagline lockup -->
+    <div class="grid-2" style="margin-top: 16px;">
+      <div class="lockup-tile cream">
+        <div style="display:flex; flex-direction: column; align-items:center; gap: 14px;">
+          <svg width="100" height="100"><use href="#cv-owl"/></svg>
+          <span style="font-family: var(--cv-display); font-weight: 700; font-size: 32px; letter-spacing: -0.022em;">
+            Content <span style="font-weight:500;">Vigilante</span>
+          </span>
+          <span style="font-family: var(--cv-sans); font-weight: 500; font-size: 13px; color: var(--cv-stone-500);">
+            Stop shipping off-brand content.
+          </span>
+        </div>
+      </div>
+      <div class="lockup-tile">
+        <div style="display:flex; align-items:center; gap:24px;">
+          <svg width="100" height="100"><use href="#cv-owl"/></svg>
+          <div>
+            <div style="font-family: var(--cv-display); font-weight: 700; font-size: 36px; letter-spacing: -0.022em; line-height: 1;">
+              Content <span style="font-weight:500;">Vigilante</span>
+            </div>
+            <div style="font-family: var(--cv-sans); font-weight: 500; font-size: 14px; color: var(--cv-stone-500); margin-top: 8px;">
+              Stop shipping off-brand content.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Clear space + minimum size -->
+    <div class="grid-2" style="margin-top: 48px;">
+      <div>
+        <span class="cv-eyebrow">Clear space</span>
+        <h3 style="font-family: var(--cv-display); font-weight: 700; font-size: 28px; margin: 8px 0 18px; letter-spacing: -0.018em;">One eye-diameter on every side.</h3>
+        <div class="clear-frame">
+          <div class="inner">
+            <div style="display:flex; align-items:center; gap:14px;">
+              <svg width="48" height="48"><use href="#cv-owl"/></svg>
+              <span style="font-family: var(--cv-display); font-weight: 700; font-size: 22px; letter-spacing: -0.022em;">
+                Content <span style="font-weight:500;">Vigilante</span>
+              </span>
+            </div>
+            <span class="x-pin" style="top:-10px; left:50%; transform:translate(-50%,0);">1×</span>
+            <span class="x-pin" style="top:50%; right:-10px; transform:translate(0,-50%);">1×</span>
+            <span class="x-pin" style="bottom:-10px; left:50%; transform:translate(-50%,0);">1×</span>
+            <span class="x-pin" style="top:50%; left:-10px; transform:translate(0,-50%);">1×</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <span class="cv-eyebrow">Minimum size</span>
+        <h3 style="font-family: var(--cv-display); font-weight: 700; font-size: 28px; margin: 8px 0 18px; letter-spacing: -0.018em;">Mark holds at 16px. Lockup at 24px tall.</h3>
+        <div class="lockup-tile" style="padding: 32px; min-height: 200px; flex-direction: column; gap: 22px;">
+          <div style="display:flex; align-items:flex-end; gap: 24px;">
+            <svg width="16" height="16"><use href="#cv-owl"/></svg>
+            <svg width="24" height="24"><use href="#cv-owl"/></svg>
+            <svg width="40" height="40"><use href="#cv-owl"/></svg>
+            <svg width="64" height="64"><use href="#cv-owl"/></svg>
+          </div>
+          <div style="font-family: var(--cv-mono); font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--cv-stone-500);">
+            16 · 24 · 40 · 64 px
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Misuse -->
+    <div style="margin-top: 56px;">
+      <span class="cv-eyebrow">Misuse</span>
+      <h3 style="font-family: var(--cv-display); font-weight: 700; font-size: 28px; margin: 8px 0 22px; letter-spacing: -0.018em;">Things that get the owl mad.</h3>
+      <div class="misuse-row">
+        <div>
+          <div class="miss" style="--owl-body: #FF66CC; --owl-eye: #00FFFF;">
+            <svg width="64" height="64"><use href="#cv-owl"/></svg>
+            <span class="strike-x"></span>
+          </div>
+          <div class="misuse-cap">Don't recolor</div>
+        </div>
+        <div>
+          <div class="miss">
+            <svg width="64" height="64" style="transform: scaleX(1.6);"><use href="#cv-owl"/></svg>
+            <span class="strike-x"></span>
+          </div>
+          <div class="misuse-cap">Don't stretch</div>
+        </div>
+        <div>
+          <div class="miss">
+            <svg width="64" height="64" style="transform: rotate(20deg);"><use href="#cv-owl"/></svg>
+            <span class="strike-x"></span>
+          </div>
+          <div class="misuse-cap">Don't rotate</div>
+        </div>
+        <div>
+          <div class="miss" style="background: linear-gradient(135deg,#ff6b6b,#feca57);">
+            <svg width="64" height="64"><use href="#cv-owl"/></svg>
+            <span class="strike-x"></span>
+          </div>
+          <div class="misuse-cap">Don't put on loud bg</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== COLOR ============== -->
+  <section id="color">
+    <div class="sec-head"><span class="num">03 / COLOR</span></div>
+    <h2 class="sec-head" style="display:block; margin-bottom: 12px;">Three colors do the work.</h2>
+    <p class="sec-lede">Navy carries weight. Cream gives the page room. Vigilante green is the verdict — it appears only when the system has something to say.</p>
+
+    <!-- Core 3 -->
+    <div class="grid-3" style="margin-top: 32px;">
+      <div class="swatch" style="background: #1A1F3A; color: #fff;">
+        <span class="name">Vigilante Navy</span>
+        <div class="meta">
+          <div class="row"><span>HEX</span><span>#1A1F3A</span></div>
+          <div class="row"><span>RGB</span><span>26 · 31 · 58</span></div>
+          <div class="row"><span>USAGE</span><span>≤ 70%</span></div>
+        </div>
+      </div>
+      <div class="swatch" style="background: #FFFFFF;">
+        <span class="name">Paper White</span>
+        <div class="meta" style="color: var(--cv-stone-600);">
+          <div class="row"><span>HEX</span><span>#FFFFFF</span></div>
+          <div class="row"><span>RGB</span><span>255 · 255 · 255</span></div>
+          <div class="row"><span>USAGE</span><span>Ground / canvas</span></div>
+        </div>
+      </div>
+      <div class="swatch" style="background: #3FE07A; color: #1A1F3A;">
+        <span class="name">Vigilante Green</span>
+        <div class="meta">
+          <div class="row"><span>HEX</span><span>#3FE07A</span></div>
+          <div class="row"><span>RGB</span><span>63 · 224 · 122</span></div>
+          <div class="row"><span>USAGE</span><span>≤ 10% · accent only</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Signal palette -->
+    <div style="margin-top: 56px;">
+      <span class="cv-eyebrow">Signal palette · audit verdicts</span>
+      <h3 style="font-family: var(--cv-display); font-weight: 700; font-size: 28px; margin: 8px 0 22px; letter-spacing: -0.018em;">Used inside the product to score content.</h3>
+      <div class="grid-3">
+        <div class="swatch" style="background: #DEFCE8; color: #0F6B3F;">
+          <span class="name">On-brand</span>
+          <div class="meta">
+            <div class="row"><span>BG</span><span>#DEFCE8</span></div>
+            <div class="row"><span>FG</span><span>#1FB35A</span></div>
+            <div class="row"><span>USE</span><span>Approved verdict</span></div>
+          </div>
+        </div>
+        <div class="swatch" style="background: #FFF1DC; color: #8A5A00;">
+          <span class="name">Drift</span>
+          <div class="meta">
+            <div class="row"><span>BG</span><span>#FFF1DC</span></div>
+            <div class="row"><span>FG</span><span>#F4A93D</span></div>
+            <div class="row"><span>USE</span><span>Caution / review</span></div>
+          </div>
+        </div>
+        <div class="swatch" style="background: #FFE4E0; color: #A02418;">
+          <span class="name">Off-brand</span>
+          <div class="meta">
+            <div class="row"><span>BG</span><span>#FFE4E0</span></div>
+            <div class="row"><span>FG</span><span>#E5483B</span></div>
+            <div class="row"><span>USE</span><span>Hard deviation</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Neutrals -->
+    <div style="margin-top: 56px;">
+      <span class="cv-eyebrow">Neutral scale</span>
+      <h3 style="font-family: var(--cv-display); font-weight: 700; font-size: 28px; margin: 8px 0 22px; letter-spacing: -0.018em;">For UI surfaces and text hierarchy.</h3>
+      <div style="display:grid; grid-template-columns: repeat(8, 1fr); border-radius: 12px; overflow: hidden; border: 1px solid var(--cv-line);">
+        <div style="background:#FAFBFC; padding: 28px 14px; font-family:var(--cv-mono); font-size:11px;">50<br/><span style="color:var(--cv-stone-500)">FAFBFC</span></div>
+        <div style="background:#F1F3F7; padding: 28px 14px; font-family:var(--cv-mono); font-size:11px;">100<br/><span style="color:var(--cv-stone-500)">F1F3F7</span></div>
+        <div style="background:#E2E6EE; padding: 28px 14px; font-family:var(--cv-mono); font-size:11px;">200<br/><span style="color:var(--cv-stone-500)">E2E6EE</span></div>
+        <div style="background:#C8CEDC; padding: 28px 14px; font-family:var(--cv-mono); font-size:11px;">300<br/><span style="color:var(--cv-stone-600)">C8CEDC</span></div>
+        <div style="background:#969DB3; padding: 28px 14px; font-family:var(--cv-mono); font-size:11px; color:#fff;">400<br/><span style="opacity:.7">969DB3</span></div>
+        <div style="background:#6B7390; padding: 28px 14px; font-family:var(--cv-mono); font-size:11px; color:#fff;">500<br/><span style="opacity:.7">6B7390</span></div>
+        <div style="background:#474D67; padding: 28px 14px; font-family:var(--cv-mono); font-size:11px; color:#fff;">600<br/><span style="opacity:.7">474D67</span></div>
+        <div style="background:#2E3552; padding: 28px 14px; font-family:var(--cv-mono); font-size:11px; color:#fff;">700<br/><span style="opacity:.7">2E3552</span></div>
+      </div>
+    </div>
+
+    <!-- Color rules -->
+    <div class="grid-2" style="margin-top: 56px;">
+      <div class="pillar"><span class="num">RULE 01</span>
+        <h3>Green is rare.</h3>
+        <p>Use green only for verdicts, accents, and CTAs. If two greens are visible at once, one of them is wrong.</p>
+      </div>
+      <div class="pillar"><span class="num">RULE 02</span>
+        <h3>Navy holds the weight.</h3>
+        <p>Surfaces, type, and structure default to navy or cream. Never let signal colors carry the page.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== TYPE ============== -->
+  <section id="type">
+    <div class="sec-head"><span class="num">04 / TYPOGRAPHY</span></div>
+    <h2 class="sec-head" style="display:block; margin-bottom: 12px;">Two voices and a witness.</h2>
+    <p class="sec-lede">Plus Jakarta Sans makes the verdict. Manrope explains it. JetBrains Mono is the witness — citations, scores, evidence.</p>
+
+    <div class="type-spec">
+      <div class="meta">
+        <strong>Plus Jakarta Sans</strong>
+        Display · Wordmark<br/>
+        700 / 600 / 500<br/>
+        Tracking −2.2%<br/>
+      </div>
+      <div class="type-sample">
+        <div style="font-family: var(--cv-display); font-weight: 700; font-size: 88px; letter-spacing: -0.025em; line-height: 1;">
+          Stop shipping<br/>off-brand.
+        </div>
+      </div>
+    </div>
+
+    <div class="type-spec">
+      <div class="meta">
+        <strong>Manrope</strong>
+        UI · Body · Caption<br/>
+        700 / 600 / 500 / 400<br/>
+        Tracking 0
+      </div>
+      <div class="type-sample">
+        <div style="font-family: var(--cv-sans); font-weight: 700; font-size: 36px; letter-spacing: -0.018em;">Headlines &amp; UI labels.</div>
+        <p style="font-family: var(--cv-sans); font-weight: 400; font-size: 17px; line-height: 1.65; max-width: 620px; color: var(--cv-stone-600); margin-top: 12px;">
+          Body copy lives here. Manrope reads cleanly at small sizes and pairs with Plus Jakarta without arguing about it.
+          Use Manrope 500 for UI labels, 600 for emphasis, 700 for in-text headlines.
+        </p>
+      </div>
+    </div>
+
+    <div class="type-spec">
+      <div class="meta">
+        <strong>JetBrains Mono</strong>
+        Evidence · Citations · Scores<br/>
+        500 / 400<br/>
+        Tracking +12% UPPERCASE
+      </div>
+      <div class="type-sample">
+        <div style="font-family: var(--cv-mono); font-weight: 600; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--cv-stone-500);">CLAUSE 4.2 · TONE</div>
+        <div style="font-family: var(--cv-mono); font-weight: 500; font-size: 28px; margin-top: 6px;">SCORE 87 / 100</div>
+        <div style="font-family: var(--cv-mono); font-weight: 400; font-size: 13px; color: var(--cv-stone-500); margin-top: 8px;">
+          ↳ Drift detected on lines 14, 18, 22 — see annotated rewrite.
+        </div>
+      </div>
+    </div>
+
+    <!-- Type scale -->
+    <div style="margin-top: 56px;">
+      <span class="cv-eyebrow">Type scale · 1.25 (major third)</span>
+      <h3 style="font-family: var(--cv-display); font-weight: 700; font-size: 28px; margin: 8px 0 22px; letter-spacing: -0.018em;">One scale, web + product.</h3>
+      <div style="border: 1px solid var(--cv-line); border-radius: 12px; overflow: hidden;">
+        <div style="display: grid; grid-template-columns: 100px 100px 1fr; padding: 14px 22px; border-bottom: 1px solid var(--cv-line); font-family: var(--cv-mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--cv-stone-500); background: var(--cv-paper-2);"><span>Token</span><span>Px</span><span>Sample</span></div>
+        <div style="display: grid; grid-template-columns: 100px 100px 1fr; padding: 14px 22px; align-items: baseline; border-bottom: 1px solid var(--cv-line);"><span class="cv-mono" style="font-size:12px;">display-1</span><span class="cv-mono" style="font-size:12px;">96</span><span style="font-family: var(--cv-display); font-size: 60px; line-height: 1; font-weight: 700; letter-spacing: -0.025em;">Vigilance.</span></div>
+        <div style="display: grid; grid-template-columns: 100px 100px 1fr; padding: 14px 22px; align-items: baseline; border-bottom: 1px solid var(--cv-line);"><span class="cv-mono" style="font-size:12px;">display-2</span><span class="cv-mono" style="font-size:12px;">64</span><span style="font-family: var(--cv-display); font-size: 44px; line-height: 1; font-weight: 700; letter-spacing: -0.022em;">Eyes on the page.</span></div>
+        <div style="display: grid; grid-template-columns: 100px 100px 1fr; padding: 14px 22px; align-items: baseline; border-bottom: 1px solid var(--cv-line);"><span class="cv-mono" style="font-size:12px;">h1</span><span class="cv-mono" style="font-size:12px;">40</span><span style="font-family: var(--cv-sans); font-size: 32px; line-height: 1.1; font-weight: 700; letter-spacing: -0.018em;">Section heading</span></div>
+        <div style="display: grid; grid-template-columns: 100px 100px 1fr; padding: 14px 22px; align-items: baseline; border-bottom: 1px solid var(--cv-line);"><span class="cv-mono" style="font-size:12px;">h2</span><span class="cv-mono" style="font-size:12px;">28</span><span style="font-family: var(--cv-sans); font-size: 24px; line-height: 1.2; font-weight: 700;">Subheading</span></div>
+        <div style="display: grid; grid-template-columns: 100px 100px 1fr; padding: 14px 22px; align-items: baseline; border-bottom: 1px solid var(--cv-line);"><span class="cv-mono" style="font-size:12px;">body</span><span class="cv-mono" style="font-size:12px;">17</span><span style="font-family: var(--cv-sans); font-size: 17px; line-height: 1.55;">The standard paragraph reads at this size.</span></div>
+        <div style="display: grid; grid-template-columns: 100px 100px 1fr; padding: 14px 22px; align-items: baseline;"><span class="cv-mono" style="font-size:12px;">caption</span><span class="cv-mono" style="font-size:12px;">12</span><span style="font-family: var(--cv-sans); font-size: 12px; line-height: 1.5; color: var(--cv-stone-500);">Caption · 12px · Manrope 500</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== VOICE ============== -->
+  <section id="voice">
+    <div class="sec-head"><span class="num">05 / VOICE &amp; TONE</span></div>
+    <h2 class="sec-head" style="display:block; margin-bottom: 12px;">Quietly authoritative. Never loud.</h2>
+    <p class="sec-lede">We are the seasoned editor in the room. Dry, precise, occasionally funny. Verdicts, not opinions. Evidence, not adjectives.</p>
+
+    <!-- Voice principles -->
+    <div class="grid-2" style="margin-top: 32px;">
+      <div class="pillar"><span class="num">VOICE 01</span><h3>Plain over clever.</h3><p>Say what's wrong. Say how to fix it. The cleverness is in being concise — never in being cute.</p></div>
+      <div class="pillar"><span class="num">VOICE 02</span><h3>Short over long.</h3><p>Never use three sentences when one will do. Default to fragments where they read clearly.</p></div>
+      <div class="pillar"><span class="num">VOICE 03</span><h3>Verdicts over hedges.</h3><p>"Off-brand on tone." Not "may be slightly off-brand depending on interpretation."</p></div>
+      <div class="pillar"><span class="num">VOICE 04</span><h3>Evidence over opinion.</h3><p>Every flag cites a clause. Never "I feel" — always "the guide says."</p></div>
+    </div>
+
+    <!-- Do / Don't -->
+    <div style="margin-top: 56px;">
+      <span class="cv-eyebrow">Voice in the wild · before / after</span>
+      <h3 style="font-family: var(--cv-display); font-weight: 700; font-size: 28px; margin: 8px 0 22px; letter-spacing: -0.018em;">How we'd phrase it.</h3>
+
+      <div class="voice-row" style="margin-bottom: 14px;">
+        <div class="voice-cell do"><span class="tag">DO</span><p>Off-brand on tone (clause 4.2). Suggested rewrite below.</p></div>
+        <div class="voice-cell dont"><span class="tag">DON'T</span><p>Hmm, this might come across a little too casual depending on context — what do you think?</p></div>
+      </div>
+      <div class="voice-row" style="margin-bottom: 14px;">
+        <div class="voice-cell do"><span class="tag">DO</span><p>87 / 100. Three drifts. One hard deviation.</p></div>
+        <div class="voice-cell dont"><span class="tag">DON'T</span><p>Looking pretty good overall! 🚀 Just a few tiny things to think about.</p></div>
+      </div>
+      <div class="voice-row">
+        <div class="voice-cell do"><span class="tag">DO</span><p>Italian translation drops the formal register required by §2.1.</p></div>
+        <div class="voice-cell dont"><span class="tag">DON'T</span><p>The Italian version reads pretty informal — you might wanna check it.</p></div>
+      </div>
+    </div>
+
+    <!-- Lexicon -->
+    <div style="margin-top: 56px;">
+      <span class="cv-eyebrow">Lexicon</span>
+      <h3 style="font-family: var(--cv-display); font-weight: 700; font-size: 28px; margin: 8px 0 22px; letter-spacing: -0.018em;">Words we use. Words we don't.</h3>
+      <div class="grid-2">
+        <div class="pillar"><span class="num" style="color: var(--cv-green-deep);">USE</span>
+          <p style="font-family: var(--cv-display); font-size: 22px; font-weight: 500; color: var(--cv-ink); line-height: 1.4;">
+            audit · verdict · drift · clause · evidence · annotate · ship · publish · register · violation · review · approve
+          </p>
+        </div>
+        <div class="pillar"><span class="num" style="color: var(--cv-red);">AVOID</span>
+          <p style="font-family: var(--cv-display); font-size: 22px; font-weight: 500; color: var(--cv-stone-500); line-height: 1.4;">
+            AI-powered · revolutionary · seamless · empower · unlock · synergize · effortless · game-changer · 🚀 · ✨ · gut-check · vibe
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== ICONS ============== -->
+  <section id="icons">
+    <div class="sec-head"><span class="num">06 / ICONOGRAPHY</span></div>
+    <h2 class="sec-head" style="display:block; margin-bottom: 12px;">Stroke 1.5px. Round caps. No fills.</h2>
+    <p class="sec-lede">Icons match the wordmark's geometry — soft, geometric, unornamented. Drawn on a 24-grid with optical alignment to the owl's eye.</p>
+
+    <div class="grid-4" style="margin-top: 32px;">
+      <div class="icon-card">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="16" y1="16" x2="21" y2="21"/></svg>
+        <span class="name">Audit</span>
+      </div>
+      <div class="icon-card">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V3h11l3 3v15z"/><line x1="9" y1="11" x2="16" y2="11"/><line x1="9" y1="15" x2="16" y2="15"/></svg>
+        <span class="name">Document</span>
+      </div>
+      <div class="icon-card">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 9 17 20 6"/></svg>
+        <span class="name">Approved</span>
+      </div>
+      <div class="icon-card">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 16H3z"/><line x1="12" y1="9" x2="12" y2="14"/><circle cx="12" cy="17" r=".8" fill="currentColor"/></svg>
+        <span class="name">Drift</span>
+      </div>
+      <div class="icon-card">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="8" y1="8" x2="16" y2="16"/><line x1="16" y1="8" x2="8" y2="16"/></svg>
+        <span class="name">Off-brand</span>
+      </div>
+      <div class="icon-card">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/></svg>
+        <span class="name">Watch</span>
+      </div>
+      <div class="icon-card">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3l7 7-11 11H3v-7z"/><line x1="13" y1="4" x2="20" y2="11"/></svg>
+        <span class="name">Annotate</span>
+      </div>
+      <div class="icon-card">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>
+        <span class="name">Speed</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== IMAGERY ============== -->
+  <section id="imagery">
+    <div class="sec-head"><span class="num">07 / IMAGERY</span></div>
+    <h2 class="sec-head" style="display:block; margin-bottom: 12px;">Workspace photography, never AI gloss.</h2>
+    <p class="sec-lede">Real desks, real screens, real proofs. Top-down printed pages with hand annotations. People reading, not posing. Avoid stock cliches: handshakes, lightbulbs, hooded hackers, robot hands.</p>
+
+    <div class="grid-4" style="margin-top: 32px;">
+      <div class="img-tile placeholder">
+        <div class="ph-icon">📰</div>
+        <div class="label">Top-down · printed proof</div>
+        <div class="crop" style="position:absolute; top:12px; right:14px;">4×3</div>
+      </div>
+      <div class="img-tile placeholder dark">
+        <div class="ph-icon">🖥️</div>
+        <div class="label">Screen · real product</div>
+        <div class="crop" style="position:absolute; top:12px; right:14px;">4×3</div>
+      </div>
+      <div class="img-tile placeholder cream">
+        <div class="ph-icon">✍️</div>
+        <div class="label">Margin notes · in-frame</div>
+        <div class="crop" style="position:absolute; top:12px; right:14px;">4×3</div>
+      </div>
+      <div class="img-tile placeholder green">
+        <div class="ph-icon">✓</div>
+        <div class="label">Approved stamp · macro</div>
+        <div class="crop" style="position:absolute; top:12px; right:14px;">4×3</div>
+      </div>
+    </div>
+
+    <div class="grid-2" style="margin-top: 32px;">
+      <div class="pillar"><span class="num" style="color: var(--cv-green-deep);">DO</span>
+        <h3>Natural light. Top-down crops.</h3>
+        <p>Shoot proofs and printouts from above. Keep human hands in frame, soft and out of focus. Use the navy/cream palette for surfaces and props.</p>
+      </div>
+      <div class="pillar"><span class="num" style="color: var(--cv-red);">DON'T</span>
+        <h3>Stock photography. AI portraits.</h3>
+        <p>No glossy team shots, no rendered "diverse office" composites, no robot hands typing. If we don't have it, we use a placeholder.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== STAMPS ============== -->
+  <section id="stamps">
+    <div class="sec-head"><span class="num">08 / COMPLIANCE STAMPS</span></div>
+    <h2 class="sec-head" style="display:block; margin-bottom: 12px;">The verdict, made visible.</h2>
+    <p class="sec-lede">Stamps appear on every audit. They are the most public-facing piece of the system — the surface marketers screenshot and share.</p>
+
+    <div style="display:flex; flex-wrap: wrap; gap: 14px; padding: 32px; background: var(--cv-paper-2); border-radius: 14px; border: 1px solid var(--cv-line); margin-top: 32px;">
+      <span class="stamp green"><span class="dot"></span>On-brand · 92 / 100</span>
+      <span class="stamp amber"><span class="dot"></span>Drift · 74 / 100</span>
+      <span class="stamp red"><span class="dot"></span>Off-brand · 38 / 100</span>
+      <span class="stamp green"><span class="dot"></span>Approved EN-IT-FR-DE</span>
+      <span class="stamp amber"><span class="dot"></span>Pending review</span>
+      <span class="stamp red"><span class="dot"></span>Violations: 4</span>
+    </div>
+
+    <div class="grid-3" style="margin-top: 32px;">
+      <div class="pillar"><span class="num">RULE 01</span><h3>One verdict per artifact.</h3><p>Never two stamps on the same content. The most severe verdict wins.</p></div>
+      <div class="pillar"><span class="num">RULE 02</span><h3>Score, then label.</h3><p>Always pair the stamp with the numeric score. The label without the number is opinion.</p></div>
+      <div class="pillar"><span class="num">RULE 03</span><h3>Stamp on the artifact.</h3><p>Burn-in the stamp on exports. Never as a separate file. The verdict travels with the work.</p></div>
+    </div>
+  </section>
+
+  <!-- ============== MULTILINGUAL ============== -->
+  <section id="multi">
+    <div class="sec-head"><span class="num">09 / MULTILINGUAL</span></div>
+    <h2 class="sec-head" style="display:block; margin-bottom: 12px;">Four languages, one register.</h2>
+    <p class="sec-lede">English, Italian, French, German. The register is identical in all four — direct, formal, second person. Never adapt voice to local quirks; the brand is the same wherever the audit ships.</p>
+
+    <div class="grid-4" style="margin-top: 32px;">
+      <div class="pillar"><span class="num">EN · default</span><h3 style="font-family: var(--cv-display); font-size: 24px;">Stop shipping off-brand content.</h3><p style="font-family: var(--cv-mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase;">Source · second person · imperative</p></div>
+      <div class="pillar"><span class="num">IT</span><h3 style="font-family: var(--cv-display); font-size: 24px;">Niente più contenuti fuori brand.</h3><p style="font-family: var(--cv-mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase;">Formal · imperative · no inversions</p></div>
+      <div class="pillar"><span class="num">FR</span><h3 style="font-family: var(--cv-display); font-size: 24px;">Plus de contenu hors marque.</h3><p style="font-family: var(--cv-mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase;">Vouvoiement · sober · 2-line max</p></div>
+      <div class="pillar"><span class="num">DE</span><h3 style="font-family: var(--cv-display); font-size: 24px;">Schluss mit Off-Brand-Content.</h3><p style="font-family: var(--cv-mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase;">Sie-Form · compound nouns OK</p></div>
+    </div>
+
+    <div class="grid-2" style="margin-top: 32px;">
+      <div class="pillar"><span class="num">RULE</span><h3>The slogan never gets cute in translation.</h3><p>It should sound like a directive in every market. If a translation reads as advice, it's wrong.</p></div>
+      <div class="pillar"><span class="num">RULE</span><h3>The owl, wordmark, and stamps are universal.</h3><p>Visual identity is identical across all four locales. Only running copy localizes.</p></div>
+    </div>
+  </section>
+
+  <!-- ============== APPLICATIONS ============== -->
+  <section id="applications">
+    <div class="sec-head"><span class="num">10 / APPLICATIONS</span></div>
+    <h2 class="sec-head" style="display:block; margin-bottom: 12px;">Where the brand lives.</h2>
+    <p class="sec-lede">Each surface has its own page in this kit. Open them side by side with this document.</p>
+
+    <div class="grid-3" style="margin-top: 32px;">
+      <a class="pillar" href="Landing Page.html" style="text-decoration: none; display:block;"><span class="num">SURFACE 01</span><h3>Landing Page →</h3><p>Marketing site hero, features, social proof, CTA.</p></a>
+      <a class="pillar" href="Dashboard.html" style="text-decoration: none; display:block;"><span class="num">SURFACE 02</span><h3>Product Dashboard →</h3><p>Audit queue, score panel, annotated rewrite view.</p></a>
+      <a class="pillar" href="Pitch Deck.html" style="text-decoration: none; display:block;"><span class="num">SURFACE 03</span><h3>Pitch Deck →</h3><p>10-slide template for sales and investor decks.</p></a>
+      <a class="pillar" href="Social Kit.html" style="text-decoration: none; display:block;"><span class="num">SURFACE 04</span><h3>Social Kit →</h3><p>Avatars, banners, post templates, story frames.</p></a>
+      <a class="pillar" href="Logo Explorations.html" style="text-decoration: none; display:block;"><span class="num">SURFACE 05</span><h3>Logo system →</h3><p>All lockups, sizes, misuse, the seal.</p></a>
+      <a class="pillar" href="index.html" style="text-decoration: none; display:block;"><span class="num">INDEX</span><h3>Brand kit hub →</h3><p>The starting point. All surfaces, one screen.</p></a>
+    </div>
+  </section>
+
+  <!-- ============== FOOTER ============== -->
+  <div class="footer-grid">
+    <div>
+      <div class="label">Owner</div>
+      <div class="val">Office of Brand Enforcement</div>
+    </div>
+    <div>
+      <div class="label">Version</div>
+      <div class="val">1.0 · May 2026</div>
+    </div>
+    <div>
+      <div class="label">Contact</div>
+      <div class="val">brand@contentvigilante.io</div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

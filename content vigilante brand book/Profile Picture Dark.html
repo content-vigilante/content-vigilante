@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Profile Picture · Dark</title>
+<link rel="stylesheet" href="styles/brand.css" />
+<style>
+  html, body { background: #0E1126; height: 100%; margin: 0; color: #fff; }
+  body { display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 32px; padding: 40px; }
+  .note { font-family: var(--cv-mono); font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: rgba(255,255,255,0.5); }
+
+  .avatar {
+    width: 1024px; height: 1024px;
+    background: var(--cv-ink);
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  /* dark variant: owl body lifts to lighter navy so it reads on the navy field; eyes stay vivid green */
+  .avatar svg path:first-of-type { fill: #2A2F4F; }
+  .avatar svg circle:nth-of-type(1),
+  .avatar svg circle:nth-of-type(2) { fill: rgba(255,255,255,0.92); }
+
+  .row { display: flex; gap: 24px; align-items: flex-end; }
+  .preview { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .preview .mini { border-radius: 50%; overflow: hidden; background: var(--cv-ink); display:flex; align-items:center; justify-content:center; }
+  .preview .label { font-family: var(--cv-mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,0.5); }
+  .preview svg path:first-of-type { fill: #2A2F4F; }
+  .preview svg circle:nth-of-type(1),
+  .preview svg circle:nth-of-type(2) { fill: rgba(255,255,255,0.92); }
+</style>
+</head>
+<body>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+  <symbol id="cv-owl" viewBox="0 0 200 200">
+    <path d="M 100 12 L 64 4 Q 60 28, 60 40 Q 36 46, 24 70 Q 14 92, 18 124 Q 24 162, 60 182 Q 80 192, 100 192 Q 120 192, 140 182 Q 176 162, 182 124 Q 186 92, 176 70 Q 164 46, 140 40 Q 140 28, 136 4 L 100 12 Z" fill="#1A1F3A"/>
+    <circle cx="68" cy="98" r="30" fill="rgba(255,255,255,0.86)"/>
+    <circle cx="132" cy="98" r="30" fill="rgba(255,255,255,0.86)"/>
+    <circle cx="68" cy="98" r="18" fill="#3FE07A"/>
+    <circle cx="132" cy="98" r="18" fill="#3FE07A"/>
+    <circle cx="68" cy="98" r="7" fill="#1A1F3A"/>
+    <circle cx="132" cy="98" r="7" fill="#1A1F3A"/>
+    <circle cx="73" cy="93" r="3" fill="rgba(255,255,255,0.85)"/>
+    <circle cx="137" cy="93" r="3" fill="rgba(255,255,255,0.85)"/>
+    <path d="M 100 122 L 90 138 Q 100 144, 110 138 Z" fill="#3FE07A"/>
+  </symbol>
+</svg>
+
+<div class="note">Profile · Dark · 1024×1024</div>
+
+<div class="avatar">
+  <svg width="720" height="720" viewBox="0 0 200 200"><use href="#cv-owl"/></svg>
+</div>
+
+<div class="row">
+  <div class="preview">
+    <div class="mini" style="width: 128px; height: 128px;"><svg width="92" height="92" viewBox="0 0 200 200"><use href="#cv-owl"/></svg></div>
+    <div class="label">128 px</div>
+  </div>
+  <div class="preview">
+    <div class="mini" style="width: 64px; height: 64px;"><svg width="46" height="46" viewBox="0 0 200 200"><use href="#cv-owl"/></svg></div>
+    <div class="label">64 px</div>
+  </div>
+  <div class="preview">
+    <div class="mini" style="width: 32px; height: 32px;"><svg width="22" height="22" viewBox="0 0 200 200"><use href="#cv-owl"/></svg></div>
+    <div class="label">32 px</div>
+  </div>
+</div>
+
+</body>
+</html>

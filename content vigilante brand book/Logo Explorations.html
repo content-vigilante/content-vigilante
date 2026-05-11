@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Content Vigilante — Logo System</title>
+<link rel="stylesheet" href="styles/brand.css" />
+<style>
+  body { background: var(--cv-paper-3); }
+
+  /* Card frame for each artboard */
+  .card {
+    background: var(--cv-paper);
+    border: 1px solid var(--cv-line);
+    border-radius: 8px;
+    height: 100%;
+    display: flex; flex-direction: column;
+    overflow: hidden;
+  }
+  .card.dark { background: var(--cv-ink); color: var(--cv-paper); }
+  .card.cream { background: #FAF6EE; }
+  .card.green { background: var(--cv-green-soft); }
+
+  .card .hd {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding: 14px 18px; border-bottom: 1px solid var(--cv-line);
+  }
+  .card.dark .hd { border-bottom-color: rgba(255,255,255,0.12); }
+  .card .hd .label { font-family: var(--cv-display); font-weight: 600; font-size: 18px; }
+  .card .hd .num   { font-family: var(--cv-mono); font-size: 10.5px; letter-spacing: .18em; color: var(--cv-stone-500); }
+  .card.dark .hd .num { color: rgba(255,255,255,0.55); }
+
+  .card .bd {
+    flex: 1;
+    padding: 36px;
+    display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 18px;
+  }
+
+  .card .ft {
+    padding: 10px 18px;
+    border-top: 1px solid var(--cv-line);
+    font-family: var(--cv-mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--cv-stone-500);
+    display: flex; justify-content: space-between;
+  }
+  .card.dark .ft { border-top-color: rgba(255,255,255,0.12); color: rgba(255,255,255,0.5); }
+
+  .note { font-family: var(--cv-mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--cv-stone-500); text-align: center; max-width: 340px; }
+  .card.dark .note { color: rgba(255,255,255,0.55); }
+
+  /* Sizing demo dots */
+  .size-row { display: flex; align-items: flex-end; gap: 28px; }
+
+  /* App icon tile */
+  .app-icon {
+    width: 168px; height: 168px;
+    background: var(--cv-ink);
+    border-radius: 38px;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: var(--cv-shadow-md);
+  }
+  .app-icon.green { background: var(--cv-green); }
+  .app-icon.cream { background: #FAF6EE; }
+
+  /* Favicon row */
+  .fav-row { display: flex; align-items: center; gap: 18px; }
+  .fav-tile {
+    width: 28px; height: 28px; border-radius: 6px;
+    background: var(--cv-ink);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .fav-tile.lg { width: 44px; height: 44px; border-radius: 10px; }
+  .fav-tile.xl { width: 64px; height: 64px; border-radius: 14px; }
+
+  /* Misuse: red strike */
+  .strike { position: relative; }
+  .strike::after {
+    content: ''; position: absolute; left: -8%; right: -8%; top: 50%;
+    height: 4px; background: var(--cv-red); transform: rotate(-12deg) translateY(-50%);
+    border-radius: 2px;
+  }
+  .misuse-tile {
+    background: var(--cv-paper-2);
+    padding: 22px;
+    border-radius: 8px;
+    border: 1px dashed var(--cv-line-strong);
+    display: flex; align-items: center; justify-content: center;
+    width: 100%; min-height: 120px;
+  }
+  .misuse-cap { font-family: var(--cv-mono); font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--cv-red); margin-top: 8px; }
+
+  /* Tagline lockup card */
+  .tagline-card-stack { display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
+  .tagline-line {
+    font-family: var(--cv-display); font-weight: 700; font-size: 44px; letter-spacing: -0.022em; line-height: 1.05;
+  }
+  .tagline-line .accent { color: var(--cv-green-deep); }
+  .tagline-line .strike-redact {
+    background: var(--cv-ink); color: transparent !important; padding: 0 8px; border-radius: 3px;
+  }
+</style>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel" src="components/owl-mark.jsx"></script>
+
+<script type="text/babel">
+
+function Card({ num, label, kind, theme, footer, children }) {
+  return (
+    <div className={"card " + (theme || "")}>
+      <div className="hd">
+        <span className="label">{label}</span>
+        <span className="num">{num} · {kind}</span>
+      </div>
+      <div className="bd">{children}</div>
+      <div className="ft">
+        <span>{footer}</span>
+        <span>CV / 2026</span>
+      </div>
+    </div>);
+
+}
+
+/* ============== A. Primary lockup ============== */
+function PrimaryLockup() {
+  return (
+    <Card num="A" label="Primary Lockup" kind="HORIZONTAL" footer="The masthead — first choice, every time">
+      <Lockup size={64} blink />
+      <p className="note" style={{ marginTop: 28 }}>Mark + wordmark, sitting beside each other. The default lockup. Use on websites, headers, decks, document covers.</p>
+    </Card>);
+
+}
+
+/* ============== B. Tagline lockup ============== */
+function TaglineLockup() {
+  return (
+    <Card num="B" label="Tagline Lockup" kind="HORIZONTAL" footer="When the slogan needs to ride along">
+      <div style={{ display: 'flex', alignItems: 'center', gap: 28 }}>
+        <OwlMark size={104} />
+        <div>
+          <Wordmark size={42} />
+          <div style={{
+            fontFamily: 'var(--cv-sans)', fontWeight: 500, fontSize: 14, letterSpacing: '-0.005em',
+            color: 'var(--cv-stone-500)', marginTop: 8, textAlign: "center"
+          }}>
+            Stop shipping off-brand content.
+          </div>
+        </div>
+      </div>
+      <p className="note" style={{ marginTop: 24 }}>The slogan sits to the right of the wordmark, half its size. Use on first-touch surfaces only.</p>
+    </Card>);
+
+}
+
+/* ============== C. Stacked ============== */
+function StackedLockup() {
+  return (
+    <Card num="C" label="Stacked" kind="VERTICAL" footer="Square formats — covers, swag, posters">
+      <LockupStacked size={36} />
+      <p className="note" style={{ marginTop: 18 }}>Mark above wordmark, slogan beneath. Use when width is tight or the layout is centered.</p>
+    </Card>);
+
+}
+
+/* ============== D. Mark only ============== */
+function MarkOnly() {
+  return (
+    <Card num="D" label="The Mark" kind="ICON" theme="cream" footer="Avatar, app, social, watermark">
+      <OwlMark size={180} blink />
+      <p className="note" style={{ marginTop: 20 }}>The owl alone. Use anywhere the wordmark won't fit or read — favicons, profile pictures, watermarks.</p>
+    </Card>);
+
+}
+
+/* ============== E. Reverse (on dark) ============== */
+function ReverseLockup() {
+  return (
+    <Card num="E" label="On Dark" kind="REVERSE" theme="dark" footer="Hero panels, footer, packaging">
+      <Lockup size={56} color="#FFFFFF" />
+      <p className="note" style={{ marginTop: 24 }}>Body inverts to paper-white. Eyes stay green. Beak stays green. Always.</p>
+    </Card>);
+
+}
+
+/* ============== F. Mono / Line ============== */
+function MonoVariants() {
+  return (
+    <Card num="F" label="Mono & Line" kind="UTILITY" footer="One-color print · embossing · favicons">
+      <div style={{ display: 'flex', gap: 38, alignItems: 'center' }}>
+        <div style={{ textAlign: 'center' }}>
+          <OwlMark size={120} variant="mono" />
+          <div className="note" style={{ marginTop: 8 }}>MONO</div>
+        </div>
+        <div style={{ width: 1, height: 100, background: 'var(--cv-line)' }} />
+        <div style={{ textAlign: 'center' }}>
+          <OwlMark size={120} variant="line" />
+          <div className="note" style={{ marginTop: 8 }}>LINE</div>
+        </div>
+      </div>
+      <p className="note" style={{ marginTop: 24 }}>Single-color reductions for embossing, single-pass print, fax-grade fidelity, and 16px favicons.</p>
+    </Card>);
+
+}
+
+/* ============== G. The Seal ============== */
+function SealCard() {
+  return (
+    <Card num="G" label="The Compliance Seal" kind="STAMP" footer="In-product · audit reports · certificates">
+      <OwlSeal size={220} />
+      <p className="note" style={{ marginTop: 18 }}>The owl, formalised. Stamped on completed audits, certificates, and approved-content badges.</p>
+    </Card>);
+
+}
+
+/* ============== H. Tagline-as-art ============== */
+function TaglineArt() {
+  return (
+    <Card num="H" label="Tagline as Art" kind="CAMPAIGN" footer="Hero panels · social · advertising">
+      <div className="tagline-card-stack">
+        <div className="tagline-line">Stop shipping</div>
+        <div className="tagline-line"><span className="strike-redact">off-brand</span></div>
+        <div className="tagline-line">content.</div>
+      </div>
+      <p className="note" style={{ marginTop: 20, alignSelf: 'flex-start', textAlign: 'left' }}>
+        The slogan, redacted. The middle line gets the bar — like the product itself, blocking off-brand language before it ships.
+      </p>
+    </Card>);
+
+}
+
+/* ============== I. App icon variants ============== */
+function AppIcons() {
+  return (
+    <Card num="I" label="App Icon" kind="DEPLOYMENT" footer="iOS · Android · macOS · Web">
+      <div style={{ display: 'flex', gap: 24, alignItems: 'center' }}>
+        <div style={{ textAlign: 'center' }}>
+          <div className="app-icon"><OwlMark size={108} /></div>
+          <div className="note" style={{ marginTop: 10 }}>NAVY · DEFAULT</div>
+        </div>
+        <div style={{ textAlign: 'center' }}>
+          <div className="app-icon green"><OwlMark size={108} body="var(--cv-ink)" accent="var(--cv-ink)" /></div>
+          <div className="note" style={{ marginTop: 10 }}>GREEN · LAUNCH</div>
+        </div>
+        <div style={{ textAlign: 'center' }}>
+          <div className="app-icon cream"><OwlMark size={108} /></div>
+          <div className="note" style={{ marginTop: 10 }}>CREAM · TINTED</div>
+        </div>
+      </div>
+    </Card>);
+
+}
+
+/* ============== J. Favicon scale ============== */
+function FaviconScale() {
+  return (
+    <Card num="J" label="Favicon Sizes" kind="REDUCTION" footer="Even at 16px it has eyes">
+      <div className="fav-row">
+        <div className="fav-tile"><OwlMark size={20} /></div>
+        <div className="fav-tile lg"><OwlMark size={32} /></div>
+        <div className="fav-tile xl"><OwlMark size={48} /></div>
+        <div style={{ width: 1, height: 60, background: 'var(--cv-line)' }} />
+        <div style={{ textAlign: 'center' }}>
+          <OwlMark size={120} />
+        </div>
+      </div>
+      <p className="note" style={{ marginTop: 24 }}>The owl is built to read at 16×16 — the eyes are oversized on purpose, giving the mark its distinctive squint at any size.</p>
+    </Card>);
+
+}
+
+/* ============== K. Misuse ============== */
+function Misuse() {
+  return (
+    <Card num="K" label="Don't Do This" kind="MISUSE" footer="Things that get the owl mad">
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 14, width: '100%' }}>
+        <div>
+          <div className="misuse-tile strike">
+            <OwlMark size={70} body="#FF66CC" accent="#00FFFF" />
+          </div>
+          <div className="misuse-cap">DON'T RECOLOR</div>
+        </div>
+        <div>
+          <div className="misuse-tile strike">
+            <OwlMark size={70} style={{ transform: 'scaleX(1.6)' }} />
+          </div>
+          <div className="misuse-cap">DON'T STRETCH</div>
+        </div>
+        <div>
+          <div className="misuse-tile strike">
+            <OwlMark size={70} style={{ transform: 'rotate(28deg)' }} />
+          </div>
+          <div className="misuse-cap">DON'T ROTATE</div>
+        </div>
+        <div>
+          <div className="misuse-tile strike" style={{ background: 'linear-gradient(135deg,#ff6b6b,#feca57)' }}>
+            <OwlMark size={70} />
+          </div>
+          <div className="misuse-cap">DON'T PLACE ON LOUD BG</div>
+        </div>
+      </div>
+    </Card>);
+
+}
+
+/* ============== L. Clear space ============== */
+function ClearSpace() {
+  return (
+    <Card num="L" label="Clear Space" kind="SAFE AREA" footer="Equal to the height of an eye, on every side">
+      <div style={{ position: 'relative', padding: 30, border: '1px dashed var(--cv-line-strong)', borderRadius: 8, background: 'var(--cv-paper-2)' }}>
+        <div style={{ position: 'relative', padding: 30, border: '1px dashed var(--cv-green-deep)', borderRadius: 4 }}>
+          <Lockup size={32} />
+          {/* eye-size markers */}
+          <span style={{ position: 'absolute', top: -10, left: '50%', transform: 'translate(-50%, 0)', background: 'var(--cv-green)', color: 'var(--cv-ink)', fontFamily: 'var(--cv-mono)', fontSize: 9, padding: '2px 6px', borderRadius: 3, letterSpacing: '.1em', fontWeight: 600 }}>1×</span>
+          <span style={{ position: 'absolute', top: '50%', right: -10, transform: 'translate(0, -50%)', background: 'var(--cv-green)', color: 'var(--cv-ink)', fontFamily: 'var(--cv-mono)', fontSize: 9, padding: '2px 6px', borderRadius: 3, letterSpacing: '.1em', fontWeight: 600 }}>1×</span>
+        </div>
+      </div>
+      <p className="note" style={{ marginTop: 22 }}>Reserve clear space equal to one eye-diameter on every side of the lockup. Never less.</p>
+    </Card>);
+
+}
+
+/* ============== Header card ============== */
+function Heading() {
+  return (
+    <div style={{ padding: '4px 12px' }}>
+      <div className="cv-eyebrow">Sheet 01 of 04 · Brand System</div>
+      <div className="cv-display" style={{ fontSize: 56, marginTop: 6 }}>
+        Logo & Lockups
+      </div>
+      <p style={{ fontFamily: 'var(--cv-sans)', fontSize: 16, lineHeight: 1.55, maxWidth: 760, marginTop: 16, color: 'var(--cv-stone-500)' }}>
+        The owl is the watcher — vigilant, wise, awake when the rest of the team is shipping copy at 11pm.
+        It anchors a system of three roles: <strong>lockup</strong> (masthead), <strong>mark</strong> (everywhere small), and <strong>seal</strong> (compliance stamp).
+      </p>
+    </div>);
+
+}
+
+/* ============== App ============== */
+function App() {
+  return (
+    <DesignCanvas>
+      <DCSection id="primary" title="Primary Lockups" subtitle="Three lockups, one system">
+        <DCArtboard id="header" label="Brief" width={760} height={260}><Heading /></DCArtboard>
+        <DCArtboard id="A" label="A · Primary Lockup" width={520} height={420}><PrimaryLockup /></DCArtboard>
+        <DCArtboard id="B" label="B · Tagline Lockup" width={620} height={420}><TaglineLockup /></DCArtboard>
+        <DCArtboard id="C" label="C · Stacked" width={420} height={520}><StackedLockup /></DCArtboard>
+      </DCSection>
+      <DCSection id="marks" title="The Mark, in all its forms" subtitle="Reductions, inversions, alt builds">
+        <DCArtboard id="D" label="D · Mark only" width={420} height={520}><MarkOnly /></DCArtboard>
+        <DCArtboard id="E" label="E · On dark" width={520} height={420}><ReverseLockup /></DCArtboard>
+        <DCArtboard id="F" label="F · Mono / Line" width={520} height={420}><MonoVariants /></DCArtboard>
+        <DCArtboard id="G" label="G · The Seal" width={420} height={520}><SealCard /></DCArtboard>
+      </DCSection>
+      <DCSection id="apps" title="Deployment" subtitle="Where the mark actually lives">
+        <DCArtboard id="I" label="I · App icon" width={620} height={420}><AppIcons /></DCArtboard>
+        <DCArtboard id="J" label="J · Favicon scale" width={620} height={420}><FaviconScale /></DCArtboard>
+        <DCArtboard id="L" label="L · Clear space" width={520} height={420}><ClearSpace /></DCArtboard>
+      </DCSection>
+      <DCSection id="campaign" title="Campaign + Misuse" subtitle="The slogan as art, and the things to never do">
+        <DCArtboard id="H" label="H · Tagline as Art" width={520} height={520}><TaglineArt /></DCArtboard>
+        <DCArtboard id="K" label="K · Misuse" width={620} height={520}><Misuse /></DCArtboard>
+      </DCSection>
+    </DesignCanvas>);
+
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
