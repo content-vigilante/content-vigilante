@@ -10,6 +10,7 @@ const IT_SAMPLE =
   'La volpe marrone salta sopra il cane pigro. Questo è un passaggio sufficientemente lungo in lingua italiana che dovrebbe essere rilevato in modo affidabile dal rilevatore di lingue franc. Aggiungiamo diverse frasi per la stabilità.';
 const FR_SAMPLE =
   'Le renard brun rapide saute par-dessus le chien paresseux. Ceci est un passage suffisamment long en langue française qui devrait être détecté de manière fiable par le détecteur de langues franc. Nous ajoutons plusieurs phrases pour la stabilité.';
+const PUBLIC_TEST_IP = '93.184.216.34';
 
 describe('extractContent — text path', () => {
   test('detects English correctly', async () => {
@@ -74,7 +75,10 @@ describe('extractContent — url path', () => {
     </body></html>`;
     mockFetch(() => new Response(html, { status: 200, headers: { 'content-type': 'text/html' } }));
 
-    const result = await extractContent({ type: 'url', value: 'https://93.184.216.34/article' });
+    const result = await extractContent({
+      type: 'url',
+      value: `https://${PUBLIC_TEST_IP}/article`,
+    });
     expect(result.language).toBe('en');
     expect(result.text.length).toBeGreaterThan(100);
     expect(result.text.toLowerCase()).toContain('fox');
@@ -83,7 +87,7 @@ describe('extractContent — url path', () => {
   test('mocked fetch returns 404 → URLFetchError', async () => {
     mockFetch(() => new Response('not found', { status: 404, statusText: 'Not Found' }));
     await expect(
-      extractContent({ type: 'url', value: 'https://93.184.216.34/missing' }),
+      extractContent({ type: 'url', value: `https://${PUBLIC_TEST_IP}/missing` }),
     ).rejects.toBeInstanceOf(URLFetchError);
   });
 
@@ -94,7 +98,7 @@ describe('extractContent — url path', () => {
 
     let caught: unknown;
     try {
-      await extractContent({ type: 'url', value: 'https://93.184.216.34/thin' });
+      await extractContent({ type: 'url', value: `https://${PUBLIC_TEST_IP}/thin` });
     } catch (err) {
       caught = err;
     }
