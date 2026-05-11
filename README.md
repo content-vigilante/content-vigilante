@@ -1,4 +1,6 @@
 <div align="center">
+<img width="1101" height="352" alt="Screenshot 2026-05-11 at 10 44 09 AM" src="https://github.com/user-attachments/assets/ec404f5a-3b65-43cb-9ae5-6a1c3e604f17" />
+
 
 # Content Vigilante
 
