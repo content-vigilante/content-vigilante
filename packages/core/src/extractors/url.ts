@@ -59,9 +59,8 @@ function isPrivateIPv4(hostname: string): boolean {
     return false;
   }
 
-  const a = parts[0];
-  const b = parts[1];
-  if (a === undefined || b === undefined) return false;
+  const a = parts[0]!;
+  const b = parts[1]!;
 
   return (
     a === 0 ||
@@ -77,15 +76,17 @@ function isPrivateIPv4(hostname: string): boolean {
 
 function isPrivateIPv6(hostname: string): boolean {
   const normalized = hostname.toLowerCase();
+  const firstHextet = Number.parseInt(normalized.split(':', 1)[0] ?? '', 16);
+  const isLinkLocal = !Number.isNaN(firstHextet) && firstHextet >= 0xfe80 && firstHextet <= 0xfebf;
+  const isSiteLocal = !Number.isNaN(firstHextet) && firstHextet >= 0xfec0 && firstHextet <= 0xfeff;
+
   return (
     normalized === '::1' ||
     normalized === '::' ||
     normalized.startsWith('fc') ||
     normalized.startsWith('fd') ||
-    normalized.startsWith('fe8') ||
-    normalized.startsWith('fe9') ||
-    normalized.startsWith('fea') ||
-    normalized.startsWith('feb')
+    isLinkLocal ||
+    isSiteLocal
   );
 }
 

@@ -2,7 +2,6 @@ import { spawn } from 'node:child_process';
 import type { ChildProcess } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';
-import { homedir } from 'node:os';
 import { dirname, isAbsolute, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
@@ -102,17 +101,6 @@ function findBundledGuidePathImpl(slug: string): string {
       '..',
       'node_modules',
       '@content-vigilante',
-      'core',
-      'src',
-      'guides',
-      'data',
-      `${slug}.json`,
-    ),
-    join(
-      homedir(),
-      'projects',
-      'content-vigilante',
-      'packages',
       'core',
       'src',
       'guides',
