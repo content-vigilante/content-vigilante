@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, test } from 'bun:test';
+import { createServer } from 'node:http';
 import { extractContent } from '../src/extractors/index.ts';
 import { EmptyContentError, URLFetchError, UnsupportedLanguageError } from '../src/types.ts';
 
@@ -104,5 +105,37 @@ describe('extractContent — url path', () => {
     await expect(extractContent({ type: 'url', value: 'not a url' })).rejects.toBeInstanceOf(
       URLFetchError,
     );
+  });
+
+  test('extracts readable text from a live local URL', async () => {
+    const html = `<!doctype html><html><body><main><article><h1>Brand voice</h1><p>${EN_SAMPLE}</p><p>${EN_SAMPLE}</p></article></main></body></html>`;
+    const server = createServer((_req, res) => {
+      res.writeHead(200, { 'content-type': 'text/html; charset=utf-8' });
+      res.end(html);
+    });
+
+    await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', () => resolve()));
+    const address = server.address();
+    if (!address || typeof address === 'string') {
+      server.close();
+      throw new Error('Failed to bind local test server.');
+    }
+
+    try {
+      const result = await extractContent({
+        type: 'url',
+        value: `http://127.0.0.1:${address.port}/article`,
+      });
+      expect(result.language).toBe('en');
+      expect(result.text).toContain('Brand voice');
+      expect(result.text.length).toBeGreaterThan(200);
+    } finally {
+      await new Promise<void>((resolve, reject) => {
+        server.close((err) => {
+          if (err) reject(err);
+          else resolve();
+        });
+      });
+    }
   });
 });

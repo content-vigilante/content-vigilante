@@ -21,8 +21,8 @@ export default function AuditPage() {
 
       <h1 className="mb-2 text-3xl font-bold tracking-tight">Audit</h1>
       <p className="mb-8 text-[var(--color-fg-muted)]">
-        Pick a provider, paste your content, and run. The bundled Mailchimp Content Style Guide (57
-        rules) is used by default.
+        Pick a provider, paste your content or point us at a URL, and run. The bundled Mailchimp
+        Content Style Guide (57 rules) is used for English by default.
       </p>
 
       <AuditClient />

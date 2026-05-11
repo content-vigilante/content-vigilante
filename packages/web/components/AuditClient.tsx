@@ -13,11 +13,15 @@ your data to unlock value at scale.
 
 Click here to learn more!!`;
 
+type InputMode = 'text' | 'url';
+
 export function AuditClient() {
+  const [inputMode, setInputMode] = useState<InputMode>('text');
   const [provider, setProvider] = useState<'anthropic' | 'openai' | 'ollama'>('anthropic');
   const [apiKey, setApiKey] = useState('');
   const [model, setModel] = useState('');
   const [content, setContent] = useState(SAMPLE_OFF_BRAND);
+  const [url, setURL] = useState('');
   const [result, setResult] = useState<AuditResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -28,18 +32,25 @@ export function AuditClient() {
     if (stored) setApiKey(stored);
     const storedProvider = sessionStorage.getItem('cv:provider');
     if (storedProvider) setProvider(storedProvider as typeof provider);
+    const storedInputMode = sessionStorage.getItem('cv:inputMode');
+    if (storedInputMode === 'text' || storedInputMode === 'url') setInputMode(storedInputMode);
   }, []);
 
   useEffect(() => {
     if (apiKey) sessionStorage.setItem('cv:apiKey', apiKey);
     sessionStorage.setItem('cv:provider', provider);
-  }, [apiKey, provider]);
+    sessionStorage.setItem('cv:inputMode', inputMode);
+  }, [apiKey, inputMode, provider]);
 
   async function runAudit() {
     setError(null);
     setResult(null);
-    if (!content.trim()) {
+    if (inputMode === 'text' && !content.trim()) {
       setError('Paste some content to audit.');
+      return;
+    }
+    if (inputMode === 'url' && !url.trim()) {
+      setError('Enter a URL to audit.');
       return;
     }
     if (provider !== 'ollama' && !apiKey) {
@@ -51,7 +62,14 @@ export function AuditClient() {
       const res = await fetch('/api/audit', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ content, provider, apiKey, model: model || undefined }),
+        body: JSON.stringify({
+          inputType: inputMode,
+          content: inputMode === 'text' ? content : undefined,
+          url: inputMode === 'url' ? url : undefined,
+          provider,
+          apiKey,
+          model: model || undefined,
+        }),
       });
       if (!res.ok) {
         const err = (await res.json()) as { error?: string };
@@ -68,30 +86,66 @@ export function AuditClient() {
   return (
     <div className="grid gap-8 md:grid-cols-[1fr_360px]">
       <section>
+        <div className="mb-4 flex gap-2">
+          {(['text', 'url'] as const).map((mode) => (
+            <button
+              key={mode}
+              type="button"
+              onClick={() => setInputMode(mode)}
+              className={`rounded-md border px-3 py-2 text-sm font-medium transition ${
+                inputMode === mode
+                  ? 'border-[var(--color-accent)] bg-[var(--color-accent)]/10 text-[var(--color-fg)]'
+                  : 'border-[var(--color-border)] text-[var(--color-fg-muted)] hover:text-[var(--color-fg)]'
+              }`}
+            >
+              {mode === 'text' ? 'Paste text' : 'Audit a URL'}
+            </button>
+          ))}
+        </div>
+
         <label
-          htmlFor="audit-content"
+          htmlFor={inputMode === 'text' ? 'audit-content' : 'audit-url'}
           className="mb-2 block text-sm font-medium text-[var(--color-fg-muted)]"
         >
-          Content
+          {inputMode === 'text' ? 'Content' : 'URL'}
         </label>
-        <textarea
-          id="audit-content"
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          rows={12}
-          className="w-full rounded-md border border-[var(--color-border)] bg-[var(--color-bg-card)] p-4 font-mono text-sm leading-relaxed outline-none focus:border-[var(--color-accent)]"
-          placeholder="Paste a blog post, ad copy, email, landing page text…"
-        />
-        <div className="mt-3 flex items-center justify-between text-xs text-[var(--color-fg-muted)]">
-          <span>{content.length.toLocaleString()} chars</span>
-          <button
-            onClick={() => setContent(SAMPLE_OFF_BRAND)}
-            className="hover:text-[var(--color-fg)]"
-            type="button"
-          >
-            Reset to sample
-          </button>
-        </div>
+        {inputMode === 'text' ? (
+          <>
+            <textarea
+              id="audit-content"
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              rows={12}
+              className="w-full rounded-md border border-[var(--color-border)] bg-[var(--color-bg-card)] p-4 font-mono text-sm leading-relaxed outline-none focus:border-[var(--color-accent)]"
+              placeholder="Paste a blog post, ad copy, email, landing page text…"
+            />
+            <div className="mt-3 flex items-center justify-between text-xs text-[var(--color-fg-muted)]">
+              <span>{content.length.toLocaleString()} chars</span>
+              <button
+                onClick={() => setContent(SAMPLE_OFF_BRAND)}
+                className="hover:text-[var(--color-fg)]"
+                type="button"
+              >
+                Reset to sample
+              </button>
+            </div>
+          </>
+        ) : (
+          <div>
+            <input
+              id="audit-url"
+              type="url"
+              value={url}
+              onChange={(e) => setURL(e.target.value)}
+              className="w-full rounded-md border border-[var(--color-border)] bg-[var(--color-bg-card)] px-4 py-3 text-sm outline-none focus:border-[var(--color-accent)]"
+              placeholder="https://example.com/blog-post"
+            />
+            <p className="mt-3 text-xs text-[var(--color-fg-muted)]">
+              We&apos;ll fetch the page server-side, extract the readable text, and audit it against
+              the matching bundled guide.
+            </p>
+          </div>
+        )}
 
         <div className="mt-6 flex items-center gap-3">
           <button
