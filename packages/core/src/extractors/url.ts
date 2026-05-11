@@ -6,6 +6,8 @@
  *   2. Fallback: if status was 403/429 OR the parsed text is too short, render with Playwright
  *      (optional dep — try-imported). If Playwright is missing, throw a helpful error.
  */
+import { lookup } from 'node:dns/promises';
+import { isIP } from 'node:net';
 import { Readability } from '@mozilla/readability';
 import { parseHTML } from 'linkedom';
 import { EmptyContentError, type Language, URLFetchError } from '../types.ts';
@@ -47,6 +49,80 @@ interface PlaywrightLike {
   };
 }
 
+interface ExtractURLOptions {
+  allowPrivateHosts?: boolean;
+}
+
+function isPrivateIPv4(hostname: string): boolean {
+  const parts = hostname.split('.').map(Number);
+  if (parts.length !== 4 || parts.some((part) => Number.isNaN(part) || part < 0 || part > 255)) {
+    return false;
+  }
+
+  const a = parts[0];
+  const b = parts[1];
+  if (a === undefined || b === undefined) return false;
+
+  return (
+    a === 0 ||
+    a === 10 ||
+    a === 127 ||
+    (a === 169 && b === 254) ||
+    (a === 172 && b >= 16 && b <= 31) ||
+    (a === 192 && b === 168) ||
+    (a === 100 && b >= 64 && b <= 127) ||
+    (a === 198 && (b === 18 || b === 19))
+  );
+}
+
+function isPrivateIPv6(hostname: string): boolean {
+  const normalized = hostname.toLowerCase();
+  return (
+    normalized === '::1' ||
+    normalized === '::' ||
+    normalized.startsWith('fc') ||
+    normalized.startsWith('fd') ||
+    normalized.startsWith('fe8') ||
+    normalized.startsWith('fe9') ||
+    normalized.startsWith('fea') ||
+    normalized.startsWith('feb')
+  );
+}
+
+function isPrivateAddress(hostname: string): boolean {
+  const ipVersion = isIP(hostname);
+  if (ipVersion === 4) return isPrivateIPv4(hostname);
+  if (ipVersion === 6) return isPrivateIPv6(hostname);
+  return false;
+}
+
+async function assertSafeTarget(parsedURL: URL, opts: ExtractURLOptions): Promise<void> {
+  if (opts.allowPrivateHosts) return;
+
+  const hostname = parsedURL.hostname.toLowerCase();
+  if (hostname === 'localhost' || hostname.endsWith('.localhost') || hostname.endsWith('.local')) {
+    throw new URLFetchError(`Refusing to fetch local or private URL host: "${parsedURL.hostname}"`);
+  }
+
+  if (isPrivateAddress(hostname)) {
+    throw new URLFetchError(`Refusing to fetch private network address: "${parsedURL.hostname}"`);
+  }
+
+  if (isIP(hostname)) return;
+
+  try {
+    const addresses = await lookup(hostname, { all: true, verbatim: true });
+    if (addresses.some((address) => isPrivateAddress(address.address))) {
+      throw new URLFetchError(`Refusing to fetch private network host: "${parsedURL.hostname}"`);
+    }
+  } catch (err) {
+    if (err instanceof URLFetchError) throw err;
+    const code = (err as NodeJS.ErrnoException).code;
+    if (code === 'ENOTFOUND' || code === 'EAI_AGAIN') return;
+    throw new URLFetchError(`Could not resolve ${parsedURL.hostname}: ${(err as Error).message}`);
+  }
+}
+
 async function renderWithPlaywright(url: string): Promise<string> {
   let playwright: PlaywrightLike;
   try {
@@ -69,7 +145,10 @@ async function renderWithPlaywright(url: string): Promise<string> {
   }
 }
 
-export async function extractURL(url: string): Promise<{ text: string; language: Language }> {
+export async function extractURL(
+  url: string,
+  opts: ExtractURLOptions = {},
+): Promise<{ text: string; language: Language }> {
   let parsedURL: URL;
   try {
     parsedURL = new URL(url);
@@ -79,6 +158,7 @@ export async function extractURL(url: string): Promise<{ text: string; language:
   if (parsedURL.protocol !== 'http:' && parsedURL.protocol !== 'https:') {
     throw new URLFetchError(`Unsupported URL protocol: "${parsedURL.protocol}"`);
   }
+  await assertSafeTarget(parsedURL, opts);
 
   let response: Response;
   try {

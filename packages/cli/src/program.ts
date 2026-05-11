@@ -354,4 +354,3 @@ export function createProgram(overrides: Partial<ProgramDeps> = {}): Command {
 }
 
 export const providerEnv = PROVIDER_ENV;
-void providerEnv;

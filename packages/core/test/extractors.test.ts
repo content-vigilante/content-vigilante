@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, test } from 'bun:test';
 import { createServer } from 'node:http';
 import { extractContent } from '../src/extractors/index.ts';
+import { extractURL } from '../src/extractors/url.ts';
 import { EmptyContentError, URLFetchError, UnsupportedLanguageError } from '../src/types.ts';
 
 const EN_SAMPLE =
@@ -73,7 +74,7 @@ describe('extractContent — url path', () => {
     </body></html>`;
     mockFetch(() => new Response(html, { status: 200, headers: { 'content-type': 'text/html' } }));
 
-    const result = await extractContent({ type: 'url', value: 'https://example.com/article' });
+    const result = await extractContent({ type: 'url', value: 'https://93.184.216.34/article' });
     expect(result.language).toBe('en');
     expect(result.text.length).toBeGreaterThan(100);
     expect(result.text.toLowerCase()).toContain('fox');
@@ -82,7 +83,7 @@ describe('extractContent — url path', () => {
   test('mocked fetch returns 404 → URLFetchError', async () => {
     mockFetch(() => new Response('not found', { status: 404, statusText: 'Not Found' }));
     await expect(
-      extractContent({ type: 'url', value: 'https://example.com/missing' }),
+      extractContent({ type: 'url', value: 'https://93.184.216.34/missing' }),
     ).rejects.toBeInstanceOf(URLFetchError);
   });
 
@@ -93,7 +94,7 @@ describe('extractContent — url path', () => {
 
     let caught: unknown;
     try {
-      await extractContent({ type: 'url', value: 'https://example.com/thin' });
+      await extractContent({ type: 'url', value: 'https://93.184.216.34/thin' });
     } catch (err) {
       caught = err;
     }
@@ -105,6 +106,12 @@ describe('extractContent — url path', () => {
     await expect(extractContent({ type: 'url', value: 'not a url' })).rejects.toBeInstanceOf(
       URLFetchError,
     );
+  });
+
+  test('rejects localhost URLs by default', async () => {
+    await expect(
+      extractContent({ type: 'url', value: 'http://127.0.0.1:3000/internal' }),
+    ).rejects.toThrow(/private network|local/i);
   });
 
   test('extracts readable text from a live local URL', async () => {
@@ -122,9 +129,8 @@ describe('extractContent — url path', () => {
     }
 
     try {
-      const result = await extractContent({
-        type: 'url',
-        value: `http://127.0.0.1:${address.port}/article`,
+      const result = await extractURL(`http://127.0.0.1:${address.port}/article`, {
+        allowPrivateHosts: true,
       });
       expect(result.language).toBe('en');
       expect(result.text).toContain('Brand voice');
