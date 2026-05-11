@@ -226,7 +226,8 @@ function buildDefaultDeps(): ProgramDeps {
     spawn,
     findBundledGuidePath: findBundledGuidePathImpl,
     findWebAppDir: findWebAppDirImpl,
-    loadGuide: (guidePath) => loadGuideImpl(findBundledGuidePathImpl, () => process.cwd(), guidePath),
+    loadGuide: (guidePath) =>
+      loadGuideImpl(findBundledGuidePathImpl, () => process.cwd(), guidePath),
     pickProvider: (name, model) => pickProviderFromEnv(process.env, name, model),
     readContent: readContentImpl,
     auditContent: audit,
@@ -262,13 +263,22 @@ export function createProgram(overrides: Partial<ProgramDeps> = {}): Command {
         const guide = await deps.loadGuide(opts.guide);
         const llm = deps.pickProvider(opts.provider, opts.model);
         const { text, language } = await deps.readContent(input);
-        const result = await deps.auditContent({ content: text, contentLanguage: language, guide, llm });
+        const result = await deps.auditContent({
+          content: text,
+          contentLanguage: language,
+          guide,
+          llm,
+        });
 
         if (opts.json) {
           deps.log(JSON.stringify(result, null, 2));
           return;
         }
-        printReport(deps.log, result, `${input}  (${language}, guide: ${guide.source}, llm: ${llm.name})`);
+        printReport(
+          deps.log,
+          result,
+          `${input}  (${language}, guide: ${guide.source}, llm: ${llm.name})`,
+        );
       } catch (err) {
         deps.error(kleur.red(`✖ ${(err as Error).message}`));
         if (deps.env['CV_DEBUG']) deps.error(err);

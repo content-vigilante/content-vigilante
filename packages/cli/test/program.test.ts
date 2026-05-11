@@ -72,15 +72,23 @@ describe('cv CLI', () => {
 
   test('serve smoke test spawns the web dev server with host and port', async () => {
     const logs: string[] = [];
-    const calls: Array<{ cmd: string; args: string[]; cwd?: string; env?: Record<string, string> }> =
-      [];
+    const calls: Array<{
+      cmd: string;
+      args: string[];
+      cwd?: string;
+      env?: Record<string, string>;
+    }> = [];
     const program = createProgram({
       env: {},
       log: (...args) => logs.push(args.join(' ')),
       error: () => undefined,
       exit: createExitStub(),
       findWebAppDir: () => '/tmp/content-vigilante-web',
-      spawn: ((cmd: string, args: string[], opts?: { cwd?: string; env?: Record<string, string> }) => {
+      spawn: ((
+        cmd: string,
+        args: string[],
+        opts?: { cwd?: string; env?: Record<string, string> },
+      ) => {
         calls.push({ cmd, args, cwd: opts?.cwd, env: opts?.env });
         return new EventEmitter() as ChildProcessLike;
       }) as typeof process.spawn,
