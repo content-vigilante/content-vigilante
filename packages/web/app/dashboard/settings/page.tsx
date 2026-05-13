@@ -3,6 +3,7 @@
 import { Check, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { Connections } from '@/components/dashboard/Connections';
+import { SyncPanel } from '@/components/dashboard/SyncPanel';
 import { Button, Card, PageHeader, Pill } from '@/components/dashboard/ui';
 import {
   seedLeads,
@@ -99,6 +100,11 @@ export default function SettingsPage() {
           >
             Open provider settings →
           </a>
+        </Card>
+
+        <Card className="lg:col-span-2">
+          <h3 className="mb-3 font-semibold">Cross-device sync</h3>
+          <SyncPanel />
         </Card>
 
         <Card>

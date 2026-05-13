@@ -7,6 +7,7 @@ import { Button, Pill } from './ui';
 interface Status {
   ga4: { configured: boolean; connected: boolean };
   linkedin: { configured: boolean; connected: boolean; name?: string | null };
+  x: { configured: boolean; connected: boolean; name?: string | null };
 }
 
 export function Connections() {
@@ -39,6 +40,14 @@ export function Connections() {
         accountName={status.linkedin.name ?? undefined}
         connectHref="/api/linkedin/connect"
         envVars={['LINKEDIN_CLIENT_ID', 'LINKEDIN_CLIENT_SECRET']}
+      />
+      <Row
+        name="X (Twitter)"
+        configured={status.x.configured}
+        connected={status.x.connected}
+        accountName={status.x.name ?? undefined}
+        connectHref="/api/x/connect"
+        envVars={['X_CLIENT_ID', 'X_CLIENT_SECRET']}
       />
     </div>
   );
