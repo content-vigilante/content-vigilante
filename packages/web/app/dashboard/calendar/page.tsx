@@ -1,0 +1,197 @@
+'use client';
+
+import { Plus } from 'lucide-react';
+import { useMemo, useState } from 'react';
+import { Button, Card, PageHeader, PLATFORM_META, Pill } from '@/components/dashboard/ui';
+import { seedPosts, useStore, type Platform, type Post } from '@/lib/store';
+
+function startOfWeek(d: Date) {
+  const x = new Date(d);
+  const day = (x.getDay() + 6) % 7; // Monday = 0
+  x.setDate(x.getDate() - day);
+  x.setHours(0, 0, 0, 0);
+  return x;
+}
+
+export default function CalendarPage() {
+  const [posts, setPosts] = useStore<Post[]>('posts', seedPosts);
+  const [anchor, setAnchor] = useState(() => startOfWeek(new Date()));
+  const [dragId, setDragId] = useState<string | null>(null);
+
+  const days = useMemo(
+    () =>
+      Array.from({ length: 7 }, (_, i) => {
+        const d = new Date(anchor);
+        d.setDate(d.getDate() + i);
+        return d;
+      }),
+    [anchor],
+  );
+
+  const byDay = (d: Date) =>
+    posts.filter((p) => {
+      if (!p.scheduledFor) return false;
+      const sd = new Date(p.scheduledFor);
+      return (
+        sd.getFullYear() === d.getFullYear() &&
+        sd.getMonth() === d.getMonth() &&
+        sd.getDate() === d.getDate()
+      );
+    });
+
+  const unscheduled = posts.filter((p) => !p.scheduledFor);
+
+  function moveTo(id: string, d: Date) {
+    setPosts((prev) =>
+      prev.map((p) =>
+        p.id === id
+          ? { ...p, scheduledFor: d.toISOString(), status: 'scheduled' as const }
+          : p,
+      ),
+    );
+  }
+
+  function addPost(d: Date) {
+    const id = `p${Date.now()}`;
+    setPosts((prev) => [
+      ...prev,
+      {
+        id,
+        title: 'New post',
+        body: '',
+        platform: 'linkedin' as Platform,
+        status: 'scheduled',
+        scheduledFor: d.toISOString(),
+        createdAt: new Date().toISOString(),
+      },
+    ]);
+  }
+
+  return (
+    <>
+      <PageHeader
+        title="Calendar"
+        subtitle="Drag posts across days. Unified across LinkedIn, Instagram, X, Facebook, and Newsletters."
+        actions={
+          <>
+            <Button
+              variant="outline"
+              onClick={() => {
+                const n = new Date(anchor);
+                n.setDate(n.getDate() - 7);
+                setAnchor(n);
+              }}
+            >
+              ←
+            </Button>
+            <Button variant="outline" onClick={() => setAnchor(startOfWeek(new Date()))}>
+              Today
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() => {
+                const n = new Date(anchor);
+                n.setDate(n.getDate() + 7);
+                setAnchor(n);
+              }}
+            >
+              →
+            </Button>
+          </>
+        }
+      />
+
+      <div className="grid grid-cols-7 gap-2">
+        {days.map((d, i) => {
+          const dayPosts = byDay(d);
+          const isToday = d.toDateString() === new Date().toDateString();
+          return (
+            <div
+              key={i}
+              onDragOver={(e) => e.preventDefault()}
+              onDrop={() => {
+                if (dragId) moveTo(dragId, d);
+                setDragId(null);
+              }}
+              className={`min-h-[260px] rounded-lg border bg-[var(--color-bg-card)] p-2 transition ${
+                isToday
+                  ? 'border-[var(--color-accent)]'
+                  : 'border-[var(--color-border)]'
+              }`}
+            >
+              <div className="mb-2 flex items-center justify-between px-1">
+                <div className="text-xs">
+                  <div className="text-[var(--color-fg-muted)]">
+                    {d.toLocaleDateString(undefined, { weekday: 'short' })}
+                  </div>
+                  <div
+                    className={`text-sm font-semibold ${
+                      isToday ? 'text-[var(--color-accent)]' : ''
+                    }`}
+                  >
+                    {d.getDate()}
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => addPost(d)}
+                  className="rounded p-1 text-[var(--color-fg-muted)] hover:bg-[var(--color-bg-elev)] hover:text-[var(--color-fg)]"
+                >
+                  <Plus className="h-3 w-3" />
+                </button>
+              </div>
+              <div className="flex flex-col gap-1.5">
+                {dayPosts.map((p) => (
+                  <div
+                    key={p.id}
+                    draggable
+                    onDragStart={() => setDragId(p.id)}
+                    className="cursor-grab rounded-md border border-[var(--color-border)] bg-[var(--color-bg-elev)] px-2 py-1.5 text-xs active:cursor-grabbing"
+                  >
+                    <div className="mb-1 flex items-center justify-between">
+                      <Pill tone={PLATFORM_META[p.platform]?.tone}>
+                        {PLATFORM_META[p.platform]?.label ?? p.platform}
+                      </Pill>
+                      {p.brandScore != null && (
+                        <span className="text-[10px] text-[var(--color-fg-muted)]">
+                          {p.brandScore}
+                        </span>
+                      )}
+                    </div>
+                    <div className="line-clamp-2 text-[var(--color-fg)]">{p.title}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {unscheduled.length > 0 && (
+        <Card className="mt-6">
+          <div className="mb-3 flex items-center justify-between">
+            <h2 className="font-semibold">Unscheduled</h2>
+            <span className="text-xs text-[var(--color-fg-muted)]">drag onto a day</span>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {unscheduled.map((p) => (
+              <div
+                key={p.id}
+                draggable
+                onDragStart={() => setDragId(p.id)}
+                className="cursor-grab rounded-md border border-[var(--color-border)] bg-[var(--color-bg-elev)] px-3 py-2 text-xs"
+              >
+                <div className="mb-1 flex items-center gap-2">
+                  <Pill tone={PLATFORM_META[p.platform]?.tone}>
+                    {PLATFORM_META[p.platform]?.label}
+                  </Pill>
+                  <span>{p.title}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Card>
+      )}
+    </>
+  );
+}
