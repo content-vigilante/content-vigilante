@@ -1,7 +1,7 @@
 'use client';
 
-import { Save, Sparkles, Wand2 } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { Loader2, Save, Sparkles, Wand2 } from 'lucide-react';
+import { useEffect, useMemo, useState } from 'react';
 import { Button, Card, PageHeader, PLATFORM_META, Pill } from '@/components/dashboard/ui';
 import { seedPosts, useStore, type Platform, type Post } from '@/lib/store';
 
@@ -32,12 +32,12 @@ function brandCheck(text: string) {
   return { score, issues };
 }
 
-function generateVariants(prompt: string): string[] {
+function fallbackVariants(prompt: string): string[] {
   if (!prompt.trim()) return [];
   return [
     `${prompt.trim()} — here's why it matters for the team shipping it.`,
     `Three quick takeaways on ${prompt.trim()}. Save this if you're building in public.`,
-    `We've been thinking about ${prompt.trim()} all week. One thread, no filler. 👇`,
+    `We've been thinking about ${prompt.trim()} all week. One thread, no filler.`,
     `Most people get ${prompt.trim()} wrong. Here's the version that actually works.`,
     `${prompt.trim()}: a short note from someone who's tried both ways.`,
   ];
@@ -49,12 +49,50 @@ export default function StudioPage() {
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
   const [aiPrompt, setAiPrompt] = useState('');
+  const [variants, setVariants] = useState<string[]>([]);
+  const [aiLoading, setAiLoading] = useState(false);
+  const [aiError, setAiError] = useState<string | null>(null);
+  const [hasKey, setHasKey] = useState(false);
   const [saved, setSaved] = useState(false);
 
   const meta = PLATFORM_META[platform];
   const check = useMemo(() => brandCheck(body), [body]);
   const fk = useMemo(() => fleschKincaid(body || 'placeholder text'), [body]);
-  const variants = useMemo(() => generateVariants(aiPrompt), [aiPrompt]);
+
+  useEffect(() => {
+    setHasKey(!!sessionStorage.getItem('cv:apiKey'));
+  }, []);
+
+  async function runGenerate() {
+    if (!aiPrompt.trim()) return;
+    setAiError(null);
+    const provider = sessionStorage.getItem('cv:provider') ?? 'anthropic';
+    const apiKey = sessionStorage.getItem('cv:apiKey') ?? '';
+    const model = sessionStorage.getItem('cv:model') ?? '';
+    if (provider !== 'ollama' && !apiKey) {
+      setVariants(fallbackVariants(aiPrompt));
+      setAiError('No API key set. Showing offline variants. Set a key on the Guardrails page.');
+      return;
+    }
+    setAiLoading(true);
+    try {
+      const res = await fetch('/api/generate', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ prompt: aiPrompt, platform, provider, apiKey, model }),
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error ?? 'Generation failed.');
+      const arr = Array.isArray(json.variants) ? json.variants : [];
+      if (arr.length === 0) throw new Error('No variants returned.');
+      setVariants(arr);
+    } catch (err) {
+      setVariants(fallbackVariants(aiPrompt));
+      setAiError((err as Error).message);
+    } finally {
+      setAiLoading(false);
+    }
+  }
 
   function save() {
     if (!title && !body) return;
@@ -182,17 +220,32 @@ export default function StudioPage() {
             <div className="mb-2 flex items-center gap-2">
               <Wand2 className="h-4 w-4 text-[var(--color-accent)]" />
               <h3 className="font-semibold">AI Caption Generator</h3>
+              {hasKey && <Pill tone="good">live</Pill>}
             </div>
-            <input
-              value={aiPrompt}
-              onChange={(e) => setAiPrompt(e.target.value)}
-              placeholder="What's the post about?"
-              className="mb-2 w-full rounded-md border border-[var(--color-border)] bg-[var(--color-bg-elev)] px-3 py-2 text-xs outline-none focus:border-[var(--color-accent)]"
-            />
+            <div className="mb-2 flex gap-2">
+              <input
+                value={aiPrompt}
+                onChange={(e) => setAiPrompt(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && runGenerate()}
+                placeholder="What's the post about?"
+                className="w-full rounded-md border border-[var(--color-border)] bg-[var(--color-bg-elev)] px-3 py-2 text-xs outline-none focus:border-[var(--color-accent)]"
+              />
+              <Button onClick={runGenerate} variant="outline">
+                {aiLoading ? (
+                  <Loader2 className="h-3 w-3 animate-spin" />
+                ) : (
+                  'Run'
+                )}
+              </Button>
+            </div>
+            {aiError && (
+              <div className="mb-2 text-[11px] text-[var(--color-warn)]">{aiError}</div>
+            )}
             <div className="space-y-1.5">
-              {variants.length === 0 && (
+              {variants.length === 0 && !aiLoading && (
                 <div className="text-xs text-[var(--color-fg-muted)]">
-                  Type a prompt to generate 5 brand-aware variants.
+                  Type a prompt and press Run to generate 5 brand-aware variants.
+                  {!hasKey && ' Set a provider key on Guardrails first for real AI.'}
                 </div>
               )}
               {variants.map((v, i) => (
