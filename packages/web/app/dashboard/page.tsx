@@ -1,9 +1,9 @@
 'use client';
 
+import { Card, PageHeader, Pill, Stat } from '@/components/dashboard/ui';
+import { type Post, seedPosts, useStore } from '@/lib/store';
 import { ArrowUpRight, CheckCircle2, Sparkles, TrendingUp } from 'lucide-react';
 import Link from 'next/link';
-import { Card, PageHeader, Pill, Stat } from '@/components/dashboard/ui';
-import { seedPosts, useStore, type Post } from '@/lib/store';
 
 export default function OverviewPage() {
   const [posts] = useStore<Post[]>('posts', seedPosts);
@@ -67,11 +67,15 @@ export default function OverviewPage() {
           <ul className="space-y-3 text-sm">
             <li className="flex gap-2">
               <Sparkles className="mt-0.5 h-4 w-4 shrink-0 text-[var(--color-accent)]" />
-              <span>3 posts use the word <em>“synergy”</em> — flagged by your brand guide.</span>
+              <span>
+                3 posts use the word <em>“synergy”</em> — flagged by your brand guide.
+              </span>
             </li>
             <li className="flex gap-2">
               <TrendingUp className="mt-0.5 h-4 w-4 shrink-0 text-[var(--color-good)]" />
-              <span>Best post times this week: <strong>Tue 10:00</strong>, <strong>Thu 19:00</strong>.</span>
+              <span>
+                Best post times this week: <strong>Tue 10:00</strong>, <strong>Thu 19:00</strong>.
+              </span>
             </li>
             <li className="flex gap-2">
               <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[var(--color-good)]" />
@@ -114,8 +118,8 @@ export default function OverviewPage() {
           <p className="mt-3 text-sm leading-relaxed text-[var(--color-fg-muted)]">
             <span className="text-[var(--color-fg)]">Weekly digest:</span> 4 posts shipped, brand
             adherence trending up (+4 vs last week). The Brand Guardrails caught 12 deviations
-            before publish — 3 of them critical. Your LinkedIn carousel about local-first AI is
-            your top performer; consider repurposing as a newsletter.
+            before publish — 3 of them critical. Your LinkedIn carousel about local-first AI is your
+            top performer; consider repurposing as a newsletter.
           </p>
         </Card>
       </div>

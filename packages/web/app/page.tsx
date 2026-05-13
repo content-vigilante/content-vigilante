@@ -1,6 +1,6 @@
+import { Owl } from '@/components/Owl';
 import { ArrowRight, Github } from 'lucide-react';
 import Link from 'next/link';
-import { Owl } from '@/components/Owl';
 
 export default function HomePage() {
   return (
@@ -23,8 +23,8 @@ export default function HomePage() {
         content.
       </h1>
       <p className="mb-16 max-w-[680px] text-[22px] leading-[1.5] text-[var(--color-cv-stone-600)]">
-        The local-first, open-source marketing operating system. Cross-channel content,
-        AI brand guardrails, unified analytics, and a hybrid CRM — your data stays yours.
+        The local-first, open-source marketing operating system. Cross-channel content, AI brand
+        guardrails, unified analytics, and a hybrid CRM — your data stays yours.
       </p>
 
       <div className="grid grid-cols-12 gap-4">
@@ -55,8 +55,8 @@ export default function HomePage() {
         </Link>
 
         <Tile num="02 · AUDIT" title="Run an audit." href="/audit" span={6}>
-          Drop in content and a brand guide. Get a scored report with line-level deviations, a
-          tone match, and suggested rewrites.
+          Drop in content and a brand guide. Get a scored report with line-level deviations, a tone
+          match, and suggested rewrites.
         </Tile>
 
         <Tile num="03 · CALENDAR" title="Calendar." href="/dashboard/calendar" span={3}>
@@ -77,17 +77,16 @@ export default function HomePage() {
           GA4 + LinkedIn + Meta + X in one view. Correlation engine, heatmap, ROI.
         </Tile>
 
-        <Tile
-          num="06 · PIPELINE"
-          title="Pipeline."
-          href="/dashboard/pipeline"
-          span={4}
-          tone="dark"
-        >
+        <Tile num="06 · PIPELINE" title="Pipeline." href="/dashboard/pipeline" span={4} tone="dark">
           Content kanban + sales pipeline. One hybrid CRM.
         </Tile>
 
-        <Tile num="07 · GUARDRAILS" title="Brand Guardrails." href="/dashboard/guardrails" span={12}>
+        <Tile
+          num="07 · GUARDRAILS"
+          title="Brand Guardrails."
+          href="/dashboard/guardrails"
+          span={12}
+        >
           Three judges run in parallel: tone (LLM), vocabulary (deterministic + LLM hybrid),
           structure & readability (deterministic). Multilingual EN · IT · FR · DE.
         </Tile>
@@ -127,8 +126,7 @@ function Tile({
   children: React.ReactNode;
 }) {
   const tones: Record<string, string> = {
-    default:
-      'bg-white border-[var(--color-cv-line)] text-[var(--color-cv-ink)]',
+    default: 'bg-white border-[var(--color-cv-line)] text-[var(--color-cv-ink)]',
     dark: 'bg-[var(--color-cv-ink)] border-[var(--color-cv-ink)] text-white',
     green: 'bg-[var(--color-cv-green)] border-[var(--color-cv-green)] text-[var(--color-cv-ink)]',
   };

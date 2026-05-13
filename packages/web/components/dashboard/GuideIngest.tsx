@@ -69,14 +69,19 @@ export function GuideIngest() {
     <div className="rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-card)] p-5">
       <div className="mb-3 flex items-center justify-between">
         <h3 className="font-semibold">Upload your brand guide</h3>
-        {guide && <Pill tone="good"><CheckCircle2 className="mr-1 inline h-3 w-3" />active</Pill>}
+        {guide && (
+          <Pill tone="good">
+            <CheckCircle2 className="mr-1 inline h-3 w-3" />
+            active
+          </Pill>
+        )}
       </div>
 
       {!guide && (
         <>
           <p className="mb-3 text-sm text-[var(--color-fg-muted)]">
-            PDF in, structured rules out. Runs heuristic extraction always; uses your LLM key
-            (set on Guardrails) for higher-quality rule extraction when available.
+            PDF in, structured rules out. Runs heuristic extraction always; uses your LLM key (set
+            on Guardrails) for higher-quality rule extraction when available.
           </p>
           <input
             ref={fileRef}

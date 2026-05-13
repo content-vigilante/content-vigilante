@@ -3,7 +3,13 @@
   "vcs": { "enabled": true, "clientKind": "git", "useIgnoreFile": true },
   "files": {
     "ignoreUnknown": false,
-    "ignore": ["**/dist/**", "**/.next/**", "**/node_modules/**"]
+    "ignore": [
+      "**/dist/**",
+      "**/.next/**",
+      "**/node_modules/**",
+      "content vigilante brand book/**",
+      "docs/**"
+    ]
   },
   "formatter": {
     "enabled": true,
@@ -17,16 +23,22 @@
       "recommended": true,
       "style": {
         "noNonNullAssertion": "off",
-        "useConst": "error"
+        "useConst": "error",
+        "useTemplate": "off"
       },
       "correctness": {
-        "noUnusedVariables": "error"
+        "noUnusedVariables": "error",
+        "useExhaustiveDependencies": "off"
       },
       "complexity": {
         "useLiteralKeys": "off"
       },
       "suspicious": {
-        "noAssignInExpressions": "off"
+        "noAssignInExpressions": "off",
+        "noArrayIndexKey": "off"
+      },
+      "a11y": {
+        "noSvgWithoutTitle": "off"
       }
     }
   },

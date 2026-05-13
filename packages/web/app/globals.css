@@ -35,11 +35,12 @@
 }
 
 @font-face {
-  font-family: 'Fraunces';
+  font-family: "Fraunces";
   font-style: normal;
   font-weight: 400 900;
   font-display: swap;
-  src: url('https://fonts.gstatic.com/s/fraunces/v32/6NUh8FyLNQOQZAnv9bYEvDiIdE9Ea92uemAk.woff2') format('woff2');
+  src: url("https://fonts.gstatic.com/s/fraunces/v32/6NUh8FyLNQOQZAnv9bYEvDiIdE9Ea92uemAk.woff2")
+    format("woff2");
 }
 
 * {
@@ -57,12 +58,16 @@ body {
   font-feature-settings: "cv02", "cv03", "cv04", "ss01";
 }
 
-h1, h2, h3, .display {
+h1,
+h2,
+h3,
+.display {
   font-family: var(--font-display);
   letter-spacing: -0.022em;
 }
 
-.mono, .eyebrow {
+.mono,
+.eyebrow {
   font-family: var(--font-mono);
   font-size: 11px;
   letter-spacing: 0.2em;

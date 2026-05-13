@@ -92,7 +92,12 @@ Rules:
     if (variants.length === 0) {
       variants = text
         .split(/\n+/)
-        .map((l) => l.replace(/^[\s\-*\d.)"]+/, '').replace(/"$/, '').trim())
+        .map((l) =>
+          l
+            .replace(/^[\s\-*\d.)"]+/, '')
+            .replace(/"$/, '')
+            .trim(),
+        )
         .filter((l) => l.length > 20)
         .slice(0, 5);
     }

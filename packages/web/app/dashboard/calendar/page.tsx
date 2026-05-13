@@ -1,9 +1,9 @@
 'use client';
 
-import { Plus } from 'lucide-react';
+import { Button, Card, PLATFORM_META, PageHeader, Pill } from '@/components/dashboard/ui';
+import { type Platform, type Post, seedPosts, useStore } from '@/lib/store';
+import { Loader2, Plus, Send } from 'lucide-react';
 import { useMemo, useState } from 'react';
-import { Button, Card, PageHeader, PLATFORM_META, Pill } from '@/components/dashboard/ui';
-import { seedPosts, useStore, type Platform, type Post } from '@/lib/store';
 
 function startOfWeek(d: Date) {
   const x = new Date(d);
@@ -17,6 +17,42 @@ export default function CalendarPage() {
   const [posts, setPosts] = useStore<Post[]>('posts', seedPosts);
   const [anchor, setAnchor] = useState(() => startOfWeek(new Date()));
   const [dragId, setDragId] = useState<string | null>(null);
+  const [publishing, setPublishing] = useState(false);
+  const [publishLog, setPublishLog] = useState<string[]>([]);
+
+  const due = posts.filter(
+    (p) =>
+      p.status === 'scheduled' &&
+      p.scheduledFor &&
+      new Date(p.scheduledFor) <= new Date() &&
+      (p.platform === 'linkedin' || p.platform === 'x'),
+  );
+
+  async function publishDue() {
+    setPublishing(true);
+    setPublishLog([]);
+    const log: string[] = [];
+    for (const p of due) {
+      try {
+        const endpoint = p.platform === 'linkedin' ? '/api/linkedin/publish' : '/api/x/publish';
+        const res = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ text: p.body || p.title }),
+        });
+        const json = await res.json();
+        if (!res.ok) throw new Error(json.error ?? 'failed');
+        setPosts((prev) =>
+          prev.map((x) => (x.id === p.id ? { ...x, status: 'published' as const } : x)),
+        );
+        log.push(`✓ ${p.platform.toUpperCase()}: ${p.title}`);
+      } catch (err) {
+        log.push(`✗ ${p.platform.toUpperCase()}: ${p.title} — ${(err as Error).message}`);
+      }
+      setPublishLog([...log]);
+    }
+    setPublishing(false);
+  }
 
   const days = useMemo(
     () =>
@@ -44,9 +80,7 @@ export default function CalendarPage() {
   function moveTo(id: string, d: Date) {
     setPosts((prev) =>
       prev.map((p) =>
-        p.id === id
-          ? { ...p, scheduledFor: d.toISOString(), status: 'scheduled' as const }
-          : p,
+        p.id === id ? { ...p, scheduledFor: d.toISOString(), status: 'scheduled' as const } : p,
       ),
     );
   }
@@ -74,6 +108,16 @@ export default function CalendarPage() {
         subtitle="Drag posts across days. Unified across LinkedIn, Instagram, X, Facebook, and Newsletters."
         actions={
           <>
+            {due.length > 0 && (
+              <Button onClick={publishDue}>
+                {publishing ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Send className="h-4 w-4" />
+                )}
+                Publish {due.length} due
+              </Button>
+            )}
             <Button
               variant="outline"
               onClick={() => {
@@ -101,6 +145,23 @@ export default function CalendarPage() {
         }
       />
 
+      {publishLog.length > 0 && (
+        <Card className="mb-4">
+          <h3 className="mb-2 font-semibold">Publish results</h3>
+          <div className="space-y-1 font-mono text-xs">
+            {publishLog.map((l, i) => (
+              <div
+                key={i}
+                className={
+                  l.startsWith('✓') ? 'text-[var(--color-good)]' : 'text-[var(--color-bad)]'
+                }
+              >
+                {l}
+              </div>
+            ))}
+          </div>
+        </Card>
+      )}
       <div className="grid grid-cols-7 gap-2">
         {days.map((d, i) => {
           const dayPosts = byDay(d);
@@ -114,9 +175,7 @@ export default function CalendarPage() {
                 setDragId(null);
               }}
               className={`min-h-[260px] rounded-lg border bg-[var(--color-bg-card)] p-2 transition ${
-                isToday
-                  ? 'border-[var(--color-accent)]'
-                  : 'border-[var(--color-border)]'
+                isToday ? 'border-[var(--color-accent)]' : 'border-[var(--color-border)]'
               }`}
             >
               <div className="mb-2 flex items-center justify-between px-1">

@@ -1,5 +1,5 @@
-import { NextResponse } from 'next/server';
 import { randomBytes } from 'node:crypto';
+import { NextResponse } from 'next/server';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -20,10 +20,7 @@ export async function GET(req: Request) {
   auth.searchParams.set('client_id', clientId);
   auth.searchParams.set('redirect_uri', redirectUri);
   auth.searchParams.set('response_type', 'code');
-  auth.searchParams.set(
-    'scope',
-    'https://www.googleapis.com/auth/analytics.readonly',
-  );
+  auth.searchParams.set('scope', 'https://www.googleapis.com/auth/analytics.readonly');
   auth.searchParams.set('access_type', 'offline');
   auth.searchParams.set('prompt', 'consent');
   auth.searchParams.set('state', state);

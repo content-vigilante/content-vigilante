@@ -1,15 +1,9 @@
 'use client';
 
+import { Button, Card, PLATFORM_META, PageHeader, Pill } from '@/components/dashboard/ui';
+import { type Lead, type Post, seedLeads, seedPosts, useStore } from '@/lib/store';
 import { Plus } from 'lucide-react';
 import { useState } from 'react';
-import { Button, Card, PageHeader, PLATFORM_META, Pill } from '@/components/dashboard/ui';
-import {
-  seedLeads,
-  seedPosts,
-  useStore,
-  type Lead,
-  type Post,
-} from '@/lib/store';
 
 const POST_STAGES: Post['status'][] = ['idea', 'drafting', 'scheduled', 'published'];
 const LEAD_STAGES: Lead['stage'][] = ['lead', 'discovery', 'proposal', 'closed'];
