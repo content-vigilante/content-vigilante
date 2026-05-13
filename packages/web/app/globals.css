@@ -1,18 +1,45 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg: #0b0c0e;
-  --color-bg-elev: #15171b;
-  --color-bg-card: #1b1e23;
-  --color-fg: #e7e9ee;
-  --color-fg-muted: #8a8f99;
-  --color-fg-faint: #4f535b;
-  --color-accent: #ffaf3a;
-  --color-accent-fg: #0b0c0e;
-  --color-good: #4ade80;
-  --color-warn: #facc15;
-  --color-bad: #f87171;
-  --color-border: #2a2d33;
+  /* Editorial brand: cream paper, navy ink, green accent. From Content Vigilante brand kit v1.0. */
+  --color-cv-paper: #f4eee3;
+  --color-cv-paper-2: #ede5d5;
+  --color-cv-ink: #1a1f3a;
+  --color-cv-green: #3fe07a;
+  --color-cv-green-soft: #d6f5e0;
+  --color-cv-green-deep: #1f8a4c;
+  --color-cv-stone-400: #b0a999;
+  --color-cv-stone-500: #8a8270;
+  --color-cv-stone-600: #5e5848;
+  --color-cv-line: #d9d1bf;
+  --color-cv-line-strong: #b0a999;
+  --color-cv-red: #b3392b;
+
+  /* Semantic aliases (so dashboard pages built against the old token names still work) */
+  --color-bg: #f4eee3;
+  --color-bg-elev: #ede5d5;
+  --color-bg-card: #ffffff;
+  --color-fg: #1a1f3a;
+  --color-fg-muted: #5e5848;
+  --color-fg-faint: #8a8270;
+  --color-accent: #3fe07a;
+  --color-accent-fg: #1a1f3a;
+  --color-good: #1f8a4c;
+  --color-warn: #b8801f;
+  --color-bad: #b3392b;
+  --color-border: #d9d1bf;
+
+  --font-display: "Fraunces", "Iowan Old Style", "Apple Garamond", Georgia, serif;
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", "SF Mono", ui-monospace, Menlo, monospace;
+}
+
+@font-face {
+  font-family: 'Fraunces';
+  font-style: normal;
+  font-weight: 400 900;
+  font-display: swap;
+  src: url('https://fonts.gstatic.com/s/fraunces/v32/6NUh8FyLNQOQZAnv9bYEvDiIdE9Ea92uemAk.woff2') format('woff2');
 }
 
 * {
@@ -23,15 +50,27 @@ html,
 body {
   background: var(--color-bg);
   color: var(--color-fg);
-  font-feature-settings: "cv02", "cv03", "cv04";
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, Helvetica, Arial,
-    sans-serif;
+  font-family: var(--font-sans);
+  font-feature-settings: "cv02", "cv03", "cv04", "ss01";
+}
+
+h1, h2, h3, .display {
+  font-family: var(--font-display);
+  letter-spacing: -0.022em;
+}
+
+.mono, .eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-fg-faint);
 }
 
 ::selection {
-  background: var(--color-accent);
-  color: var(--color-accent-fg);
+  background: var(--color-cv-ink);
+  color: var(--color-cv-paper);
 }
