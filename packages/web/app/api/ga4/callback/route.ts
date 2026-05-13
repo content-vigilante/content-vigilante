@@ -1,5 +1,5 @@
+import { COOKIE_OPTS, seal } from '@/lib/cookies';
 import { NextResponse } from 'next/server';
-import { seal, COOKIE_OPTS } from '@/lib/cookies';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -15,9 +15,7 @@ export async function GET(req: Request) {
   const url = new URL(req.url);
   const code = url.searchParams.get('code');
   const state = url.searchParams.get('state');
-  const cookieState = req.headers
-    .get('cookie')
-    ?.match(/cv_ga4_state=([^;]+)/)?.[1];
+  const cookieState = req.headers.get('cookie')?.match(/cv_ga4_state=([^;]+)/)?.[1];
 
   if (!code || !state || state !== cookieState) {
     return NextResponse.redirect(`${url.origin}/dashboard/analytics?ga4=denied`);

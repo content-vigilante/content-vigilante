@@ -1,18 +1,11 @@
 'use client';
 
-import { Check, Trash2 } from 'lucide-react';
-import { useState } from 'react';
 import { Connections } from '@/components/dashboard/Connections';
 import { SyncPanel } from '@/components/dashboard/SyncPanel';
 import { Button, Card, PageHeader, Pill } from '@/components/dashboard/ui';
-import {
-  seedLeads,
-  seedPosts,
-  useStore,
-  type Lead,
-  type Post,
-  type Workspace,
-} from '@/lib/store';
+import { type Lead, type Post, type Workspace, seedLeads, seedPosts, useStore } from '@/lib/store';
+import { Check, Trash2 } from 'lucide-react';
+import { useState } from 'react';
 
 const SEED_WORKSPACES: Workspace[] = [
   { id: 'w1', name: 'Personal — Sai', brandColor: '#3FE07A' },
@@ -29,10 +22,7 @@ export default function SettingsPage() {
   function addWorkspace() {
     const name = prompt('Workspace name?');
     if (!name) return;
-    setWorkspaces((prev) => [
-      ...prev,
-      { id: `w${Date.now()}`, name, brandColor: '#3FE07A' },
-    ]);
+    setWorkspaces((prev) => [...prev, { id: `w${Date.now()}`, name, brandColor: '#3FE07A' }]);
   }
 
   function resetData() {
@@ -45,10 +35,7 @@ export default function SettingsPage() {
 
   return (
     <>
-      <PageHeader
-        title="Settings"
-        subtitle="Workspaces, providers, and your local data."
-      />
+      <PageHeader title="Settings" subtitle="Workspaces, providers, and your local data." />
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         <Card>
@@ -71,13 +58,15 @@ export default function SettingsPage() {
                 }`}
               >
                 <span className="flex items-center gap-3">
-                  <span
-                    className="h-3 w-3 rounded-full"
-                    style={{ background: w.brandColor }}
-                  />
+                  <span className="h-3 w-3 rounded-full" style={{ background: w.brandColor }} />
                   {w.name}
                 </span>
-                {activeWs === w.id && <Pill tone="good"><Check className="mr-1 h-3 w-3 inline" />active</Pill>}
+                {activeWs === w.id && (
+                  <Pill tone="good">
+                    <Check className="mr-1 h-3 w-3 inline" />
+                    active
+                  </Pill>
+                )}
               </button>
             ))}
           </div>

@@ -1,116 +1,170 @@
 <div align="center">
-<img width="1101" height="352" alt="Screenshot 2026-05-11 at 10 44 09 AM" src="https://github.com/user-attachments/assets/ec404f5a-3b65-43cb-9ae5-6a1c3e604f17" />
+<img width="1101" height="352" alt="Content Vigilante" src="https://github.com/user-attachments/assets/ec404f5a-3b65-43cb-9ae5-6a1c3e604f17" />
 
 
 # Content Vigilante
 
-**Patrols your content for off-brand violations.**
+**The local-first, open-source marketing operating system.**
 
-An open-source brand voice auditor. Drop in your brand guidelines and any piece of content. Get a scored report with annotated deviations and suggested rewrites. Multilingual. Local-first. Bring your own LLM.
+Brand-voice auditor + content calendar + multi-platform publishing + hybrid CRM, in one workspace. Drop in your brand guide, write across LinkedIn / X / Instagram / Facebook / Newsletter with inline guardrails, schedule, publish, and report — all without giving up data sovereignty.
 
 [![CI](https://github.com/content-vigilante/Content-Vigilante/actions/workflows/ci.yml/badge.svg)](https://github.com/content-vigilante/Content-Vigilante/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Stars](https://img.shields.io/github/stars/content-vigilante/Content-Vigilante?style=social)](https://github.com/content-vigilante/Content-Vigilante)
 
+**Live:** [content-vigilante-vercel.vercel.app](https://content-vigilante-vercel.vercel.app)
+
 </div>
 
-> Status: **active development**, v0.1 launch coming soon. Watch the repo to follow.
+> Status: **v1.2 shipped** — dashboard MVP, AI generator, PDF brand-guide ingestion, GA4 + LinkedIn + X integrations, cross-device sync.
 
 ## Why this exists
 
-Every marketing team has a brand guide nobody reads. Tone drifts across writers, agencies, and freelancers. By the time the CMO notices, 50 pieces of off-brand content are live. Existing tools generate content. None of them check it.
+Every marketing team has a brand guide nobody reads. Tone drifts across writers, agencies, and freelancers. By the time the CMO notices, 50 pieces of off-brand content are live. Most tools generate content. None of them check it — let alone schedule it, publish it, and keep the brand intact across channels.
 
-Content Vigilante is the missing audit layer.
+Content Vigilante is the layer in between.
 
-## What it does
+## What's in the box
 
-- **Voice scoring** — rates content against your guide on tone, vocabulary, structure, and readability.
-- **Annotated deviations** — every flagged passage shows the rule it broke and a suggested rewrite.
-- **Multilingual** — first-class support for EN and IT in v0.1. FR and DE coming in v0.2 / v0.3.
-- **Local-first** — your content never leaves your machine. BYO LLM (Anthropic, OpenAI, or local Ollama).
-- **CI integration** — block off-brand content at PR time.
-- **Multi-judge eval** — every score includes inter-model agreement so you know when to trust it.
+**Brand Guardrails — the Vigilante core**
+- Hybrid AI judges: tone (LLM) · vocabulary (deterministic + LLM) · structure & readability (deterministic).
+- Multilingual: EN + IT in v0.1; FR + DE queued.
+- BYO LLM (Anthropic, OpenAI, or local Ollama) — keys never leave your browser session.
+- **PDF guide ingestion** — drop a PDF, get a structured rule set wired into the audit pipeline.
 
-## Quick start
+**Studio**
+- Multi-platform composer (LinkedIn, IG, X, FB, Newsletter) with character & readability counters.
+- Inline brand-score (live as you type), forbidden-term flags, FK readability.
+- AI caption generator — 5 brand-aware variants per prompt, routed through your own provider.
+- One-click publish to LinkedIn and X (OAuth wired).
+
+**Calendar**
+- Drag-and-drop weekly grid across all channels.
+- **Publish-due** action runs your scheduled queue through real platform APIs.
+
+**Pipeline**
+- Hybrid CRM. Content kanban (Idea → Drafting → Scheduled → Published) and sales pipeline (Lead → Discovery → Proposal → Closed) side-by-side.
+
+**Analytics**
+- KPI cards, correlation engine, best-time heatmap, ROI calculator.
+- **Live GA4** when the integration is configured; falls back to sample data.
+
+**System**
+- Cross-device sync via Vercel KV (in-memory fallback for dev).
+- Workspace switcher for client / brand identities.
+- Connections panel showing every integration's status and exact env vars to enable it.
+
+## Quick start — web app
 
 ```bash
-# install
-npm install -g @content-vigilante/cli
-
-# initialize with your brand guide (PDF or markdown)
-cv init --guide ./brand-guidelines.pdf
-
-# audit content
-cv audit ./blog-post.md
-cv audit https://yoursite.com/landing-page
-
-# launch the local web UI
-cv serve
+git clone https://github.com/content-vigilante/Content-Vigilante
+cd Content-Vigilante
+bun install
+bun run --filter @content-vigilante/web dev
+# → http://localhost:3000
 ```
 
-## Roadmap
+Or use the live deployment: **[content-vigilante-vercel.vercel.app](https://content-vigilante-vercel.vercel.app)**.
 
-- [x] Repo + CI scaffolding, npm placeholders published
-- [x] LLM provider abstraction (Anthropic / OpenAI / Ollama)
-- [x] Brand guide loaders (JSON + markdown)
-- [x] Real Mailchimp guide bundled (57 rules)
-- [x] Tone judge, vocabulary judge (hybrid), structure judge (deterministic)
-- [x] sqlite-vec embedding store + Ollama bge-m3 + OpenAI 3-small providers
-- [x] Aggregator with weighted scoring + dedupe
-- [x] Eval runner with CI regression gate (15 hand-labeled cases)
-- [ ] CLI (`cv audit`, `cv init`, `cv serve`) wired to the engine — week 2
-- [ ] URL extractor + Italian eval cases + bundled IT guide — week 2
-- [ ] Next.js web UI on `contentvigilante.vercel.app` — week 3
-- [ ] v1.0 — Full polish, docs site, Product Hunt launch
+## Quick start — CLI
 
-For the technical deep-dive see [`docs/TECHNICAL_OVERVIEW.md`](docs/TECHNICAL_OVERVIEW.md) and [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
+```bash
+npm install -g @content-vigilante/cli
+cv init --guide ./brand-guidelines.pdf
+cv audit ./blog-post.md
+cv audit https://yoursite.com/landing-page
+```
+
+## Enabling the integrations
+
+All integrations activate via Vercel env vars — the app surfaces "not configured" / "connect" / "connected" states automatically. Full setup walk-through in [`docs/v1.1-INTEGRATIONS.md`](docs/v1.1-INTEGRATIONS.md) and [`docs/v1.2-CHANGES.md`](docs/v1.2-CHANGES.md).
+
+| Integration | Env vars | Activates |
+|---|---|---|
+| **GA4** | `GA4_CLIENT_ID`, `GA4_CLIENT_SECRET` | Live analytics on `/dashboard/analytics` |
+| **LinkedIn** | `LINKEDIN_CLIENT_ID`, `LINKEDIN_CLIENT_SECRET` | Publish button in Studio + Calendar |
+| **X (Twitter)** | `X_CLIENT_ID`, `X_CLIENT_SECRET` | Publish button for X posts (PKCE OAuth) |
+| **Vercel KV** | `KV_REST_API_URL`, `KV_REST_API_TOKEN` | Real cross-device sync (auto-injected when you create a KV store) |
+| Cookie encryption | `CV_COOKIE_SECRET` | Required once any OAuth integration is enabled |
 
 ## Architecture
 
 ```
-┌──────────────────────┐
-│   USER INPUTS        │  paste / URL / PDF / Figma
-└──────────┬───────────┘
+┌──────────────────────────────────────────────┐
+│  USER INPUTS                                 │  text · URL · PDF · scheduled post
+└──────────┬───────────────────────────────────┘
            │
-┌──────────▼───────────┐
-│   CONTENT EXTRACTOR  │  per-format parsers → normalized text
-└──────────┬───────────┘
-           │
-┌──────────▼───────────┐
-│   BRAND GUIDE INDEX  │  pgvector / sqlite-vec, multilingual embeddings
-└──────────┬───────────┘
-           │
-┌──────────▼───────────┐
-│   3 JUDGES           │  tone (LLM) · vocabulary (rules+LLM) · structure (deterministic)
-└──────────┬───────────┘
-           │
-┌──────────▼───────────┐
-│   AGGREGATOR         │  → score, issues, suggestions, multi-judge agreement
-└──────────────────────┘
+┌──────────▼───────────────┐  ┌────────────────────────────┐
+│  EXTRACTORS              │  │  BRAND GUIDE INDEX         │
+│  text · url · pdf        │  │  bundled Mailchimp + IT    │
+│                          │  │  + your uploaded PDF       │
+└──────────┬───────────────┘  └────────────┬───────────────┘
+           │                               │
+           └───────────────┬───────────────┘
+                           │
+┌──────────────────────────▼───────────────────────────────┐
+│  AGGREGATOR (3 judges in parallel)                       │
+│  tone (LLM) · vocab (rules+LLM) · structure (det.)       │
+└──────────────────────────┬───────────────────────────────┘
+                           │
+┌──────────────────────────▼───────────────────────────────┐
+│  REPORT                                                  │
+│  → score · annotated issues · rewrites · multi-judge     │
+│    agreement · readability                               │
+└──────────────────────────────────────────────────────────┘
+
+PUBLISH PATH                       SYNC PATH
+   Studio / Calendar                   localStorage (browser)
+        │                                   ↕
+   /api/{linkedin,x}/publish           /api/sync (KV adapter)
+        │                                   ↕
+   platform APIs                       any device with token
 ```
 
-See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for the full design.
+Deeper: [`docs/TECHNICAL_OVERVIEW.md`](docs/TECHNICAL_OVERVIEW.md), [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md), [`docs/PRD.md`](docs/PRD.md).
 
-## Built with
+## Roadmap
 
-- [Bun](https://bun.sh) + TypeScript
-- [Vercel AI SDK](https://sdk.vercel.ai) (provider-agnostic LLM access)
-- [Next.js 15](https://nextjs.org) + [shadcn/ui](https://ui.shadcn.com) for the web UI
-- [sqlite-vec](https://github.com/asg017/sqlite-vec) for local vector search
-- [Biome](https://biomejs.dev) for lint + format
+- [x] Core audit engine — extractors, embeddings, 3 judges, aggregator
+- [x] Eval runner with CI regression gate
+- [x] CLI (`cv audit`, `cv init`, `cv serve`)
+- [x] Italian eval cases + bundled IT guide
+- [x] Next.js dashboard with Calendar / Studio / Guardrails / Analytics / Pipeline / Settings
+- [x] AI caption generator wired to user's provider
+- [x] PDF brand-guide ingestion
+- [x] GA4 OAuth + Data API
+- [x] LinkedIn OAuth + publish
+- [x] X (Twitter) OAuth + publish
+- [x] Cross-device sync (Vercel KV)
+- [x] Vercel cron scaffold for scheduled publishing
+- [ ] **v1.3** — server-driven cron publishing (migrate platform tokens to KV)
+- [ ] **v1.3** — named-account auth via NextAuth (optional)
+- [ ] **v1.3** — Instagram + Facebook publishing
+- [ ] **v1.4** — competitor watchlist, dark social tracker, client approval portal
+- [ ] **v2.0** — Product Hunt launch
 
 ## Eval suite
 
 Every prompt change is regression-tested against a public, hand-labeled eval suite.
 
-- 30 cases per language (EN + IT in v0.1)
-- Each case asserts: expected score range, lines that must be flagged, lines that must not be flagged
-- CI fails on >5% F1 regression
-- See [`packages/eval/`](packages/eval) for cases and methodology
+- 20+ cases across EN + IT (FR + DE queued).
+- Each case asserts: expected score range, lines that must be flagged, lines that must not be flagged.
+- CI fails on >5% weighted-F1 regression.
+- See [`packages/eval/`](packages/eval) for cases and methodology.
+
+## Built with
+
+- [Bun](https://bun.sh) + TypeScript monorepo
+- [Next.js 15](https://nextjs.org) (App Router) + Tailwind v4
+- [Vercel AI SDK](https://sdk.vercel.ai) for provider-agnostic LLM access
+- [sqlite-vec](https://github.com/asg017/sqlite-vec) for local vector search
+- [Biome](https://biomejs.dev) for lint + format
+- Vercel KV (sync) · Vercel Cron (scheduled jobs)
+- Editorial brand kit (Fraunces display + JetBrains Mono eyebrows)
 
 ## Contributing
 
-Content Vigilante is under active development. Issues and PRs are welcome once v0.1 ships. For now, **star the repo to follow along.**
+Issues and PRs welcome. For now: **star the repo to follow along.**
 
 ## License
 

@@ -1,4 +1,4 @@
-import { createHash, createCipheriv, createDecipheriv, randomBytes } from 'node:crypto';
+import { createCipheriv, createDecipheriv, createHash, randomBytes } from 'node:crypto';
 
 const COOKIE_SECRET = process.env.CV_COOKIE_SECRET ?? 'dev-secret-replace-in-production';
 
@@ -9,10 +9,7 @@ function key() {
 export function seal(value: object): string {
   const iv = randomBytes(12);
   const cipher = createCipheriv('aes-256-gcm', key(), iv);
-  const enc = Buffer.concat([
-    cipher.update(JSON.stringify(value), 'utf8'),
-    cipher.final(),
-  ]);
+  const enc = Buffer.concat([cipher.update(JSON.stringify(value), 'utf8'), cipher.final()]);
   const tag = cipher.getAuthTag();
   return Buffer.concat([iv, tag, enc]).toString('base64url');
 }

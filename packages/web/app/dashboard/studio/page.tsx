@@ -1,11 +1,22 @@
 'use client';
 
+import { Button, Card, PLATFORM_META, PageHeader, Pill } from '@/components/dashboard/ui';
+import { type Platform, type Post, seedPosts, useStore } from '@/lib/store';
 import { Linkedin, Loader2, Save, Send, Sparkles, Wand2 } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
-import { Button, Card, PageHeader, PLATFORM_META, Pill } from '@/components/dashboard/ui';
-import { seedPosts, useStore, type Platform, type Post } from '@/lib/store';
 
-const FORBIDDEN = ['synergy', 'synergistic', 'leverage', 'ninja', 'rockstar', 'crush it', 'automagical', 'utilize', 'best-in-class', 'cutting-edge'];
+const FORBIDDEN = [
+  'synergy',
+  'synergistic',
+  'leverage',
+  'ninja',
+  'rockstar',
+  'crush it',
+  'automagical',
+  'utilize',
+  'best-in-class',
+  'cutting-edge',
+];
 
 function fleschKincaid(text: string) {
   const sentences = Math.max(text.split(/[.!?]+/).filter(Boolean).length, 1);
@@ -286,16 +297,10 @@ export default function StudioPage() {
                 className="w-full rounded-md border border-[var(--color-border)] bg-[var(--color-bg-elev)] px-3 py-2 text-xs outline-none focus:border-[var(--color-accent)]"
               />
               <Button onClick={runGenerate} variant="outline">
-                {aiLoading ? (
-                  <Loader2 className="h-3 w-3 animate-spin" />
-                ) : (
-                  'Run'
-                )}
+                {aiLoading ? <Loader2 className="h-3 w-3 animate-spin" /> : 'Run'}
               </Button>
             </div>
-            {aiError && (
-              <div className="mb-2 text-[11px] text-[var(--color-warn)]">{aiError}</div>
-            )}
+            {aiError && <div className="mb-2 text-[11px] text-[var(--color-warn)]">{aiError}</div>}
             <div className="space-y-1.5">
               {variants.length === 0 && !aiLoading && (
                 <div className="text-xs text-[var(--color-fg-muted)]">
@@ -356,16 +361,21 @@ export default function StudioPage() {
           <span className="text-xs text-[var(--color-fg-muted)]">{posts.length} total</span>
         </div>
         <div className="divide-y divide-[var(--color-border)]">
-          {posts.slice(-6).reverse().map((p) => (
-            <div key={p.id} className="flex items-center gap-3 py-2.5 text-sm">
-              <Pill tone={PLATFORM_META[p.platform]?.tone}>{PLATFORM_META[p.platform]?.label}</Pill>
-              <div className="min-w-0 flex-1 truncate">{p.title}</div>
-              {p.brandScore != null && (
-                <span className="text-xs text-[var(--color-fg-muted)]">score {p.brandScore}</span>
-              )}
-              <Pill tone={p.status === 'published' ? 'good' : 'default'}>{p.status}</Pill>
-            </div>
-          ))}
+          {posts
+            .slice(-6)
+            .reverse()
+            .map((p) => (
+              <div key={p.id} className="flex items-center gap-3 py-2.5 text-sm">
+                <Pill tone={PLATFORM_META[p.platform]?.tone}>
+                  {PLATFORM_META[p.platform]?.label}
+                </Pill>
+                <div className="min-w-0 flex-1 truncate">{p.title}</div>
+                {p.brandScore != null && (
+                  <span className="text-xs text-[var(--color-fg-muted)]">score {p.brandScore}</span>
+                )}
+                <Pill tone={p.status === 'published' ? 'good' : 'default'}>{p.status}</Pill>
+              </div>
+            ))}
         </div>
       </Card>
     </>

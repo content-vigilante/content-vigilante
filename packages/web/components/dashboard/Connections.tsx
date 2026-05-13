@@ -93,9 +93,7 @@ function Row({
           Connect <ExternalLink className="h-3 w-3" />
         </Button>
       )}
-      {!configured && (
-        <Pill tone="warn">not configured</Pill>
-      )}
+      {!configured && <Pill tone="warn">not configured</Pill>}
     </div>
   );
 }
