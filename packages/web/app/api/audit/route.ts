@@ -20,6 +20,7 @@ interface Body {
   provider?: 'anthropic' | 'openai' | 'ollama';
   apiKey?: string;
   model?: string;
+  customGuide?: BrandGuide;
 }
 
 interface RouteDeps {
@@ -102,7 +103,9 @@ export function createPostHandler(overrides: Partial<RouteDeps> = {}) {
     try {
       const llm = deps.pickProvider(body.provider, body.apiKey, body.model);
       const { text, language } = await deps.extractContent(input);
-      const guide = await deps.getGuide(language);
+      const guide = body.customGuide?.rules?.length
+        ? body.customGuide
+        : await deps.getGuide(language);
       const result = await deps.audit({
         content: text,
         contentLanguage: language,
