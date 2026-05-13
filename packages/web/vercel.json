@@ -2,5 +2,11 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "nextjs",
   "buildCommand": "cd ../.. && bun install --frozen-lockfile && bun run --filter @content-vigilante/web build",
-  "installCommand": "echo 'install handled in buildCommand'"
+  "installCommand": "echo 'install handled in buildCommand'",
+  "crons": [
+    {
+      "path": "/api/cron/publish",
+      "schedule": "*/15 * * * *"
+    }
+  ]
 }

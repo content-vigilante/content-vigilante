@@ -1,6 +1,6 @@
 'use client';
 
-import { Linkedin, Loader2, Save, Sparkles, Wand2 } from 'lucide-react';
+import { Linkedin, Loader2, Save, Send, Sparkles, Wand2 } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { Button, Card, PageHeader, PLATFORM_META, Pill } from '@/components/dashboard/ui';
 import { seedPosts, useStore, type Platform, type Post } from '@/lib/store';
@@ -96,19 +96,20 @@ export default function StudioPage() {
     }
   }
 
-  async function publishLinkedIn() {
+  async function publishNow(target: 'linkedin' | 'x') {
     if (!body.trim()) return;
     setPublishing(true);
     setPublishMsg(null);
+    const endpoint = target === 'linkedin' ? '/api/linkedin/publish' : '/api/x/publish';
     try {
-      const res = await fetch('/api/linkedin/publish', {
+      const res = await fetch(endpoint, {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({ text: body }),
       });
       const json = await res.json();
       if (!res.ok) throw new Error(json.error ?? 'Publish failed.');
-      setPublishMsg('Published to LinkedIn ✓');
+      setPublishMsg(`Published to ${target === 'linkedin' ? 'LinkedIn' : 'X'} ✓`);
       const id = `p${Date.now()}`;
       setPosts((prev) => [
         ...prev,
@@ -116,7 +117,7 @@ export default function StudioPage() {
           id,
           title: title || body.slice(0, 60),
           body,
-          platform: 'linkedin',
+          platform: target,
           status: 'published',
           createdAt: new Date().toISOString(),
           brandScore: check.score,
@@ -157,12 +158,14 @@ export default function StudioPage() {
         subtitle="Compose once, ship everywhere. Brand Guardrails run inline as you type."
         actions={
           <>
-            {platform === 'linkedin' && (
-              <Button onClick={publishLinkedIn} variant="outline">
+            {(platform === 'linkedin' || platform === 'x') && (
+              <Button onClick={() => publishNow(platform)} variant="outline">
                 {publishing ? (
                   <Loader2 className="h-4 w-4 animate-spin" />
-                ) : (
+                ) : platform === 'linkedin' ? (
                   <Linkedin className="h-4 w-4" />
+                ) : (
+                  <Send className="h-4 w-4" />
                 )}
                 Publish
               </Button>
