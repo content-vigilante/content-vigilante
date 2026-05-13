@@ -1,8 +1,8 @@
 'use client';
 
+import { Button, Card, PageHeader, Pill, Stat } from '@/components/dashboard/ui';
 import { Loader2, RefreshCw } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { Button, Card, PageHeader, Pill, Stat } from '@/components/dashboard/ui';
 
 const TRAFFIC = [12, 18, 14, 22, 19, 28, 26, 32, 30, 38, 41, 39, 47, 52];
 const SOCIAL = [5, 9, 7, 11, 10, 14, 13, 18, 17, 22, 24, 23, 28, 31];
@@ -141,9 +141,7 @@ export default function AnalyticsPage() {
             <Pill tone="warn">connect GA4 in Settings</Pill>
           )}
         </div>
-        {error && (
-          <div className="mt-2 text-xs text-[var(--color-bad)]">{error}</div>
-        )}
+        {error && <div className="mt-2 text-xs text-[var(--color-bad)]">{error}</div>}
       </Card>
 
       <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
@@ -201,12 +199,7 @@ export default function AnalyticsPage() {
                   </div>
                 ))}
                 {DAYS.map((day, di) => (
-                  <ContentRow
-                    key={day}
-                    day={day}
-                    row={HEATMAP[di]}
-                    max={max}
-                  />
+                  <ContentRow key={day} day={day} row={HEATMAP[di]} max={max} />
                 ))}
               </div>
             </div>
@@ -272,7 +265,9 @@ function ContentRow({ day, row, max }: { day: string; row: number[]; max: number
           <div
             key={i}
             className="h-6 w-7 rounded-sm"
-            style={{ background: `color-mix(in oklab, var(--color-accent) ${op * 100}%, transparent)` }}
+            style={{
+              background: `color-mix(in oklab, var(--color-accent) ${op * 100}%, transparent)`,
+            }}
             title={`${day} ${i}: ${v}`}
           />
         );

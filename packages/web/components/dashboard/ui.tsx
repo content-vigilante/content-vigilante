@@ -94,9 +94,9 @@ export function Button({
   ...props
 }: React.ButtonHTMLAttributes<HTMLButtonElement> & { variant?: 'primary' | 'ghost' | 'outline' }) {
   const variants = {
-    primary:
-      'bg-[var(--color-accent)] text-[var(--color-accent-fg)] hover:opacity-90',
-    ghost: 'text-[var(--color-fg-muted)] hover:bg-[var(--color-bg-elev)] hover:text-[var(--color-fg)]',
+    primary: 'bg-[var(--color-accent)] text-[var(--color-accent-fg)] hover:opacity-90',
+    ghost:
+      'text-[var(--color-fg-muted)] hover:bg-[var(--color-bg-elev)] hover:text-[var(--color-fg)]',
     outline:
       'border border-[var(--color-border)] text-[var(--color-fg)] hover:bg-[var(--color-bg-elev)]',
   };
@@ -110,10 +110,7 @@ export function Button({
   );
 }
 
-export const PLATFORM_META: Record<
-  string,
-  { label: string; tone: string; limit: number }
-> = {
+export const PLATFORM_META: Record<string, { label: string; tone: string; limit: number }> = {
   linkedin: { label: 'LinkedIn', tone: 'accent', limit: 3000 },
   instagram: { label: 'Instagram', tone: 'warn', limit: 2200 },
   x: { label: 'X', tone: 'default', limit: 280 },

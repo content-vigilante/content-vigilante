@@ -1,5 +1,5 @@
+import { COOKIE_OPTS, seal } from '@/lib/cookies';
 import { NextResponse } from 'next/server';
-import { seal, COOKIE_OPTS } from '@/lib/cookies';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';

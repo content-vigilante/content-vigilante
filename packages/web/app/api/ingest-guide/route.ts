@@ -3,7 +3,7 @@ import {
   createOllamaProvider,
   createOpenAIProvider,
 } from '@content-vigilante/core/llm';
-import type { BrandRule, IssueType, Language, LLMProvider } from '@content-vigilante/core/types';
+import type { BrandRule, IssueType, LLMProvider, Language } from '@content-vigilante/core/types';
 import { NextResponse } from 'next/server';
 
 export const runtime = 'nodejs';
@@ -114,7 +114,8 @@ ${text.slice(0, 18000)}
     return parsed
       .filter(
         (r): r is BrandRule =>
-          r && typeof r.id === 'string' &&
+          r &&
+          typeof r.id === 'string' &&
           typeof r.description === 'string' &&
           VALID_CATEGORIES.includes(r.category),
       )
@@ -149,7 +150,9 @@ export async function POST(req: Request) {
       pdf?: (b: Buffer) => Promise<{ text?: string }>;
     } & ((b: Buffer) => Promise<{ text?: string }>);
     const pdfParse =
-      pdfParseMod.default ?? pdfParseMod.pdf ?? (pdfParseMod as unknown as (b: Buffer) => Promise<{ text?: string }>);
+      pdfParseMod.default ??
+      pdfParseMod.pdf ??
+      (pdfParseMod as unknown as (b: Buffer) => Promise<{ text?: string }>);
     const buf = Buffer.from(await file.arrayBuffer());
     const parsed = await pdfParse(buf);
     text = parsed.text ?? '';

@@ -1,5 +1,5 @@
+import { COOKIE_OPTS, seal, unseal } from '@/lib/cookies';
 import { NextResponse } from 'next/server';
-import { seal, unseal, COOKIE_OPTS } from '@/lib/cookies';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -39,7 +39,10 @@ export async function POST(req: Request) {
   const cookieMatch = req.headers.get('cookie')?.match(/cv_ga4=([^;]+)/);
   let token = unseal<Token>(cookieMatch?.[1]);
   if (!token) {
-    return NextResponse.json({ error: 'Not connected. Visit /api/ga4/connect first.' }, { status: 401 });
+    return NextResponse.json(
+      { error: 'Not connected. Visit /api/ga4/connect first.' },
+      { status: 401 },
+    );
   }
 
   const { propertyId, dateRange = '30daysAgo' } = (await req.json().catch(() => ({}))) as {
@@ -47,7 +50,10 @@ export async function POST(req: Request) {
     dateRange?: string;
   };
   if (!propertyId) {
-    return NextResponse.json({ error: 'propertyId required (e.g. "properties/12345").' }, { status: 400 });
+    return NextResponse.json(
+      { error: 'propertyId required (e.g. "properties/12345").' },
+      { status: 400 },
+    );
   }
 
   let refreshed: Token | null = null;

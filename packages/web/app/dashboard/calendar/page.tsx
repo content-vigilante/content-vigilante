@@ -1,9 +1,9 @@
 'use client';
 
+import { Button, Card, PLATFORM_META, PageHeader, Pill } from '@/components/dashboard/ui';
+import { type Platform, type Post, seedPosts, useStore } from '@/lib/store';
 import { Loader2, Plus, Send } from 'lucide-react';
 import { useMemo, useState } from 'react';
-import { Button, Card, PageHeader, PLATFORM_META, Pill } from '@/components/dashboard/ui';
-import { seedPosts, useStore, type Platform, type Post } from '@/lib/store';
 
 function startOfWeek(d: Date) {
   const x = new Date(d);
@@ -34,8 +34,7 @@ export default function CalendarPage() {
     const log: string[] = [];
     for (const p of due) {
       try {
-        const endpoint =
-          p.platform === 'linkedin' ? '/api/linkedin/publish' : '/api/x/publish';
+        const endpoint = p.platform === 'linkedin' ? '/api/linkedin/publish' : '/api/x/publish';
         const res = await fetch(endpoint, {
           method: 'POST',
           headers: { 'content-type': 'application/json' },
@@ -44,9 +43,7 @@ export default function CalendarPage() {
         const json = await res.json();
         if (!res.ok) throw new Error(json.error ?? 'failed');
         setPosts((prev) =>
-          prev.map((x) =>
-            x.id === p.id ? { ...x, status: 'published' as const } : x,
-          ),
+          prev.map((x) => (x.id === p.id ? { ...x, status: 'published' as const } : x)),
         );
         log.push(`✓ ${p.platform.toUpperCase()}: ${p.title}`);
       } catch (err) {
@@ -83,9 +80,7 @@ export default function CalendarPage() {
   function moveTo(id: string, d: Date) {
     setPosts((prev) =>
       prev.map((p) =>
-        p.id === id
-          ? { ...p, scheduledFor: d.toISOString(), status: 'scheduled' as const }
-          : p,
+        p.id === id ? { ...p, scheduledFor: d.toISOString(), status: 'scheduled' as const } : p,
       ),
     );
   }
@@ -158,9 +153,7 @@ export default function CalendarPage() {
               <div
                 key={i}
                 className={
-                  l.startsWith('✓')
-                    ? 'text-[var(--color-good)]'
-                    : 'text-[var(--color-bad)]'
+                  l.startsWith('✓') ? 'text-[var(--color-good)]' : 'text-[var(--color-bad)]'
                 }
               >
                 {l}
@@ -182,9 +175,7 @@ export default function CalendarPage() {
                 setDragId(null);
               }}
               className={`min-h-[260px] rounded-lg border bg-[var(--color-bg-card)] p-2 transition ${
-                isToday
-                  ? 'border-[var(--color-accent)]'
-                  : 'border-[var(--color-border)]'
+                isToday ? 'border-[var(--color-accent)]' : 'border-[var(--color-border)]'
               }`}
             >
               <div className="mb-2 flex items-center justify-between px-1">

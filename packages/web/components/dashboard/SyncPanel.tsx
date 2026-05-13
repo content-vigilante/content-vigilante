@@ -157,8 +157,8 @@ export function SyncPanel() {
         </div>
       )}
       <div className="text-[11px] text-[var(--color-fg-muted)]">
-        Paste the same token on each device to sync your posts, leads, workspaces, and brand
-        guide. No accounts. Tokens are opaque — keep yours secret.
+        Paste the same token on each device to sync your posts, leads, workspaces, and brand guide.
+        No accounts. Tokens are opaque — keep yours secret.
       </div>
     </div>
   );

@@ -1,5 +1,6 @@
 'use client';
 
+import { Owl } from '@/components/Owl';
 import {
   BarChart3,
   CalendarDays,
@@ -11,7 +12,6 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Owl } from '@/components/Owl';
 
 const items = [
   { href: '/dashboard', label: 'Overview', icon: LayoutDashboard },
