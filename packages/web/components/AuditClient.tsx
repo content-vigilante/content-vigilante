@@ -59,6 +59,13 @@ export function AuditClient() {
     }
     setLoading(true);
     try {
+      let customGuide: unknown;
+      try {
+        const raw = localStorage.getItem('cv:store:customGuide');
+        if (raw) customGuide = JSON.parse(raw);
+      } catch {
+        /* ignore */
+      }
       const res = await fetch('/api/audit', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
@@ -69,6 +76,7 @@ export function AuditClient() {
           provider,
           apiKey,
           model: model || undefined,
+          customGuide,
         }),
       });
       if (!res.ok) {

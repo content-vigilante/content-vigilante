@@ -2,6 +2,7 @@
 
 import { Check, Trash2 } from 'lucide-react';
 import { useState } from 'react';
+import { Connections } from '@/components/dashboard/Connections';
 import { Button, Card, PageHeader, Pill } from '@/components/dashboard/ui';
 import {
   seedLeads,
@@ -79,6 +80,11 @@ export default function SettingsPage() {
               </button>
             ))}
           </div>
+        </Card>
+
+        <Card className="lg:col-span-2">
+          <h3 className="mb-3 font-semibold">Integrations</h3>
+          <Connections />
         </Card>
 
         <Card>

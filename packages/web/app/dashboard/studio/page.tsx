@@ -1,6 +1,6 @@
 'use client';
 
-import { Loader2, Save, Sparkles, Wand2 } from 'lucide-react';
+import { Linkedin, Loader2, Save, Sparkles, Wand2 } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { Button, Card, PageHeader, PLATFORM_META, Pill } from '@/components/dashboard/ui';
 import { seedPosts, useStore, type Platform, type Post } from '@/lib/store';
@@ -54,6 +54,8 @@ export default function StudioPage() {
   const [aiError, setAiError] = useState<string | null>(null);
   const [hasKey, setHasKey] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [publishing, setPublishing] = useState(false);
+  const [publishMsg, setPublishMsg] = useState<string | null>(null);
 
   const meta = PLATFORM_META[platform];
   const check = useMemo(() => brandCheck(body), [body]);
@@ -94,6 +96,39 @@ export default function StudioPage() {
     }
   }
 
+  async function publishLinkedIn() {
+    if (!body.trim()) return;
+    setPublishing(true);
+    setPublishMsg(null);
+    try {
+      const res = await fetch('/api/linkedin/publish', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ text: body }),
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error ?? 'Publish failed.');
+      setPublishMsg('Published to LinkedIn ✓');
+      const id = `p${Date.now()}`;
+      setPosts((prev) => [
+        ...prev,
+        {
+          id,
+          title: title || body.slice(0, 60),
+          body,
+          platform: 'linkedin',
+          status: 'published',
+          createdAt: new Date().toISOString(),
+          brandScore: check.score,
+        },
+      ]);
+    } catch (err) {
+      setPublishMsg((err as Error).message);
+    } finally {
+      setPublishing(false);
+    }
+  }
+
   function save() {
     if (!title && !body) return;
     const id = `p${Date.now()}`;
@@ -121,12 +156,29 @@ export default function StudioPage() {
         title="Studio"
         subtitle="Compose once, ship everywhere. Brand Guardrails run inline as you type."
         actions={
-          <Button onClick={save}>
-            <Save className="h-4 w-4" /> {saved ? 'Saved' : 'Save draft'}
-          </Button>
+          <>
+            {platform === 'linkedin' && (
+              <Button onClick={publishLinkedIn} variant="outline">
+                {publishing ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Linkedin className="h-4 w-4" />
+                )}
+                Publish
+              </Button>
+            )}
+            <Button onClick={save}>
+              <Save className="h-4 w-4" /> {saved ? 'Saved' : 'Save draft'}
+            </Button>
+          </>
         }
       />
 
+      {publishMsg && (
+        <div className="mb-4 rounded-md border border-[var(--color-border)] bg-[var(--color-bg-card)] px-4 py-2 text-sm">
+          {publishMsg}
+        </div>
+      )}
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
         <Card className="lg:col-span-2">
           <div className="mb-4 flex flex-wrap gap-1.5">
