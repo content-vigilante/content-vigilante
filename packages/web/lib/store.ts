@@ -127,7 +127,16 @@ export function useStore<T>(key: string, fallback: T): [T, (v: T | ((prev: T) =>
   return [hydrated ? value : fallback, update];
 }
 
-export const seedCampaigns: Campaign[] = [
+/**
+ * When NEXT_PUBLIC_CV_DEMO_MODE is "1", the seed arrays return rich mock data so
+ * the demo deployment looks alive on first load. When unset (production app),
+ * they return empty so every user starts with a clean workspace.
+ */
+export const isDemoMode = (): boolean => process.env.NEXT_PUBLIC_CV_DEMO_MODE === '1';
+
+const DEMO = isDemoMode();
+
+const DEMO_CAMPAIGNS: Campaign[] = [
   {
     id: 'cmp-launch',
     name: 'v2 Launch wave',
@@ -144,7 +153,9 @@ export const seedCampaigns: Campaign[] = [
   },
 ];
 
-export const seedPosts: Post[] = [
+export const seedCampaigns: Campaign[] = DEMO ? DEMO_CAMPAIGNS : [];
+
+const DEMO_POSTS: Post[] = [
   {
     id: 'p1',
     title: 'Local-first launch teaser',
@@ -186,7 +197,9 @@ export const seedPosts: Post[] = [
   },
 ];
 
-export const seedComments: Comment[] = [
+export const seedPosts: Post[] = DEMO ? DEMO_POSTS : [];
+
+const DEMO_COMMENTS: Comment[] = [
   {
     id: 'c1',
     platform: 'linkedin',
@@ -221,7 +234,9 @@ export const seedComments: Comment[] = [
   },
 ];
 
-export const seedLeads: Lead[] = [
+export const seedComments: Comment[] = DEMO ? DEMO_COMMENTS : [];
+
+const DEMO_LEADS: Lead[] = [
   {
     id: 'l1',
     name: 'Carlos Mota — AD Magazine',
@@ -257,3 +272,5 @@ export const seedLeads: Lead[] = [
     createdAt: new Date().toISOString(),
   },
 ];
+
+export const seedLeads: Lead[] = DEMO ? DEMO_LEADS : [];
