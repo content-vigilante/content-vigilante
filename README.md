@@ -168,6 +168,10 @@ Every prompt change is regression-tested against a public, hand-labeled eval sui
 - Vercel KV (sync) · Vercel Cron (scheduled jobs)
 - Editorial brand kit (Fraunces display + JetBrains Mono eyebrows)
 
+## Security
+
+See [SECURITY.md](SECURITY.md) for the threat model, hardening checklist, and vulnerability reporting.
+
 ## Contributing
 
 Issues and PRs welcome. For now: **star the repo to follow along.**
