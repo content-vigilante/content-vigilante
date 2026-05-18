@@ -44,15 +44,15 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@ai-sdk/anthropic": "^1.0.0",
-    "@ai-sdk/openai": "^1.0.0",
+    "@ai-sdk/anthropic": "^3.0.78",
+    "@ai-sdk/openai": "^3.0.64",
     "@mozilla/readability": "^0.6.0",
-    "ai": "^4.0.0",
+    "ai": "^6.0.184",
     "franc": "^6.2.0",
     "linkedom": "^0.18.12",
     "ollama-ai-provider": "^1.0.0",
     "sqlite-vec": "^0.1.9",
     "unpdf": "^1.6.2",
-    "zod": "^3.23.0"
+    "zod": "^4.4.3"
   }
 }
