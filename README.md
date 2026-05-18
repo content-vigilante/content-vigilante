@@ -12,11 +12,11 @@ Brand-voice auditor + content calendar + multi-platform publishing + hybrid CRM,
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Stars](https://img.shields.io/github/stars/content-vigilante/Content-Vigilante?style=social)](https://github.com/content-vigilante/Content-Vigilante)
 
-**Live:** [content-vigilante-vercel.vercel.app](https://content-vigilante-vercel.vercel.app)
+**Live:** [content-vigilante-vercel.vercel.app](https://content-vigilante-vercel.vercel.app) (clean) · **Demo:** [content-vigilante-demo.vercel.app](https://content-vigilante-demo.vercel.app) (seeded)
 
 </div>
 
-> Status: **v2.4 shipped** — agency & brand edition. Per-workspace white-label, per-client billing, approval workflow, campaign rollups with ROI + AI diagnosis, lead.hot → CRM webhooks, role-based UI gates.
+> Status: **v2.5 shipped** — demo + prod deployments live, three core secrets wired across all Vercel envs, daily cron scheduled. KV + OAuth integrations are documented in [`docs/LAUNCH_CHECKLIST.md`](docs/LAUNCH_CHECKLIST.md) (each takes ~5–15 minutes). Built on the v2.4 agency & brand edition.
 
 ## Why this exists
 
