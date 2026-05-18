@@ -109,6 +109,12 @@ export default function OverviewPage() {
             >
               Open pipeline →
             </Link>
+            <Link
+              href="/dashboard/context"
+              className="rounded-md border border-[var(--color-accent)] bg-[var(--color-accent)]/10 px-3 py-2 text-sm font-medium text-[var(--color-cv-ink)] hover:bg-[var(--color-accent)]/20"
+            >
+              Ideas from your context →
+            </Link>
           </div>
         </Card>
         <Card className="md:col-span-2">

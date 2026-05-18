@@ -1,0 +1,64 @@
+import { NextResponse } from 'next/server';
+
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
+export const maxDuration = 60;
+
+const TEXTUAL = /\.(md|markdown|txt|csv|tsv|json|jsonl|yaml|yml|xml|html|htm|srt|vtt)$/i;
+const PDF = /\.pdf$/i;
+
+export async function POST(req: Request) {
+  const form = await req.formData().catch(() => null);
+  if (!form) {
+    return NextResponse.json({ error: 'multipart/form-data required.' }, { status: 400 });
+  }
+  const file = form.get('file');
+  if (!(file instanceof File)) {
+    return NextResponse.json({ error: 'file field required.' }, { status: 400 });
+  }
+
+  let text = '';
+  const name = file.name;
+
+  try {
+    if (PDF.test(name) || file.type === 'application/pdf') {
+      const pdfParseMod = (await import('pdf-parse')) as unknown as {
+        default?: (b: Buffer) => Promise<{ text?: string }>;
+        pdf?: (b: Buffer) => Promise<{ text?: string }>;
+      } & ((b: Buffer) => Promise<{ text?: string }>);
+      const pdfParse =
+        pdfParseMod.default ??
+        pdfParseMod.pdf ??
+        (pdfParseMod as unknown as (b: Buffer) => Promise<{ text?: string }>);
+      const buf = Buffer.from(await file.arrayBuffer());
+      const parsed = await pdfParse(buf);
+      text = parsed.text ?? '';
+    } else if (TEXTUAL.test(name) || file.type.startsWith('text/')) {
+      text = await file.text();
+    } else if (file.type.startsWith('image/')) {
+      // No OCR shipped yet. Store the filename so it still shows up in context.
+      text = `[image: ${name}] (OCR not enabled — filename used as caption)`;
+    } else {
+      // Last-ditch attempt: try to read as text. Binary files will produce garbage,
+      // which we trim and tag as 'binary'.
+      const t = await file.text();
+      const NUL = String.fromCharCode(0);
+      text = t.indexOf(NUL) >= 0 || t.indexOf('�') >= 0 ? `[binary file: ${name}]` : t;
+    }
+  } catch (err) {
+    return NextResponse.json(
+      { error: `Could not read “${name}”: ${(err as Error).message}` },
+      { status: 400 },
+    );
+  }
+
+  const NUL = String.fromCharCode(0);
+  const trimmed = text.split(NUL).join('').trim();
+  return NextResponse.json({
+    name,
+    type: file.type,
+    size: file.size,
+    text: trimmed.slice(0, 80_000),
+    truncated: trimmed.length > 80_000,
+  });
+}

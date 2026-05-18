@@ -1,8 +1,9 @@
 'use client';
 
 import { Button, Card, PLATFORM_META, PageHeader, Pill } from '@/components/dashboard/ui';
+import { scoreLead } from '@/lib/leadScore';
 import { type Lead, type Post, seedLeads, seedPosts, useStore } from '@/lib/store';
-import { Plus } from 'lucide-react';
+import { Flame, Plus } from 'lucide-react';
 import { useState } from 'react';
 
 const POST_STAGES: Post['status'][] = ['idea', 'drafting', 'scheduled', 'published'];
@@ -147,6 +148,8 @@ export default function PipelinePage() {
                 <div className="flex flex-col gap-2">
                   {leads
                     .filter((l) => l.stage === stage)
+                    .map(scoreLead)
+                    .sort((a, b) => b.score - a.score)
                     .map((l) => (
                       <div
                         key={l.id}
@@ -154,7 +157,15 @@ export default function PipelinePage() {
                         onDragStart={() => setDrag({ id: l.id, kind: 'lead' })}
                         className="cursor-grab rounded-md border border-[var(--color-border)] bg-[var(--color-bg-elev)] p-2.5 text-xs"
                       >
-                        <div className="font-medium">{l.name}</div>
+                        <div className="flex items-start justify-between gap-2">
+                          <div className="font-medium">{l.name}</div>
+                          <Pill
+                            tone={l.tier === 'hot' ? 'bad' : l.tier === 'warm' ? 'warn' : 'default'}
+                          >
+                            {l.tier === 'hot' && <Flame className="mr-1 inline h-3 w-3" />}
+                            {l.score}
+                          </Pill>
+                        </div>
                         <div className="mt-1 flex items-center justify-between text-[var(--color-fg-muted)]">
                           <span>{l.source}</span>
                           {l.value != null && (

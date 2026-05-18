@@ -31,6 +31,27 @@ export interface Workspace {
   brandColor?: string;
 }
 
+export interface TimeEntry {
+  id: string;
+  kind: 'creation' | 'engagement';
+  postId?: string;
+  label: string;
+  startedAt: string;
+  endedAt?: string;
+  seconds: number;
+}
+
+export interface Comment {
+  id: string;
+  platform: 'linkedin' | 'instagram' | 'x' | 'facebook' | 'newsletter';
+  author: string;
+  body: string;
+  receivedAt: string;
+  postTitle: string;
+  read?: boolean;
+  convertedToLead?: boolean;
+}
+
 const KEY = (k: string) => `cv:store:${k}`;
 
 function read<T>(key: string, fallback: T): T {
@@ -108,6 +129,41 @@ export const seedPosts: Post[] = [
     status: 'published',
     createdAt: new Date(Date.now() - 2 * 86400000).toISOString(),
     brandScore: 92,
+  },
+];
+
+export const seedComments: Comment[] = [
+  {
+    id: 'c1',
+    platform: 'linkedin',
+    author: 'Marco R.',
+    body: 'Curious — how does the offline mode handle media assets?',
+    receivedAt: new Date(Date.now() - 3600000).toISOString(),
+    postTitle: 'Local-first launch teaser',
+  },
+  {
+    id: 'c2',
+    platform: 'instagram',
+    author: 'Aanya P.',
+    body: 'This is exactly the workflow I needed. DM me about a 30-day trial?',
+    receivedAt: new Date(Date.now() - 2 * 3600000).toISOString(),
+    postTitle: 'Behind the build',
+  },
+  {
+    id: 'c3',
+    platform: 'x',
+    author: '@buildwithben',
+    body: 'How does it compare to Hypefury for X-only flows?',
+    receivedAt: new Date(Date.now() - 5 * 3600000).toISOString(),
+    postTitle: 'Brand Guardrails demo',
+  },
+  {
+    id: 'c4',
+    platform: 'newsletter',
+    author: 'reply@bikewo.it',
+    body: 'Can we get a 2-seat plan for client onboarding?',
+    receivedAt: new Date(Date.now() - 18 * 3600000).toISOString(),
+    postTitle: 'Weekly digest #14',
   },
 ];
 
