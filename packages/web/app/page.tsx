@@ -92,7 +92,142 @@ export default function HomePage() {
         </Tile>
       </div>
 
-      <footer className="mt-16 flex items-center justify-between border-t border-[var(--color-cv-line)] pt-16 font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--color-cv-stone-500)]">
+      {/* How it works */}
+      <section className="mt-24">
+        <div className="mb-6 font-mono text-[11.5px] uppercase tracking-[0.22em] text-[var(--color-cv-stone-500)]">
+          How it works
+        </div>
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+          {[
+            {
+              num: '01',
+              title: 'Drop in context.',
+              body: 'Upload PDFs, transcripts, briefs, research. Or just paste a goal. Everything stays in your browser.',
+            },
+            {
+              num: '02',
+              title: 'Generate on-brand.',
+              body: 'Studio writes drafts that pass your brand guardrails. Bias, readability, SEO, headline scoring — all live.',
+            },
+            {
+              num: '03',
+              title: 'Schedule. Publish. Report.',
+              body: 'LinkedIn, X, Facebook, Instagram in one queue. Vercel cron publishes. Live GA4 + dark social in analytics.',
+            },
+          ].map((s) => (
+            <div
+              key={s.num}
+              className="rounded-[16px] border border-[var(--color-cv-line)] bg-white p-6"
+            >
+              <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--color-cv-stone-500)]">
+                Step {s.num}
+              </div>
+              <h3 className="mt-3 font-display text-2xl font-bold tracking-tight">{s.title}</h3>
+              <p className="mt-2 text-[15px] leading-[1.55] text-[var(--color-cv-stone-600)]">
+                {s.body}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Compare */}
+      <section className="mt-24">
+        <div className="mb-6 font-mono text-[11.5px] uppercase tracking-[0.22em] text-[var(--color-cv-stone-500)]">
+          Compared
+        </div>
+        <h2 className="mb-8 max-w-3xl font-display text-4xl font-bold leading-tight tracking-tight">
+          We&apos;re not Buffer. We&apos;re not Grammarly. We&apos;re the layer between them.
+        </h2>
+        <div className="overflow-x-auto rounded-[16px] border border-[var(--color-cv-line)] bg-white">
+          <table className="w-full text-sm">
+            <thead className="text-left text-xs uppercase tracking-[0.16em] text-[var(--color-cv-stone-500)]">
+              <tr>
+                <th className="px-5 py-4">Capability</th>
+                <th className="px-5 py-4">Vigilante</th>
+                <th className="px-5 py-4">Buffer-class</th>
+                <th className="px-5 py-4">Grammarly-class</th>
+                <th className="px-5 py-4">HubSpot-class</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-[var(--color-cv-line)]">
+              {[
+                ['Brand voice audit with rewrite', '✓', '—', 'partial', 'partial'],
+                ['Multi-platform scheduler', '✓', '✓', '—', 'partial'],
+                ['Hybrid CRM (content + sales)', '✓', '—', '—', '✓'],
+                ['Local-first / BYO LLM', '✓', '—', '—', '—'],
+                ['Open source · MIT', '✓', '—', '—', '—'],
+                ['Price per seat / month', 'Free', '$15', '$30', '$1,200+'],
+              ].map((r, i) => (
+                <tr key={i}>
+                  <td className="px-5 py-3 font-medium">{r[0]}</td>
+                  {r.slice(1).map((c, ci) => (
+                    <td
+                      key={ci}
+                      className={`px-5 py-3 ${
+                        c === '✓'
+                          ? 'text-[var(--color-cv-green-deep)]'
+                          : c === '—'
+                            ? 'text-[var(--color-cv-stone-500)]'
+                            : ''
+                      }`}
+                    >
+                      {c}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="mt-24">
+        <div className="mb-6 font-mono text-[11.5px] uppercase tracking-[0.22em] text-[var(--color-cv-stone-500)]">
+          FAQ
+        </div>
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+          {[
+            {
+              q: 'Is my data really staying local?',
+              a: 'Yes. Posts, leads, workspaces, brand guides — all in localStorage by default. Sync is opt-in and uses a token only you know. The audit engine sends content to your chosen LLM with your key; nothing routes through us.',
+            },
+            {
+              q: 'Do I need any credentials to try it?',
+              a: 'No. The dashboard, calendar, guardrails, studio, and PDF brand-guide ingestion all work without any keys. Add a provider key (Anthropic / OpenAI / Ollama) for AI features. Add OAuth credentials when you want to publish or pull live GA4.',
+            },
+            {
+              q: 'Can it actually publish?',
+              a: 'Yes. LinkedIn, X, Facebook, Instagram (business) wired against the official APIs. Vercel cron runs every 15 minutes against your queued posts.',
+            },
+            {
+              q: 'What about Instagram Reels / image posts?',
+              a: 'IG requires a publicly reachable image or video URL. Drop the asset URL on the queued post and the publish route does the rest. Reels use the same media-container flow.',
+            },
+            {
+              q: 'Is the brand audit actually accurate?',
+              a: 'Three judges in parallel — tone (LLM), vocabulary (rules + LLM), structure & readability (deterministic). Regression-tested against 20+ hand-labeled cases on every commit.',
+            },
+            {
+              q: 'Can I self-host?',
+              a: 'Yes. Open source under MIT — monorepo with Bun + Next.js 15. KV + cron only matter when you want cross-device sync and unattended publishing.',
+            },
+          ].map((f) => (
+            <div
+              key={f.q}
+              className="rounded-[16px] border border-[var(--color-cv-line)] bg-white p-5"
+            >
+              <div className="font-display text-base font-bold tracking-tight">{f.q}</div>
+              <p className="mt-2 text-[14px] leading-[1.55] text-[var(--color-cv-stone-600)]">
+                {f.a}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <footer className="mt-24 flex items-center justify-between border-t border-[var(--color-cv-line)] pt-16 font-mono text-[11px] uppercase tracking-[0.14em] text-[var(--color-cv-stone-500)]">
         <div className="flex items-center gap-2.5 font-display text-base font-bold tracking-[-0.018em] normal-case text-[var(--color-cv-ink)]">
           <Owl className="h-[22px] w-[22px]" />
           Content <span className="font-medium">Vigilante</span>

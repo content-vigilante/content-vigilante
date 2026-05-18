@@ -16,7 +16,7 @@ Brand-voice auditor + content calendar + multi-platform publishing + hybrid CRM,
 
 </div>
 
-> Status: **v2.1 shipped** — context library (drop research → get post ideas), mobile-responsive dashboard, time tracker, unified inbox, exports + client approval portal, lead scoring, GA4 + LinkedIn + X integrations, cross-device sync.
+> Status: **v2.2 shipped** — server-driven cron publishing (LinkedIn / X / Facebook), Instagram via Meta Graph, competitor watchlist, dark-social tracker, NextAuth (optional). Plus the v2.1 context library + dashboard rollup.
 
 ## Why this exists
 
@@ -143,11 +143,9 @@ Deeper: [`docs/TECHNICAL_OVERVIEW.md`](docs/TECHNICAL_OVERVIEW.md), [`docs/ARCHI
 - [x] X (Twitter) OAuth + publish
 - [x] Cross-device sync (Vercel KV)
 - [x] Vercel cron scaffold for scheduled publishing
-- [x] **v2.1** — Context library (drop research → get post ideas), inbox, exports, time tracker, lead scoring, client approval portal, mobile responsive
-- [ ] **v2.2** — server-driven cron publishing (migrate platform tokens to KV)
-- [ ] **v2.2** — named-account auth via NextAuth (optional)
-- [ ] **v2.2** — Instagram + Facebook publishing
-- [ ] **v2.3** — competitor watchlist, dark social tracker, OCR for image context
+- [x] **v2.1** — Context library, inbox, exports, time tracker, lead scoring, client approval portal, mobile responsive
+- [x] **v2.2** — Server-driven cron publishing (KV-backed tokens), Instagram + Facebook (Meta Graph), competitor watchlist, dark-social tracker, NextAuth (optional)
+- [ ] **v2.3** — OCR for image context, Vercel domain alias to contentvigilante.com
 - [ ] **v3.0** — Product Hunt launch
 
 ## Eval suite

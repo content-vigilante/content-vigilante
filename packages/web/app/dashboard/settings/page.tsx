@@ -1,5 +1,6 @@
 'use client';
 
+import { AccountPanel } from '@/components/dashboard/AccountPanel';
 import { Connections } from '@/components/dashboard/Connections';
 import { SyncPanel } from '@/components/dashboard/SyncPanel';
 import { Button, Card, PageHeader, Pill } from '@/components/dashboard/ui';
@@ -89,6 +90,11 @@ export default function SettingsPage() {
           >
             Open provider settings →
           </a>
+        </Card>
+
+        <Card className="lg:col-span-2">
+          <h3 className="mb-3 font-semibold">Account & token linking</h3>
+          <AccountPanel />
         </Card>
 
         <Card className="lg:col-span-2">
