@@ -105,7 +105,7 @@ export function Sidebar() {
 
       {/* Mobile drawer */}
       {open && (
-        <div className="fixed inset-0 z-40 md:hidden" role="dialog" aria-modal="true">
+        <div className="fixed inset-0 z-40 md:hidden">
           <button
             type="button"
             aria-label="Close menu"

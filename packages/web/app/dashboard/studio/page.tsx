@@ -19,17 +19,6 @@ const FORBIDDEN = [
   'cutting-edge',
 ];
 
-function fleschKincaid(text: string) {
-  const sentences = Math.max(text.split(/[.!?]+/).filter(Boolean).length, 1);
-  const words = Math.max(text.trim().split(/\s+/).filter(Boolean).length, 1);
-  const syllables = text
-    .toLowerCase()
-    .split(/\s+/)
-    .reduce((sum, w) => sum + Math.max(1, (w.match(/[aeiouy]+/g) ?? []).length), 0);
-  const score = 206.835 - 1.015 * (words / sentences) - 84.6 * (syllables / words);
-  return Math.round(score);
-}
-
 function brandCheck(text: string) {
   const lower = text.toLowerCase();
   const hits = FORBIDDEN.filter((w) => lower.includes(w));
