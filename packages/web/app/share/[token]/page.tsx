@@ -7,6 +7,12 @@ export const dynamic = 'force-dynamic';
 interface SharedSnapshot {
   client: string;
   generatedAt: string;
+  brand?: {
+    name?: string;
+    color?: string;
+    logoUrl?: string;
+    accentText?: string;
+  };
   posts: Array<{
     id: string;
     title: string;
@@ -35,14 +41,29 @@ export default async function SharePage({ params }: { params: Promise<{ token: s
     );
   }
   const snap = entry.data as SharedSnapshot;
+  const brand = snap.brand ?? {};
+  const accent = brand.color ?? '#1F8A4C';
+
   return (
     <main className="mx-auto max-w-3xl px-6 py-12">
       <header className="mb-10 flex items-end justify-between border-b border-[var(--color-cv-line)] pb-6">
         <div className="flex items-center gap-3">
-          <Owl className="h-8 w-8" />
+          {brand.logoUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={brand.logoUrl}
+              alt={brand.name ?? snap.client}
+              className="h-10 w-10 rounded-md object-contain"
+            />
+          ) : (
+            <Owl className="h-8 w-8" />
+          )}
           <div>
-            <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--color-cv-stone-500)]">
-              Content Vigilante · Approval portal
+            <div
+              className="font-mono text-[11px] uppercase tracking-[0.2em]"
+              style={{ color: accent }}
+            >
+              {brand.name ?? 'Content Vigilante'} · Approval portal
             </div>
             <h1 className="mt-1 font-display text-2xl font-bold tracking-tight">{snap.client}</h1>
           </div>
@@ -55,18 +76,19 @@ export default async function SharePage({ params }: { params: Promise<{ token: s
       </header>
 
       <p className="mb-8 text-sm text-[var(--color-cv-stone-600)]">
-        Below is the content queued for review. Reply to your collaborator with feedback — this page
-        is read-only and tied to a private token.
+        Below is the content queued for review. Reply with feedback — this page is read-only and
+        tied to a private token.
       </p>
 
       <div className="space-y-4">
         {snap.posts.map((p) => (
           <article
             key={p.id}
-            className="rounded-lg border border-[var(--color-cv-line)] bg-white p-5"
+            className="rounded-lg border bg-white p-5"
+            style={{ borderColor: 'var(--color-cv-line)' }}
           >
             <div className="mb-2 flex items-center justify-between text-xs">
-              <span className="font-mono uppercase tracking-[0.2em] text-[var(--color-cv-stone-500)]">
+              <span className="font-mono uppercase tracking-[0.2em]" style={{ color: accent }}>
                 {p.platform}
               </span>
               {p.brandScore != null && (
@@ -96,7 +118,7 @@ export default async function SharePage({ params }: { params: Promise<{ token: s
       </div>
 
       <footer className="mt-12 border-t border-[var(--color-cv-line)] pt-4 font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--color-cv-stone-500)]">
-        Read-only · token gated
+        Read-only · powered by Content Vigilante
       </footer>
     </main>
   );

@@ -4,15 +4,24 @@ import { useEffect, useState } from 'react';
 
 export type Platform = 'linkedin' | 'instagram' | 'x' | 'facebook' | 'newsletter';
 
+export type PostStatus = 'idea' | 'drafting' | 'in-review' | 'approved' | 'scheduled' | 'published';
+
 export interface Post {
   id: string;
   title: string;
   body: string;
   platform: Platform;
-  status: 'idea' | 'drafting' | 'scheduled' | 'published';
+  status: PostStatus;
   scheduledFor?: string;
   createdAt: string;
   brandScore?: number;
+  /** Workspace this post belongs to. Optional — legacy posts have none. */
+  workspaceId?: string;
+  /** Campaign tag — used by the Campaigns rollup. */
+  campaignId?: string;
+  /** Who approved (when status === 'approved'). */
+  approvedBy?: string;
+  approvedAt?: string;
 }
 
 export interface Lead {
@@ -23,12 +32,36 @@ export interface Lead {
   value?: number;
   notes?: string;
   createdAt: string;
+  workspaceId?: string;
+  campaignId?: string;
 }
+
+export interface Campaign {
+  id: string;
+  name: string;
+  goal?: string;
+  workspaceId?: string;
+  /** Total ad spend across the campaign in EUR. */
+  spend?: number;
+  createdAt: string;
+}
+
+export type WorkspaceRole = 'admin' | 'writer' | 'reviewer';
 
 export interface Workspace {
   id: string;
   name: string;
   brandColor?: string;
+  /** White-label client name shown on /share/[token]. */
+  clientName?: string;
+  /** Public URL for client logo (rendered on the approval portal). */
+  logoUrl?: string;
+  /** Default hourly rate (€) used by the invoice generator. */
+  hourlyRate?: number;
+  /** Currency symbol — defaults to € when unset. */
+  currency?: string;
+  /** Current user's role in this workspace. */
+  role?: WorkspaceRole;
 }
 
 export interface TimeEntry {
@@ -94,6 +127,23 @@ export function useStore<T>(key: string, fallback: T): [T, (v: T | ((prev: T) =>
   return [hydrated ? value : fallback, update];
 }
 
+export const seedCampaigns: Campaign[] = [
+  {
+    id: 'cmp-launch',
+    name: 'v2 Launch wave',
+    goal: 'Drive 500 dashboard signups in 30 days',
+    spend: 420,
+    createdAt: new Date(Date.now() - 5 * 86400000).toISOString(),
+  },
+  {
+    id: 'cmp-evergreen',
+    name: 'Evergreen brand',
+    goal: 'Consistent on-brand presence between launches',
+    spend: 0,
+    createdAt: new Date(Date.now() - 30 * 86400000).toISOString(),
+  },
+];
+
 export const seedPosts: Post[] = [
   {
     id: 'p1',
@@ -104,6 +154,7 @@ export const seedPosts: Post[] = [
     scheduledFor: new Date(Date.now() + 86400000).toISOString(),
     createdAt: new Date().toISOString(),
     brandScore: 87,
+    campaignId: 'cmp-launch',
   },
   {
     id: 'p2',
@@ -112,6 +163,7 @@ export const seedPosts: Post[] = [
     platform: 'x',
     status: 'drafting',
     createdAt: new Date().toISOString(),
+    campaignId: 'cmp-launch',
   },
   {
     id: 'p3',
@@ -120,6 +172,7 @@ export const seedPosts: Post[] = [
     platform: 'instagram',
     status: 'idea',
     createdAt: new Date().toISOString(),
+    campaignId: 'cmp-launch',
   },
   {
     id: 'p4',
@@ -129,6 +182,7 @@ export const seedPosts: Post[] = [
     status: 'published',
     createdAt: new Date(Date.now() - 2 * 86400000).toISOString(),
     brandScore: 92,
+    campaignId: 'cmp-evergreen',
   },
 ];
 
@@ -175,6 +229,7 @@ export const seedLeads: Lead[] = [
     stage: 'discovery',
     value: 4500,
     createdAt: new Date().toISOString(),
+    campaignId: 'cmp-launch',
   },
   {
     id: 'l2',
@@ -183,6 +238,7 @@ export const seedLeads: Lead[] = [
     stage: 'proposal',
     value: 1800,
     createdAt: new Date().toISOString(),
+    campaignId: 'cmp-launch',
   },
   {
     id: 'l3',
@@ -191,6 +247,7 @@ export const seedLeads: Lead[] = [
     stage: 'closed',
     value: 6000,
     createdAt: new Date().toISOString(),
+    campaignId: 'cmp-evergreen',
   },
   {
     id: 'l4',

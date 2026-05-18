@@ -1,7 +1,7 @@
 'use client';
 
 import { Button, Card, PLATFORM_META, PageHeader, Pill } from '@/components/dashboard/ui';
-import { type Platform, type Post, seedPosts, useStore } from '@/lib/store';
+import { type Platform, type Post, type Workspace, seedPosts, useStore } from '@/lib/store';
 import { detectBias, scoreHeadline, seoDensity, suggestEmojis } from '@/lib/textAnalysis';
 import { Linkedin, Loader2, Save, Send, Sparkles, Wand2 } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
@@ -46,6 +46,10 @@ function fallbackVariants(prompt: string): string[] {
 
 export default function StudioPage() {
   const [posts, setPosts] = useStore<Post[]>('posts', seedPosts);
+  const [workspaces] = useStore<Workspace[]>('workspaces', []);
+  const [activeWs] = useStore<string>('activeWs', '');
+  const role = workspaces.find((w) => w.id === activeWs)?.role ?? 'admin';
+  const canPublish = role !== 'writer';
   const [platform, setPlatform] = useState<Platform>('linkedin');
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
@@ -190,7 +194,7 @@ export default function StudioPage() {
         subtitle="Compose once, ship everywhere. Brand Guardrails run inline as you type."
         actions={
           <>
-            {(platform === 'linkedin' || platform === 'x') && (
+            {(platform === 'linkedin' || platform === 'x') && canPublish && (
               <Button onClick={() => publishNow(platform)} variant="outline">
                 {publishing ? (
                   <Loader2 className="h-4 w-4 animate-spin" />
@@ -200,6 +204,30 @@ export default function StudioPage() {
                   <Send className="h-4 w-4" />
                 )}
                 Publish
+              </Button>
+            )}
+            {!canPublish && (platform === 'linkedin' || platform === 'x') && (
+              <Button
+                onClick={() => {
+                  const id = `p${Date.now()}`;
+                  setPosts((prev) => [
+                    ...prev,
+                    {
+                      id,
+                      title: title || body.slice(0, 60),
+                      body,
+                      platform,
+                      status: 'in-review',
+                      createdAt: new Date().toISOString(),
+                      brandScore: check.score,
+                      workspaceId: activeWs,
+                    },
+                  ]);
+                  setPublishMsg('Submitted for review ✓');
+                }}
+                variant="outline"
+              >
+                Submit for review
               </Button>
             )}
             <Button onClick={save}>
