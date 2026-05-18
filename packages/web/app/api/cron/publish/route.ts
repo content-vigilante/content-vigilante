@@ -1,3 +1,4 @@
+import { broadcast } from '@/lib/notify';
 import {
   type PlatformKey,
   type ScheduledPost,
@@ -156,6 +157,12 @@ export async function GET(req: Request) {
           postId: post.id,
           ok: true,
         });
+        await broadcast(syncToken, {
+          type: 'post.published',
+          title: `Published to ${post.platform.toUpperCase()}`,
+          detail: post.text.slice(0, 200),
+          tags: [post.platform],
+        });
       } catch (err) {
         results.push({
           syncToken,
@@ -163,6 +170,12 @@ export async function GET(req: Request) {
           postId: post.id,
           ok: false,
           error: (err as Error).message,
+        });
+        await broadcast(syncToken, {
+          type: 'post.publish_failed',
+          title: `Publish failed: ${post.platform.toUpperCase()}`,
+          detail: (err as Error).message,
+          tags: [post.platform],
         });
       }
     }
