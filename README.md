@@ -16,7 +16,7 @@ Brand-voice auditor + content calendar + multi-platform publishing + hybrid CRM,
 
 </div>
 
-> Status: **v2.3 shipped** — Slack / Discord / webhook alerts, multimedia audit (image alt-text + brand-palette + OCR via vision LLM), `docs/PLAYBOOK.md` for agency-vs-brand workflows. On top of the v2.2 cron + Meta + watchlist + dark-social rollup.
+> Status: **v2.4 shipped** — agency & brand edition. Per-workspace white-label, per-client billing, approval workflow, campaign rollups with ROI + AI diagnosis, lead.hot → CRM webhooks, role-based UI gates.
 
 ## Why this exists
 
@@ -145,8 +145,8 @@ Deeper: [`docs/TECHNICAL_OVERVIEW.md`](docs/TECHNICAL_OVERVIEW.md), [`docs/ARCHI
 - [x] Vercel cron scaffold for scheduled publishing
 - [x] **v2.1** — Context library, inbox, exports, time tracker, lead scoring, client approval portal, mobile responsive
 - [x] **v2.2** — Server-driven cron publishing, Instagram + Facebook (Meta Graph), competitor watchlist, dark-social tracker, NextAuth (optional)
-- [x] **v2.3** — Slack/Discord/webhook notifications, multimedia (image) audit with alt-text + palette + OCR, agency-vs-brand playbook
-- [ ] **v2.4** — White-label client portal, approval gate before publish, role-based permissions, per-client billing rate, campaign tagging, CRM export hooks
+- [x] **v2.3** — Slack/Discord/webhook notifications, multimedia (image) audit, agency-vs-brand playbook
+- [x] **v2.4** — Per-workspace white-label, per-client billing rate, approval workflow, campaign rollups + AI diagnosis, lead.hot → CRM webhooks, role-based UI gates
 - [ ] **v3.0** — Product Hunt launch + custom domain
 
 ## Eval suite

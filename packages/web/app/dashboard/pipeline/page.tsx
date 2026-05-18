@@ -2,16 +2,25 @@
 
 import { Button, Card, PLATFORM_META, PageHeader, Pill } from '@/components/dashboard/ui';
 import { scoreLead } from '@/lib/leadScore';
-import { type Lead, type Post, seedLeads, seedPosts, useStore } from '@/lib/store';
-import { Flame, Plus } from 'lucide-react';
+import { type Lead, type Post, type Workspace, seedLeads, seedPosts, useStore } from '@/lib/store';
+import { Check, Flame, Plus } from 'lucide-react';
 import { useState } from 'react';
 
-const POST_STAGES: Post['status'][] = ['idea', 'drafting', 'scheduled', 'published'];
+const POST_STAGES: Post['status'][] = [
+  'idea',
+  'drafting',
+  'in-review',
+  'approved',
+  'scheduled',
+  'published',
+];
 const LEAD_STAGES: Lead['stage'][] = ['lead', 'discovery', 'proposal', 'closed'];
 
 const STAGE_LABEL: Record<string, string> = {
   idea: 'Ideas',
   drafting: 'Drafting',
+  'in-review': 'In review',
+  approved: 'Approved',
   scheduled: 'Scheduled',
   published: 'Published',
   lead: 'New leads',
@@ -24,13 +33,54 @@ export default function PipelinePage() {
   const [tab, setTab] = useState<'content' | 'sales'>('content');
   const [posts, setPosts] = useStore<Post[]>('posts', seedPosts);
   const [leads, setLeads] = useStore<Lead[]>('leads', seedLeads);
+  const [workspaces] = useStore<Workspace[]>('workspaces', []);
+  const [activeWs] = useStore<string>('activeWs', '');
+  const role = workspaces.find((w) => w.id === activeWs)?.role ?? 'admin';
   const [drag, setDrag] = useState<{ id: string; kind: 'post' | 'lead' } | null>(null);
 
   function movePost(id: string, status: Post['status']) {
     setPosts((prev) => prev.map((p) => (p.id === id ? { ...p, status } : p)));
   }
+
+  function approvePost(id: string) {
+    setPosts((prev) =>
+      prev.map((p) =>
+        p.id === id
+          ? {
+              ...p,
+              status: 'approved',
+              approvedBy: role,
+              approvedAt: new Date().toISOString(),
+            }
+          : p,
+      ),
+    );
+  }
   function moveLead(id: string, stage: Lead['stage']) {
-    setLeads((prev) => prev.map((l) => (l.id === id ? { ...l, stage } : l)));
+    setLeads((prev) =>
+      prev.map((l) => {
+        if (l.id !== id) return l;
+        const next: Lead = { ...l, stage };
+        const before = scoreLead(l);
+        const after = scoreLead(next);
+        if (before.tier !== 'hot' && after.tier === 'hot') {
+          const syncToken = localStorage.getItem('cv:syncToken') ?? '';
+          if (syncToken.length >= 16) {
+            fetch('/api/notify/broadcast', {
+              method: 'POST',
+              headers: { 'content-type': 'application/json', 'x-cv-sync-token': syncToken },
+              body: JSON.stringify({
+                type: 'lead.hot',
+                title: `Hot lead: ${l.name}`,
+                detail: `Moved to ${stage}. Score ${after.score}/100.`,
+                tags: [l.source, stage],
+              }),
+            }).catch(() => {});
+          }
+        }
+        return next;
+      }),
+    );
   }
 
   function addLead() {
@@ -122,6 +172,20 @@ export default function PipelinePage() {
                         {p.body && (
                           <div className="mt-1 line-clamp-2 text-[var(--color-fg-muted)]">
                             {p.body}
+                          </div>
+                        )}
+                        {p.status === 'in-review' && role !== 'writer' && (
+                          <button
+                            type="button"
+                            onClick={() => approvePost(p.id)}
+                            className="mt-2 inline-flex items-center gap-1 rounded-md bg-[var(--color-cv-ink)] px-2 py-1 text-[10px] font-medium text-white"
+                          >
+                            <Check className="h-3 w-3" /> Approve
+                          </button>
+                        )}
+                        {p.status === 'approved' && p.approvedBy && (
+                          <div className="mt-1 text-[10px] text-[var(--color-good)]">
+                            ✓ approved by {p.approvedBy}
                           </div>
                         )}
                       </div>

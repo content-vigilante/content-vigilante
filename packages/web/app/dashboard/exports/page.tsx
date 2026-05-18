@@ -1,10 +1,10 @@
 'use client';
 
 import { Card, PageHeader, Pill } from '@/components/dashboard/ui';
-import { type Lead, type Post, seedLeads, seedPosts, useStore } from '@/lib/store';
+import { type Lead, type Post, type Workspace, seedLeads, seedPosts, useStore } from '@/lib/store';
 import { Download, FileText, Printer, Share2 } from 'lucide-react';
 import Link from 'next/link';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 function randomToken() {
   const arr = new Uint8Array(16);
@@ -15,10 +15,23 @@ function randomToken() {
 export default function ExportsPage() {
   const [posts] = useStore<Post[]>('posts', seedPosts);
   const [leads] = useStore<Lead[]>('leads', seedLeads);
+  const [workspaces] = useStore<Workspace[]>('workspaces', []);
+  const [activeWs] = useStore<string>('activeWs', '');
+  const activeWorkspace = workspaces.find((w) => w.id === activeWs);
+
   const [hourly, setHourly] = useState(60);
   const [hours, setHours] = useState(24);
   const [clientName, setClientName] = useState('Client name');
   const [shareToken, setShareToken] = useState('');
+
+  // Hydrate hourly + client name from the active workspace on mount / change.
+  useEffect(() => {
+    if (!activeWorkspace) return;
+    if (activeWorkspace.hourlyRate) setHourly(activeWorkspace.hourlyRate);
+    if (activeWorkspace.clientName) setClientName(activeWorkspace.clientName);
+  }, [activeWorkspace]);
+
+  const currency = activeWorkspace?.currency ?? '€';
 
   const published = posts.filter((p) => p.status === 'published');
   const scheduled = posts.filter((p) => p.status === 'scheduled');
@@ -38,8 +51,17 @@ export default function ExportsPage() {
     const payload = {
       client: clientName,
       generatedAt: new Date().toISOString(),
+      brand: activeWorkspace
+        ? {
+            name: activeWorkspace.name,
+            color: activeWorkspace.brandColor,
+            logoUrl: activeWorkspace.logoUrl,
+          }
+        : undefined,
       posts: posts
-        .filter((p) => p.status === 'scheduled' || p.status === 'drafting')
+        .filter(
+          (p) => p.status === 'scheduled' || p.status === 'in-review' || p.status === 'approved',
+        )
         .map(({ id, title, body, platform, scheduledFor, brandScore }) => ({
           id,
           title,
@@ -107,7 +129,7 @@ export default function ExportsPage() {
           <Metric label="Campaigns" value={posts.length} />
           <Metric label="Published" value={published.length} />
           <Metric label="Scheduled" value={scheduled.length} />
-          <Metric label="Closed revenue" value={`€${closedValue.toLocaleString()}`} />
+          <Metric label="Closed revenue" value={`${currency}${closedValue.toLocaleString()}`} />
         </div>
         <div className="mt-4 text-sm">
           <h3 className="mb-2 font-medium">Published work</h3>
@@ -156,7 +178,7 @@ export default function ExportsPage() {
             />
           </label>
           <label className="text-xs text-[var(--color-fg-muted)]">
-            Rate (€ / hour)
+            Rate ({currency} / hour)
             <input
               type="number"
               value={hourly}
@@ -194,8 +216,14 @@ export default function ExportsPage() {
                   scheduled
                 </td>
                 <td className="py-2 text-right">{hours}</td>
-                <td className="py-2 text-right">€{hourly}</td>
-                <td className="py-2 text-right">€{invoiceTotal.toLocaleString()}</td>
+                <td className="py-2 text-right">
+                  {currency}
+                  {hourly}
+                </td>
+                <td className="py-2 text-right">
+                  {currency}
+                  {invoiceTotal.toLocaleString()}
+                </td>
               </tr>
             </tbody>
             <tfoot>
@@ -203,7 +231,10 @@ export default function ExportsPage() {
                 <td colSpan={3} className="py-3 text-right font-semibold">
                   Total
                 </td>
-                <td className="py-3 text-right font-semibold">€{invoiceTotal.toLocaleString()}</td>
+                <td className="py-3 text-right font-semibold">
+                  {currency}
+                  {invoiceTotal.toLocaleString()}
+                </td>
               </tr>
             </tfoot>
           </table>
