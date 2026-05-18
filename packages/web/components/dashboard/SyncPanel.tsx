@@ -42,11 +42,19 @@ export function SyncPanel() {
   const [msg, setMsg] = useState<string | null>(null);
   const [lastSync, setLastSync] = useState<string | null>(null);
   const [adapter, setAdapter] = useState<string | null>(null);
+  const [auto, setAuto] = useState(false);
 
   useEffect(() => {
     setTok(localStorage.getItem('cv:syncToken') ?? '');
     setLastSync(localStorage.getItem('cv:lastSync'));
+    setAuto(localStorage.getItem('cv:autoSync') === '1');
   }, []);
+
+  function toggleAuto() {
+    const next = !auto;
+    setAuto(next);
+    localStorage.setItem('cv:autoSync', next ? '1' : '0');
+  }
 
   function saveToken(v: string) {
     setTok(v);
@@ -145,6 +153,11 @@ export function SyncPanel() {
           </Pill>
         )}
       </div>
+
+      <label className="flex items-center gap-2 text-xs text-[var(--color-fg-muted)]">
+        <input type="checkbox" checked={auto} onChange={toggleAuto} className="h-3.5 w-3.5" />
+        Auto-sync (push every 4s after a change)
+      </label>
 
       {lastSync && (
         <div className="text-xs text-[var(--color-fg-muted)]">

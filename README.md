@@ -16,7 +16,7 @@ Brand-voice auditor + content calendar + multi-platform publishing + hybrid CRM,
 
 </div>
 
-> Status: **v1.2 shipped** — dashboard MVP, AI generator, PDF brand-guide ingestion, GA4 + LinkedIn + X integrations, cross-device sync.
+> Status: **v2.1 shipped** — context library (drop research → get post ideas), mobile-responsive dashboard, time tracker, unified inbox, exports + client approval portal, lead scoring, GA4 + LinkedIn + X integrations, cross-device sync.
 
 ## Why this exists
 
@@ -25,6 +25,12 @@ Every marketing team has a brand guide nobody reads. Tone drifts across writers,
 Content Vigilante is the layer in between.
 
 ## What's in the box
+
+**Context library (v2.1)**
+- Drag-and-drop PDF, Markdown, text, CSV, JSON, HTML, SRT/VTT files.
+- Extracted text stays in your browser (or syncs across devices via Vercel KV).
+- **Suggest 5 post ideas** button feeds context + brand guide + goal into your own LLM and returns structured, source-attributed drafts.
+- One click hands a draft to Studio with brand-guardrail check applied.
 
 **Brand Guardrails — the Vigilante core**
 - Hybrid AI judges: tone (LLM) · vocabulary (deterministic + LLM) · structure & readability (deterministic).
@@ -137,11 +143,12 @@ Deeper: [`docs/TECHNICAL_OVERVIEW.md`](docs/TECHNICAL_OVERVIEW.md), [`docs/ARCHI
 - [x] X (Twitter) OAuth + publish
 - [x] Cross-device sync (Vercel KV)
 - [x] Vercel cron scaffold for scheduled publishing
-- [ ] **v1.3** — server-driven cron publishing (migrate platform tokens to KV)
-- [ ] **v1.3** — named-account auth via NextAuth (optional)
-- [ ] **v1.3** — Instagram + Facebook publishing
-- [ ] **v1.4** — competitor watchlist, dark social tracker, client approval portal
-- [ ] **v2.0** — Product Hunt launch
+- [x] **v2.1** — Context library (drop research → get post ideas), inbox, exports, time tracker, lead scoring, client approval portal, mobile responsive
+- [ ] **v2.2** — server-driven cron publishing (migrate platform tokens to KV)
+- [ ] **v2.2** — named-account auth via NextAuth (optional)
+- [ ] **v2.2** — Instagram + Facebook publishing
+- [ ] **v2.3** — competitor watchlist, dark social tracker, OCR for image context
+- [ ] **v3.0** — Product Hunt launch
 
 ## Eval suite
 

@@ -2,6 +2,7 @@
 
 import { Button, Card, PLATFORM_META, PageHeader, Pill } from '@/components/dashboard/ui';
 import { type Platform, type Post, seedPosts, useStore } from '@/lib/store';
+import { detectBias, scoreHeadline, seoDensity, suggestEmojis } from '@/lib/textAnalysis';
 import { Linkedin, Loader2, Save, Send, Sparkles, Wand2 } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 
@@ -67,13 +68,44 @@ export default function StudioPage() {
   const [saved, setSaved] = useState(false);
   const [publishing, setPublishing] = useState(false);
   const [publishMsg, setPublishMsg] = useState<string | null>(null);
+  const [seoKeyword, setSeoKeyword] = useState('');
 
   const meta = PLATFORM_META[platform];
   const check = useMemo(() => brandCheck(body), [body]);
-  const fk = useMemo(() => fleschKincaid(body || 'placeholder text'), [body]);
+  const fk = useMemo(() => {
+    const t = body || 'placeholder text';
+    const sentences = Math.max(t.split(/[.!?]+/).filter(Boolean).length, 1);
+    const words = Math.max(t.trim().split(/\s+/).filter(Boolean).length, 1);
+    const syl = t
+      .toLowerCase()
+      .split(/\s+/)
+      .reduce((s, w) => s + Math.max(1, (w.match(/[aeiouy]+/g) ?? []).length), 0);
+    return Math.round(206.835 - 1.015 * (words / sentences) - 84.6 * (syl / words));
+  }, [body]);
+  const headline = useMemo(() => scoreHeadline(title), [title]);
+  const seo = useMemo(() => seoDensity(body, seoKeyword), [body, seoKeyword]);
+  const bias = useMemo(() => detectBias(body), [body]);
+  const suggestedEmojis = useMemo(() => suggestEmojis(body || title), [body, title]);
 
   useEffect(() => {
     setHasKey(!!sessionStorage.getItem('cv:apiKey'));
+    // Pick up handoff from Context page's "Open in Studio"
+    const draft = sessionStorage.getItem('cv:studioDraft');
+    if (draft) {
+      try {
+        const parsed = JSON.parse(draft) as {
+          title?: string;
+          body?: string;
+          platform?: Platform;
+        };
+        if (parsed.title) setTitle(parsed.title);
+        if (parsed.body) setBody(parsed.body);
+        if (parsed.platform) setPlatform(parsed.platform);
+      } catch {
+        /* ignore */
+      }
+      sessionStorage.removeItem('cv:studioDraft');
+    }
   }, []);
 
   async function runGenerate() {
@@ -322,16 +354,81 @@ export default function StudioPage() {
           </Card>
 
           <Card>
+            <h3 className="mb-2 font-semibold">Headline scorecard</h3>
+            <div className="flex items-baseline gap-2">
+              <span className="text-2xl font-bold tabular-nums">{headline.score}</span>
+              <span className="text-xs text-[var(--color-fg-muted)]">/100</span>
+            </div>
+            <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-[var(--color-bg-elev)]">
+              <div
+                className="h-full"
+                style={{
+                  width: `${headline.score}%`,
+                  background:
+                    headline.score >= 70
+                      ? 'var(--color-good)'
+                      : headline.score >= 40
+                        ? 'var(--color-warn)'
+                        : 'var(--color-bad)',
+                }}
+              />
+            </div>
+            <ul className="mt-2 space-y-1 text-[11px] text-[var(--color-fg-muted)]">
+              {headline.reasons.map((r) => (
+                <li key={r}>• {r}</li>
+              ))}
+            </ul>
+          </Card>
+
+          <Card>
+            <h3 className="mb-2 font-semibold">SEO density</h3>
+            <input
+              value={seoKeyword}
+              onChange={(e) => setSeoKeyword(e.target.value)}
+              placeholder="Target keyword"
+              className="mb-2 w-full rounded-md border border-[var(--color-border)] bg-[var(--color-bg-elev)] px-3 py-1.5 text-xs outline-none focus:border-[var(--color-accent)]"
+            />
+            <div className="flex items-center justify-between text-xs">
+              <span>
+                <span className="text-[var(--color-fg-muted)]">Matches:</span> {seo.matches}
+              </span>
+              <span>
+                <span className="text-[var(--color-fg-muted)]">Density:</span> {seo.density}%
+              </span>
+            </div>
+            <div className="mt-1 text-[11px] text-[var(--color-fg-muted)]">{seo.hint}</div>
+          </Card>
+
+          <Card>
+            <h3 className="mb-2 font-semibold">Bias & sensitivity</h3>
+            {bias.length === 0 ? (
+              <div className="text-xs text-[var(--color-good)]">No flagged terms.</div>
+            ) : (
+              <ul className="space-y-1.5 text-[11px]">
+                {bias.map((b) => (
+                  <li key={b.term} className="flex gap-2 text-[var(--color-fg-muted)]">
+                    <Pill tone="warn">{b.term}</Pill>
+                    <span>{b.message}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </Card>
+
+          <Card>
             <div className="mb-2 flex items-center gap-2">
               <Sparkles className="h-4 w-4 text-[var(--color-accent)]" />
-              <h3 className="font-semibold">Emoji & CTA</h3>
+              <h3 className="font-semibold">Smart emojis & CTA</h3>
+            </div>
+            <div className="mb-1 text-[11px] text-[var(--color-fg-muted)]">
+              Picked from your post sentiment:
             </div>
             <div className="flex flex-wrap gap-1.5 text-lg">
-              {['🚀', '🛡️', '✨', '📊', '🧵', '👇', '🔥', '🧠'].map((e) => (
+              {suggestedEmojis.map((e) => (
                 <button
                   type="button"
                   key={e}
-                  onClick={() => setBody((b) => b + ' ' + e)}
+                  onClick={() => setBody((b) => `${b} ${e}`)}
                   className="rounded-md border border-[var(--color-border)] px-2 hover:bg-[var(--color-bg-elev)]"
                 >
                   {e}
@@ -344,7 +441,7 @@ export default function StudioPage() {
                 <button
                   type="button"
                   key={c}
-                  onClick={() => setBody((b) => b + '\n\n' + c)}
+                  onClick={() => setBody((b) => `${b}\n\n${c}`)}
                   className="rounded-md border border-[var(--color-border)] px-2 py-1 text-xs hover:bg-[var(--color-bg-elev)]"
                 >
                   {c}
