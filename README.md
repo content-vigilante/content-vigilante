@@ -16,7 +16,7 @@ Brand-voice auditor + content calendar + multi-platform publishing + hybrid CRM,
 
 </div>
 
-> Status: **v2.2 shipped** — server-driven cron publishing (LinkedIn / X / Facebook), Instagram via Meta Graph, competitor watchlist, dark-social tracker, NextAuth (optional). Plus the v2.1 context library + dashboard rollup.
+> Status: **v2.3 shipped** — Slack / Discord / webhook alerts, multimedia audit (image alt-text + brand-palette + OCR via vision LLM), `docs/PLAYBOOK.md` for agency-vs-brand workflows. On top of the v2.2 cron + Meta + watchlist + dark-social rollup.
 
 ## Why this exists
 
@@ -144,9 +144,10 @@ Deeper: [`docs/TECHNICAL_OVERVIEW.md`](docs/TECHNICAL_OVERVIEW.md), [`docs/ARCHI
 - [x] Cross-device sync (Vercel KV)
 - [x] Vercel cron scaffold for scheduled publishing
 - [x] **v2.1** — Context library, inbox, exports, time tracker, lead scoring, client approval portal, mobile responsive
-- [x] **v2.2** — Server-driven cron publishing (KV-backed tokens), Instagram + Facebook (Meta Graph), competitor watchlist, dark-social tracker, NextAuth (optional)
-- [ ] **v2.3** — OCR for image context, Vercel domain alias to contentvigilante.com
-- [ ] **v3.0** — Product Hunt launch
+- [x] **v2.2** — Server-driven cron publishing, Instagram + Facebook (Meta Graph), competitor watchlist, dark-social tracker, NextAuth (optional)
+- [x] **v2.3** — Slack/Discord/webhook notifications, multimedia (image) audit with alt-text + palette + OCR, agency-vs-brand playbook
+- [ ] **v2.4** — White-label client portal, approval gate before publish, role-based permissions, per-client billing rate, campaign tagging, CRM export hooks
+- [ ] **v3.0** — Product Hunt launch + custom domain
 
 ## Eval suite
 

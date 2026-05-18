@@ -2,6 +2,7 @@
 
 import { AccountPanel } from '@/components/dashboard/AccountPanel';
 import { Connections } from '@/components/dashboard/Connections';
+import { NotifyPanel } from '@/components/dashboard/NotifyPanel';
 import { SyncPanel } from '@/components/dashboard/SyncPanel';
 import { Button, Card, PageHeader, Pill } from '@/components/dashboard/ui';
 import { type Lead, type Post, type Workspace, seedLeads, seedPosts, useStore } from '@/lib/store';
@@ -100,6 +101,11 @@ export default function SettingsPage() {
         <Card className="lg:col-span-2">
           <h3 className="mb-3 font-semibold">Cross-device sync</h3>
           <SyncPanel />
+        </Card>
+
+        <Card className="lg:col-span-2">
+          <h3 className="mb-3 font-semibold">Notifications (Slack / Discord / webhook)</h3>
+          <NotifyPanel />
         </Card>
 
         <Card>
