@@ -22,10 +22,35 @@ export default function HomePage() {
         <br />
         content.
       </h1>
-      <p className="mb-16 max-w-[680px] text-[22px] leading-[1.5] text-[var(--color-cv-stone-600)]">
+      <p className="mb-8 max-w-[680px] text-[22px] leading-[1.5] text-[var(--color-cv-stone-600)]">
         The local-first, open-source marketing operating system. Cross-channel content, AI brand
         guardrails, unified analytics, and a hybrid CRM — your data stays yours.
       </p>
+
+      <div className="mb-16 flex flex-wrap gap-3">
+        <Link
+          href="/dashboard"
+          className="inline-flex items-center gap-2 rounded-md bg-[var(--color-cv-ink)] px-5 py-2.5 text-sm font-medium text-white transition hover:opacity-90"
+        >
+          Open the dashboard →
+        </Link>
+        <a
+          href="https://content-vigilante-demo.vercel.app/dashboard"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 rounded-md border border-[var(--color-cv-line)] bg-white px-5 py-2.5 text-sm font-medium text-[var(--color-cv-ink)] transition hover:bg-[var(--color-cv-paper-2)]"
+        >
+          Try the demo (seeded) ↗
+        </a>
+        <a
+          href="https://github.com/content-vigilante/Content-Vigilante"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 rounded-md border border-[var(--color-cv-line)] bg-white px-5 py-2.5 text-sm font-medium text-[var(--color-cv-ink)] transition hover:bg-[var(--color-cv-paper-2)]"
+        >
+          Star on GitHub ↗
+        </a>
+      </div>
 
       <div className="grid grid-cols-12 gap-4">
         <Link
