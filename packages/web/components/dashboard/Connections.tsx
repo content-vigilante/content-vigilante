@@ -8,6 +8,8 @@ interface Status {
   ga4: { configured: boolean; connected: boolean };
   linkedin: { configured: boolean; connected: boolean; name?: string | null };
   x: { configured: boolean; connected: boolean; name?: string | null };
+  facebook: { configured: boolean; connected: boolean; name?: string | null };
+  instagram: { configured: boolean; connected: boolean; name?: string | null };
 }
 
 export function Connections() {
@@ -48,6 +50,22 @@ export function Connections() {
         accountName={status.x.name ?? undefined}
         connectHref="/api/x/connect"
         envVars={['X_CLIENT_ID', 'X_CLIENT_SECRET']}
+      />
+      <Row
+        name="Facebook Page"
+        configured={status.facebook.configured}
+        connected={status.facebook.connected}
+        accountName={status.facebook.name ?? undefined}
+        connectHref="/api/meta/connect"
+        envVars={['META_CLIENT_ID', 'META_CLIENT_SECRET']}
+      />
+      <Row
+        name="Instagram (business)"
+        configured={status.instagram.configured}
+        connected={status.instagram.connected}
+        accountName={status.instagram.name ?? undefined}
+        connectHref="/api/meta/connect"
+        envVars={['META_CLIENT_ID', 'META_CLIENT_SECRET']}
       />
     </div>
   );

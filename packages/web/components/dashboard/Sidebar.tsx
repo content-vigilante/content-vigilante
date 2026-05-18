@@ -4,6 +4,7 @@ import { Owl } from '@/components/Owl';
 import {
   BarChart3,
   CalendarDays,
+  Eye,
   FileDown,
   FolderOpen,
   Inbox,
@@ -26,6 +27,7 @@ const items = [
   { href: '/dashboard/studio', label: 'Studio', icon: PenSquare },
   { href: '/dashboard/guardrails', label: 'Guardrails', icon: ShieldCheck },
   { href: '/dashboard/analytics', label: 'Analytics', icon: BarChart3 },
+  { href: '/dashboard/watchlist', label: 'Watchlist', icon: Eye },
   { href: '/dashboard/pipeline', label: 'Pipeline', icon: KanbanSquare },
   { href: '/dashboard/inbox', label: 'Inbox', icon: Inbox },
   { href: '/dashboard/exports', label: 'Exports', icon: FileDown },

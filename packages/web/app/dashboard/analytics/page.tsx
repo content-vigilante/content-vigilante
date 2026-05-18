@@ -1,5 +1,6 @@
 'use client';
 
+import { DarkSocial } from '@/components/dashboard/DarkSocial';
 import { Button, Card, PageHeader, Pill, Stat } from '@/components/dashboard/ui';
 import { Loader2, RefreshCw } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -250,6 +251,10 @@ export default function AnalyticsPage() {
             </div>
           </div>
         </Card>
+      </div>
+
+      <div className="mt-6">
+        <DarkSocial />
       </div>
     </>
   );
