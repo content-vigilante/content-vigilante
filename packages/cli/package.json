@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@content-vigilante/core": "workspace:*",
-    "commander": "^12.1.0",
+    "commander": "^15.0.0",
     "kleur": "^4.1.5"
   }
 }
